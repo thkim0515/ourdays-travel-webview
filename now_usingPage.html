@@ -341,18 +341,23 @@
   }
 
   var docRef = null; // Firebase 연결이 끝난 뒤에만 채워짐(아래 두 번째 script)
+  var pendingSave = false; // Firebase 연결 전에 로컬에서 체크/추가/삭제가 발생했는지
   var state = loadCache() || DEFAULT_CATEGORIES; // 캐시가 있으면 그걸로, 없으면 기본값으로 즉시 화면 표시
 
   function uid() { return Math.random().toString(36).slice(2, 9); }
 
-  // 로컬 캐시에는 항상 즉시 반영하고(체감 속도), Firestore 연결이 아직 안 됐으면 그걸로 충분 —
-  // 연결되면 onSnapshot이 최신값을 받아 알아서 다시 맞춰준다.
+  // 로컬 캐시에는 항상 즉시 반영하고(체감 속도), Firestore 연결이 아직 안 됐으면 pendingSave만
+  // 표시해둔다 — 연결되는 대로 아래 onSnapshot이 이 표시를 보고 로컬 상태를 서버에 반영한다.
+  // (docRef가 없다고 그냥 넘어가면, 연결 직후 onSnapshot이 서버의 예전 값으로 state를 통째로
+  // 덮어써서 그 사이에 한 체크가 저장되지 않고 사라지는 문제가 있었다.)
   function save() {
     saveCache(state);
     if (docRef) {
       docRef.set({ categories: state, updatedAt: Date.now() }).catch(function (e) {
         console.error('checklist save failed', e);
       });
+    } else {
+      pendingSave = true;
     }
   }
 
@@ -479,15 +484,24 @@
   docRef = db.collection('travelWebviewPublic').doc('checklist_' + TRIP_ID);
 
   docRef.onSnapshot(function (snap) {
-    if (snap.exists && snap.data().categories) {
+    if (pendingSave) {
+      // Firebase가 연결되기 전에 이미 로컬에서 체크/추가/삭제가 있었다 — 서버의(더 예전) 값으로
+      // 덮어쓰지 않고, 방금까지 화면에 반영된 로컬 최신 상태를 그대로 서버에 저장한다.
+      pendingSave = false;
+      docRef.set({ categories: state, updatedAt: Date.now() }).catch(function (e) {
+        console.error('checklist save failed', e);
+      });
+    } else if (snap.exists && snap.data().categories) {
       state = snap.data().categories;
+      saveCache(state);
+      render();
     } else {
       // 이 기기가 처음 열었고 Firestore에도 문서가 없는 경우에만 기본값으로 새로 만든다.
       state = loadCache() || DEFAULT_CATEGORIES;
       docRef.set({ categories: state, updatedAt: Date.now() });
+      saveCache(state);
+      render();
     }
-    saveCache(state);
-    render();
     setSyncStatus('live');
   }, function (err) {
     console.error('checklist load failed', err);

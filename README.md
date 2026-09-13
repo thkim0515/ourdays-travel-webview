@@ -39,7 +39,7 @@ GitHub Pages로 서빙되며, 앱은 재설치 없이 이 저장소의 최신 �
 
 `now_usingPage.html` 안 체크박스는 정적이지 않고, Firebase JS SDK(CDN)로 Our Days 앱과 **같은 Firestore 프로젝트**(`our-days-f8384`)에 실시간으로 저장됩니다.
 
-- 저장 위치: `travelWebviewChecklist/{TRIP_ID}` 문서 하나 (`TRIP_ID`는 `now_usingPage.html` 상단 스크립트의 `TRIP_ID` 상수, 예: `toodam-sauna-20260913`). 새 여행으로 내용을 바꿀 때 이 상수도 그 여행에 맞는 값으로 바꿔주면 체크리스트가 이전 여행 것과 섞이지 않습니다.
+- 저장 위치: `travelWebviewPublic/checklist_{TRIP_ID}` 문서 하나 (`TRIP_ID`는 `now_usingPage.html` 상단 스크립트의 `TRIP_ID` 상수, 예: `toodam-sauna-20260913`). 새 여행으로 내용을 바꿀 때 이 상수도 그 여행에 맞는 값으로 바꿔주면 체크리스트가 이전 여행 것과 섞이지 않습니다.
 - 체크 토글·항목 추가·항목 삭제 모두 즉시 Firestore에 저장되고(`onSnapshot`으로 실시간 반영), 커플 두 사람이 동시에 열어도 서로의 체크가 실시간으로 보입니다.
-- **보안 범위**: 이 페이지는 로그인이 없는 완전 공개 페이지라 어떤 방문자인지 구분할 방법이 없습니다. 그래서 앱 저장소(`D:\Claude_Dev\app`)의 `firestore.rules`에 `travelWebviewChecklist/{tripId}` 경로 **하나만** `allow read, write: if true`로 열어뒀습니다 — 이 경로는 커플의 다른 개인 데이터(일기·일정·펫 등)와 완전히 격리돼 있어, 이 체크리스트 URL이 알려지더라도 노출되는 건 준비물 목록뿐입니다. 그래도 민감한 내용(주소·전화번호 등)은 체크리스트 항목으로 적지 않는 걸 권장합니다.
+- **보안 범위**: 이 페이지는 로그인이 없는 완전 공개 페이지라 어떤 방문자인지 구분할 방법이 없습니다. 그래서 앱 저장소(`D:\Claude_Dev\app`)의 `firestore.rules`에 `travelWebviewPublic/{document=**}` 네임스페이스 **하나만** `allow read, write: if true`로 열어뒀습니다 — 이 경로는 커플의 다른 개인 데이터(일기·일정·펫 등)와 완전히 격리돼 있어, 이 체크리스트 URL이 알려지더라도 노출되는 건 이 네임스페이스 안 데이터뿐입니다. `{document=**}`는 재귀 와일드카드라, 앞으로 웹뷰에 다른 기능(방명록·투표 등)을 추가해도 이 네임스페이스 아래에 문서만 두면 Firestore 규칙을 다시 배포할 필요가 없습니다(문서 id 앞에 `checklist_`처럼 기능명을 붙여 서로 구분). 그래도 민감한 내용(주소·전화번호 등)은 항목으로 적지 않는 걸 권장합니다.
 - Firestore 문서가 아직 없을 때는 `now_usingPage.html`에 하드코딩된 기본 목록으로 자동 초기화됩니다. 이후로는 Firestore 쪽 데이터가 항상 기준입니다.

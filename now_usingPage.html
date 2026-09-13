@@ -287,29 +287,15 @@
     <div class="footer">Our Days · 토담한방사우나 나들이</div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script>
-  // 체크박스 상태 + 항목 추가/삭제를 Our Days 앱과 같은 Firestore 프로젝트에 저장한다.
-  // 이 페이지는 로그인이 없는 완전 공개 페이지라, 커플의 다른 개인 데이터와는 완전히 격리된
-  // travelWebviewChecklist/{TRIP_ID} 문서 하나만 쓴다(firestore.rules에서 이 경로만 공개 read/write 허용).
-  var firebaseConfig = {
-    apiKey: "AIzaSyAV0VysM84ycJMItcoJYSI5QcUdycMNtdg",
-    authDomain: "our-days-f8384.firebaseapp.com",
-    projectId: "our-days-f8384",
-    storageBucket: "our-days-f8384.firebasestorage.app",
-    messagingSenderId: "61731466962",
-    appId: "1:61731466962:web:00b1c6a52179d00c6b070b"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.firestore();
+  // 체크리스트는 Firebase SDK(CDN)가 로드·연결되기를 기다리지 않고, 캐시(localStorage) 또는
+  // 기본 목록으로 이 자리에서 곧바로 화면에 그린다 — CDN 스크립트 로딩 + Firestore 연결까지
+  // 기다리느라 체크리스트가 몇 초씩 늦게 뜨던 문제를 없애기 위함. Firebase 연결은 아래에서
+  // 별도로 진행되고, 응답이 오면(또는 로컬에서 체크할 때마다) 조용히 갱신·재저장한다.
   var TRIP_ID = 'toodam-sauna-20260913';
-  // travelWebviewPublic/{document=**} 네임스페이스 아래에 문서를 둔다(firestore.rules에서
-  // 이 트리 전체를 재귀 와일드카드로 공개 read/write 처리 — 앞으로 다른 웹뷰 기능을 추가할 때도
-  // 이 네임스페이스 아래에만 두면 규칙을 다시 배포할 필요가 없다). 문서 id는 기능명 접두사로 구분.
-  var docRef = db.collection('travelWebviewPublic').doc('checklist_' + TRIP_ID);
+  var LS_KEY = 'travelWebviewChecklist_' + TRIP_ID;
 
-  // 최초 접속 시(문서가 아직 없을 때)에만 쓰는 기본 체크리스트 — 이후로는 항상 Firestore가 기준.
+  // 최초 접속 시(캐시도 Firestore 문서도 없을 때)에만 쓰는 기본 체크리스트.
   var DEFAULT_CATEGORIES = [
     {
       id: 'food', icon: '🥩', iconBg: 'var(--pink-soft)', name: '식재료', count: '금요일 장보기',
@@ -344,14 +330,30 @@
     }
   ];
 
-  var state = null; // Firestore에서 받은 categories 배열(로컬 렌더 기준)
+  function loadCache() {
+    try {
+      var raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function saveCache(categories) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(categories)); } catch (e) { /* 저장 실패는 무시 */ }
+  }
+
+  var docRef = null; // Firebase 연결이 끝난 뒤에만 채워짐(아래 두 번째 script)
+  var state = loadCache() || DEFAULT_CATEGORIES; // 캐시가 있으면 그걸로, 없으면 기본값으로 즉시 화면 표시
 
   function uid() { return Math.random().toString(36).slice(2, 9); }
 
+  // 로컬 캐시에는 항상 즉시 반영하고(체감 속도), Firestore 연결이 아직 안 됐으면 그걸로 충분 —
+  // 연결되면 onSnapshot이 최신값을 받아 알아서 다시 맞춰준다.
   function save() {
-    docRef.set({ categories: state, updatedAt: Date.now() }).catch(function (e) {
-      console.error('checklist save failed', e);
-    });
+    saveCache(state);
+    if (docRef) {
+      docRef.set({ categories: state, updatedAt: Date.now() }).catch(function (e) {
+        console.error('checklist save failed', e);
+      });
+    }
   }
 
   function render() {
@@ -438,27 +440,58 @@
     });
   }
 
-  function setSyncStatus(live) {
+  function setSyncStatus(mode) {
+    // mode: 'cached' | 'live' | 'offline'
     var badge = document.getElementById('syncBadge');
     var text = document.getElementById('syncText');
-    badge.className = 'sync-badge' + (live ? ' live' : '');
-    text.textContent = live ? '실시간 동기화 중 — 체크하면 바로 저장돼요' : '연결 중...';
+    badge.className = 'sync-badge' + (mode === 'live' ? ' live' : '');
+    text.textContent =
+      mode === 'live' ? '실시간 동기화 중 — 체크하면 바로 저장돼요' :
+      mode === 'offline' ? '오프라인 — 체크는 이 화면에서만 유지돼요' :
+      '연결 중... (지금 보이는 목록은 최근 저장된 상태예요)';
   }
+
+  // 캐시든 기본값이든, 여기서 바로 한 번 그린다 — 아래 Firebase 연결을 기다리지 않는다.
+  render();
+  setSyncStatus(loadCache() ? 'cached' : 'connecting');
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+  // 체크박스 상태 + 항목 추가/삭제를 Our Days 앱과 같은 Firestore 프로젝트에 저장한다.
+  // 이 페이지는 로그인이 없는 완전 공개 페이지라, 커플의 다른 개인 데이터와는 완전히 격리된
+  // travelWebviewPublic/{document=**} 네임스페이스만 쓴다(firestore.rules에서 이 경로만 공개 read/write 허용).
+  // 위 script에서 이미 캐시/기본값으로 화면을 그려둔 상태라, 여기서는 연결되는 대로 조용히
+  // 최신값으로 맞추기만 하면 된다(사용자는 이미 목록을 보고 있어 체감 대기시간이 없다).
+  var firebaseConfig = {
+    apiKey: "AIzaSyAV0VysM84ycJMItcoJYSI5QcUdycMNtdg",
+    authDomain: "our-days-f8384.firebaseapp.com",
+    projectId: "our-days-f8384",
+    storageBucket: "our-days-f8384.firebasestorage.app",
+    messagingSenderId: "61731466962",
+    appId: "1:61731466962:web:00b1c6a52179d00c6b070b"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+  // travelWebviewPublic/{document=**} 네임스페이스 아래에 문서를 둔다 — 앞으로 다른 웹뷰 기능을
+  // 추가할 때도 이 네임스페이스 아래에만 두면 Firestore 규칙을 다시 배포할 필요가 없다.
+  docRef = db.collection('travelWebviewPublic').doc('checklist_' + TRIP_ID);
 
   docRef.onSnapshot(function (snap) {
     if (snap.exists && snap.data().categories) {
       state = snap.data().categories;
-    } else if (!state) {
-      state = DEFAULT_CATEGORIES;
+    } else {
+      // 이 기기가 처음 열었고 Firestore에도 문서가 없는 경우에만 기본값으로 새로 만든다.
+      state = loadCache() || DEFAULT_CATEGORIES;
       docRef.set({ categories: state, updatedAt: Date.now() });
     }
+    saveCache(state);
     render();
-    setSyncStatus(true);
+    setSyncStatus('live');
   }, function (err) {
     console.error('checklist load failed', err);
-    if (!state) { state = DEFAULT_CATEGORIES; render(); }
-    setSyncStatus(false);
-    document.getElementById('syncText').textContent = '오프라인 — 체크는 이 화면에서만 유지돼요';
+    setSyncStatus('offline');
   });
   </script>
 </body>

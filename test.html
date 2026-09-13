@@ -7,12 +7,17 @@
 <style>
   :root { color-scheme: light; }
   * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8DCE2 transparent; }
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     background: #F7F8FA;
     color: #222;
   }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8DCE2; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C3C9D1; }
   .wrap { padding: 24px 20px 40px; max-width: 480px; margin: 0 auto; }
   .badge {
     display: inline-block;

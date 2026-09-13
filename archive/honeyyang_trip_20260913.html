@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>토담한방사우나 나들이</title>
+<style>
+  :root {
+    color-scheme: light;
+    --pink: #FF6B9D;
+    --pink-soft: #FFF0F5;
+    --blue: #6C9EFF;
+    --blue-soft: #EEF3FF;
+    --green: #10B981;
+    --green-soft: #ECFDF5;
+    --amber: #F59E0B;
+    --amber-soft: #FFFBEB;
+    --ink: #1F2430;
+    --sub: #7A8290;
+    --line: #EEF0F3;
+  }
+  * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8DCE2 transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8DCE2; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C3C9D1; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: #F7F8FA;
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 0 0 44px; }
+
+  /* 히어로 */
+  .hero {
+    background: linear-gradient(135deg, var(--pink) 0%, #FF9AC0 100%);
+    padding: 30px 22px 26px;
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 10px 24px -14px rgba(255,107,157,0.55);
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.22);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 23px; margin: 0 0 6px; line-height: 1.35; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0; }
+  .hero .route {
+    margin-top: 18px; display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.16); border-radius: 16px; padding: 12px 14px;
+  }
+  .hero .route .stop { flex: 1; text-align: center; }
+  .hero .route .stop .name { font-size: 13.5px; font-weight: 700; }
+  .hero .route .stop .tag { font-size: 10.5px; opacity: 0.85; margin-top: 1px; }
+  .hero .route .arrow { font-size: 15px; opacity: 0.85; }
+
+  .section { padding: 22px 18px 0; }
+  .section-title {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 15px; font-weight: 800; margin: 0 0 12px;
+  }
+  .section-title .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--pink); }
+
+  /* 타임라인 카드 */
+  .timeline-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+    padding: 18px 18px 6px;
+  }
+  .tl-item { display: flex; gap: 14px; position: relative; padding-bottom: 20px; }
+  .tl-item:last-child { padding-bottom: 4px; }
+  .tl-item .tl-line {
+    position: absolute; left: 20px; top: 30px; bottom: -2px; width: 2px;
+    background: var(--line);
+  }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-time {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 13px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 10.5px; font-weight: 800; line-height: 1.15; z-index: 1;
+  }
+  .tl-time.go { background: var(--pink-soft); color: var(--pink); }
+  .tl-time.mid { background: var(--amber-soft); color: var(--amber); }
+  .tl-time.back { background: var(--blue-soft); color: var(--blue); }
+  .tl-body { flex: 1; padding-top: 3px; }
+  .tl-body .t { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+  .tl-body .d { font-size: 12.5px; color: var(--sub); line-height: 1.5; }
+  .tl-body .d b { color: var(--ink); font-weight: 700; }
+
+  .duration-strip {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin: 14px 0 0; padding: 10px; background: var(--amber-soft);
+    border-radius: 14px; font-size: 12.5px; font-weight: 700; color: #B45309;
+  }
+
+  /* 준비물 카드 */
+  .pack-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+    padding: 16px 18px 18px; margin-bottom: 12px;
+  }
+  .pack-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+  .pack-icon {
+    width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .pack-head .name { font-size: 14px; font-weight: 800; }
+  .pack-head .count { margin-left: auto; font-size: 11.5px; color: var(--sub); font-weight: 600; }
+  .pack-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+  .pack-list li {
+    display: flex; align-items: center; gap: 9px; font-size: 13px; color: #40454F;
+    padding: 2px 0;
+  }
+  .pack-list li .chk {
+    width: 17px; height: 17px; border-radius: 6px; border: 1.6px solid #D9DEE4;
+    flex-shrink: 0;
+  }
+  .pack-list li.hl { font-weight: 700; color: var(--ink); }
+  .pack-list li .note { color: var(--sub); font-size: 11.5px; margin-left: 2px; }
+
+  .cash-row {
+    display: flex; gap: 10px; margin-top: 2px;
+  }
+  .cash-chip {
+    flex: 1; background: var(--green-soft); border-radius: 12px; padding: 10px 12px;
+    text-align: center;
+  }
+  .cash-chip .n { font-size: 15px; font-weight: 800; color: #067A5A; }
+  .cash-chip .l { font-size: 10.5px; color: #0A8F6B; margin-top: 1px; }
+
+  .note-card {
+    background: #FFF7ED; border: 1px solid #FDE9CF; border-radius: 16px;
+    padding: 14px 16px; font-size: 12.5px; color: #92600B; line-height: 1.7;
+    margin: 4px 18px 0;
+  }
+  .note-card b { color: #7A4A08; }
+
+  .footer { text-align: center; font-size: 11px; color: #B4BAC2; margin-top: 26px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="hero">
+      <span class="badge">🚗 당일치기 나들이</span>
+      <h1>토담한방사우나 &amp; 계곡놀이</h1>
+      <p class="sub">숯불고기 · 계곡놀이 · 한방사우나까지 알차게 즐기고 당일 복귀!</p>
+      <div class="route">
+        <div class="stop">
+          <div class="name">정발산역</div>
+          <div class="tag">출발</div>
+        </div>
+        <div class="arrow">➜</div>
+        <div class="stop">
+          <div class="name">토담한방사우나</div>
+          <div class="tag">약 39km · 50분</div>
+        </div>
+        <div class="arrow">➜</div>
+        <div class="stop">
+          <div class="name">정발산역</div>
+          <div class="tag">복귀</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>일정표</div>
+      <div class="timeline-card">
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time go">06:40<span>기상</span></div>
+          <div class="tl-body">
+            <div class="t">기상 · 준비</div>
+            <div class="d">씻고 짐 챙기기. 전날 밤 미리 싸둔 짐 최종 확인.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time go">06:50<span>픽업</span></div>
+          <div class="tl-body">
+            <div class="t">렌트카 픽업</div>
+            <div class="d">예약 내역 · 신분증 · 운전면허증 확인.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time go">07:20<span>출발</span></div>
+          <div class="tl-body">
+            <div class="t"><b>정발산역 출발</b></div>
+            <div class="d">차량 탑승 완료, 바로 출발.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time mid">08:10<span>도착</span></div>
+          <div class="tl-body">
+            <div class="t"><b>토담한방사우나 도착</b></div>
+            <div class="d">이동 약 <b>50분</b>. 세면도구·수건 등 가벼운 짐만 챙겨 입장, 액세서리는 차에 보관.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time mid">08:10<br>~12:20<span>활동</span></div>
+          <div class="tl-body">
+            <div class="t">계곡놀이 · 숯불고기 · 찜질 · 샤워</div>
+            <div class="d">약 <b>4시간</b> 동안 알차게 즐기기 — 계곡놀이 → 숯불고기 식사 → 찜질 → 마무리 샤워.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time back">12:20<span>복귀</span></div>
+          <div class="tl-body">
+            <div class="t"><b>바로 복귀 출발</b></div>
+            <div class="d">짐 정리하고 차량 탑승, 정발산역 방향으로 출발.</div>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-line"></div>
+          <div class="tl-time back">13:10<span>도착</span></div>
+          <div class="tl-body">
+            <div class="t">정발산역 도착</div>
+            <div class="d">렌트카 반납 및 일정 종료.</div>
+          </div>
+        </div>
+
+        <div class="duration-strip">⏱️ 총 활동 시간 약 4시간 · 이동 왕복 약 1시간 40분</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot" style="background:var(--blue)"></span>준비물 체크리스트</div>
+
+      <div class="pack-card">
+        <div class="pack-head">
+          <div class="pack-icon" style="background:var(--pink-soft)">🥩</div>
+          <div class="name">식재료</div>
+          <div class="count">금요일 장보기</div>
+        </div>
+        <ul class="pack-list">
+          <li><span class="chk"></span>삼겹살</li>
+          <li><span class="chk"></span>쌈장 · 허브솔트</li>
+          <li><span class="chk"></span>컵라면 또는 라면 <span class="note">(양은냄비 지참)</span></li>
+          <li><span class="chk"></span>음료</li>
+        </ul>
+      </div>
+
+      <div class="pack-card">
+        <div class="pack-head">
+          <div class="pack-icon" style="background:var(--amber-soft)">🍽️</div>
+          <div class="name">식기류 · 기타</div>
+          <div class="count">까먹기 쉬운 것들</div>
+        </div>
+        <ul class="pack-list">
+          <li><span class="chk"></span>일회용 접시 · 식기류</li>
+          <li><span class="chk"></span>집게 · 고기가위</li>
+          <li><span class="chk"></span>일회용 비닐장갑</li>
+          <li><span class="chk"></span>호일</li>
+          <li><span class="chk"></span>물티슈 · 쓰레기봉투</li>
+          <li><span class="chk"></span>아이스박스 <span class="note">(고기 보냉용)</span></li>
+          <li><span class="chk"></span>돗자리</li>
+          <li><span class="chk"></span>벌레기피제 <span class="note">(계곡 근처)</span></li>
+        </ul>
+      </div>
+
+      <div class="pack-card">
+        <div class="pack-head">
+          <div class="pack-icon" style="background:var(--blue-soft)">♨️</div>
+          <div class="name">사우나 준비물</div>
+          <div class="count">필수</div>
+        </div>
+        <ul class="pack-list">
+          <li><span class="chk"></span>세면도구 <span class="note">(샴푸 · 바디워시 소분)</span></li>
+          <li class="hl"><span class="chk"></span>수건 2장 <span class="note">(기본 1장 제공, 막 쓸 용도 추가)</span></li>
+          <li class="hl"><span class="chk"></span>수면양말 또는 양말</li>
+          <li><span class="chk"></span>계곡놀이용: 수영복 · 아쿠아슈즈 · 여벌 옷</li>
+        </ul>
+        <div class="cash-row">
+          <div class="cash-chip"><div class="n">100원 × 10개</div><div class="l">동전 사물함 등</div></div>
+          <div class="cash-chip"><div class="n">만원 × 3장</div><div class="l">현금 결제용</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <b>⚠️ 주의사항</b><br>
+      반지 · 귀걸이 · 목걸이 등 액세서리는 화상 위험이 있어 차에 두고 입장하세요.<br>
+      시설에 탕은 없고 샤워만 가능, 드라이기는 동전 사용, 전자레인지도 유료입니다.
+    </div>
+
+    <div class="footer">Our Days · 토담한방사우나 나들이</div>
+  </div>
+</body>
+</html>

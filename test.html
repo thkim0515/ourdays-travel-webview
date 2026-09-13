@@ -115,11 +115,42 @@
     padding: 2px 0;
   }
   .pack-list li .chk {
-    width: 17px; height: 17px; border-radius: 6px; border: 1.6px solid #D9DEE4;
-    flex-shrink: 0;
+    width: 19px; height: 19px; border-radius: 6px; border: 1.6px solid #D9DEE4;
+    flex-shrink: 0; cursor: pointer; position: relative; background: #fff;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  .pack-list li .chk.on { background: var(--pink); border-color: var(--pink); }
+  .pack-list li .chk.on::after {
+    content: ''; position: absolute; left: 6px; top: 2px; width: 5px; height: 9px;
+    border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(40deg);
   }
   .pack-list li.hl { font-weight: 700; color: var(--ink); }
   .pack-list li .note { color: var(--sub); font-size: 11.5px; margin-left: 2px; }
+  .pack-list li .label { flex: 1; cursor: pointer; }
+  .pack-list li.checked .label { color: var(--sub); text-decoration: line-through; }
+  .pack-list li .del {
+    flex-shrink: 0; width: 20px; height: 20px; border-radius: 999px; border: none;
+    background: transparent; color: #C7CCD3; font-size: 15px; line-height: 1;
+    cursor: pointer;
+  }
+  .pack-list li .del:active { color: #EF4444; }
+  .pack-add-row { display: flex; gap: 7px; margin-top: 9px; }
+  .pack-add-row input {
+    flex: 1; border: 1.4px dashed #DCE0E6; border-radius: 10px; padding: 7px 10px;
+    font-size: 12.5px; font-family: inherit; outline: none; color: var(--ink); min-width: 0;
+  }
+  .pack-add-row input:focus { border-color: var(--pink); border-style: solid; }
+  .pack-add-row button {
+    flex-shrink: 0; border: none; border-radius: 10px; padding: 0 13px;
+    background: var(--pink-soft); color: var(--pink); font-weight: 800; font-size: 13px;
+    cursor: pointer;
+  }
+  .sync-badge {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    font-size: 10.5px; color: var(--sub); margin: 10px 18px 0;
+  }
+  .sync-badge .sdot { width: 6px; height: 6px; border-radius: 999px; background: #CBD1D8; }
+  .sync-badge.live .sdot { background: #34D399; }
 
   .cash-row {
     display: flex; gap: 10px; margin-top: 2px;
@@ -239,56 +270,12 @@
 
     <div class="section">
       <div class="section-title"><span class="dot" style="background:var(--blue)"></span>준비물 체크리스트</div>
-
-      <div class="pack-card">
-        <div class="pack-head">
-          <div class="pack-icon" style="background:var(--pink-soft)">🥩</div>
-          <div class="name">식재료</div>
-          <div class="count">금요일 장보기</div>
-        </div>
-        <ul class="pack-list">
-          <li><span class="chk"></span>삼겹살</li>
-          <li><span class="chk"></span>쌈장 · 허브솔트</li>
-          <li><span class="chk"></span>컵라면 또는 라면 <span class="note">(양은냄비 지참)</span></li>
-          <li><span class="chk"></span>음료</li>
-        </ul>
+      <div id="packCards"></div>
+      <div class="cash-row" style="padding: 0 0; margin: 2px 0 0;">
+        <div class="cash-chip"><div class="n">100원 × 10개</div><div class="l">동전 사물함 등</div></div>
+        <div class="cash-chip"><div class="n">만원 × 3장</div><div class="l">현금 결제용</div></div>
       </div>
-
-      <div class="pack-card">
-        <div class="pack-head">
-          <div class="pack-icon" style="background:var(--amber-soft)">🍽️</div>
-          <div class="name">식기류 · 기타</div>
-          <div class="count">까먹기 쉬운 것들</div>
-        </div>
-        <ul class="pack-list">
-          <li><span class="chk"></span>일회용 접시 · 식기류</li>
-          <li><span class="chk"></span>집게 · 고기가위</li>
-          <li><span class="chk"></span>일회용 비닐장갑</li>
-          <li><span class="chk"></span>호일</li>
-          <li><span class="chk"></span>물티슈 · 쓰레기봉투</li>
-          <li><span class="chk"></span>아이스박스 <span class="note">(고기 보냉용)</span></li>
-          <li><span class="chk"></span>돗자리</li>
-          <li><span class="chk"></span>벌레기피제 <span class="note">(계곡 근처)</span></li>
-        </ul>
-      </div>
-
-      <div class="pack-card">
-        <div class="pack-head">
-          <div class="pack-icon" style="background:var(--blue-soft)">♨️</div>
-          <div class="name">사우나 준비물</div>
-          <div class="count">필수</div>
-        </div>
-        <ul class="pack-list">
-          <li><span class="chk"></span>세면도구 <span class="note">(샴푸 · 바디워시 소분)</span></li>
-          <li class="hl"><span class="chk"></span>수건 2장 <span class="note">(기본 1장 제공, 막 쓸 용도 추가)</span></li>
-          <li class="hl"><span class="chk"></span>수면양말 또는 양말</li>
-          <li><span class="chk"></span>계곡놀이용: 수영복 · 아쿠아슈즈 · 여벌 옷</li>
-        </ul>
-        <div class="cash-row">
-          <div class="cash-chip"><div class="n">100원 × 10개</div><div class="l">동전 사물함 등</div></div>
-          <div class="cash-chip"><div class="n">만원 × 3장</div><div class="l">현금 결제용</div></div>
-        </div>
-      </div>
+      <div class="sync-badge" id="syncBadge"><span class="sdot"></span><span id="syncText">불러오는 중...</span></div>
     </div>
 
     <div class="note-card">
@@ -299,5 +286,177 @@
 
     <div class="footer">Our Days · 토담한방사우나 나들이</div>
   </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+  // 체크박스 상태 + 항목 추가/삭제를 Our Days 앱과 같은 Firestore 프로젝트에 저장한다.
+  // 이 페이지는 로그인이 없는 완전 공개 페이지라, 커플의 다른 개인 데이터와는 완전히 격리된
+  // travelWebviewChecklist/{TRIP_ID} 문서 하나만 쓴다(firestore.rules에서 이 경로만 공개 read/write 허용).
+  var firebaseConfig = {
+    apiKey: "AIzaSyAV0VysM84ycJMItcoJYSI5QcUdycMNtdg",
+    authDomain: "our-days-f8384.firebaseapp.com",
+    projectId: "our-days-f8384",
+    storageBucket: "our-days-f8384.firebasestorage.app",
+    messagingSenderId: "61731466962",
+    appId: "1:61731466962:web:00b1c6a52179d00c6b070b"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+  var TRIP_ID = 'toodam-sauna-20260913';
+  var docRef = db.collection('travelWebviewChecklist').doc(TRIP_ID);
+
+  // 최초 접속 시(문서가 아직 없을 때)에만 쓰는 기본 체크리스트 — 이후로는 항상 Firestore가 기준.
+  var DEFAULT_CATEGORIES = [
+    {
+      id: 'food', icon: '🥩', iconBg: 'var(--pink-soft)', name: '식재료', count: '금요일 장보기',
+      items: [
+        { id: 'f1', label: '삼겹살', checked: false },
+        { id: 'f2', label: '쌈장 · 허브솔트', checked: false },
+        { id: 'f3', label: '컵라면 또는 라면', note: '(양은냄비 지참)', checked: false },
+        { id: 'f4', label: '음료', checked: false }
+      ]
+    },
+    {
+      id: 'etc', icon: '🍽️', iconBg: 'var(--amber-soft)', name: '식기류 · 기타', count: '까먹기 쉬운 것들',
+      items: [
+        { id: 'e1', label: '일회용 접시 · 식기류', checked: false },
+        { id: 'e2', label: '집게 · 고기가위', checked: false },
+        { id: 'e3', label: '일회용 비닐장갑', checked: false },
+        { id: 'e4', label: '호일', checked: false },
+        { id: 'e5', label: '물티슈 · 쓰레기봉투', checked: false },
+        { id: 'e6', label: '아이스박스', note: '(고기 보냉용)', checked: false },
+        { id: 'e7', label: '돗자리', checked: false },
+        { id: 'e8', label: '벌레기피제', note: '(계곡 근처)', checked: false }
+      ]
+    },
+    {
+      id: 'sauna', icon: '♨️', iconBg: 'var(--blue-soft)', name: '사우나 준비물', count: '필수',
+      items: [
+        { id: 's1', label: '세면도구', note: '(샴푸 · 바디워시 소분)', checked: false },
+        { id: 's2', label: '수건 2장', note: '(기본 1장 제공, 막 쓸 용도 추가)', checked: false, hl: true },
+        { id: 's3', label: '수면양말 또는 양말', checked: false, hl: true },
+        { id: 's4', label: '계곡놀이용: 수영복 · 아쿠아슈즈 · 여벌 옷', checked: false }
+      ]
+    }
+  ];
+
+  var state = null; // Firestore에서 받은 categories 배열(로컬 렌더 기준)
+
+  function uid() { return Math.random().toString(36).slice(2, 9); }
+
+  function save() {
+    docRef.set({ categories: state, updatedAt: Date.now() }).catch(function (e) {
+      console.error('checklist save failed', e);
+    });
+  }
+
+  function render() {
+    var wrap = document.getElementById('packCards');
+    wrap.innerHTML = '';
+    state.forEach(function (cat) {
+      var card = document.createElement('div');
+      card.className = 'pack-card';
+
+      var head = document.createElement('div');
+      head.className = 'pack-head';
+      head.innerHTML =
+        '<div class="pack-icon" style="background:' + cat.iconBg + '">' + cat.icon + '</div>' +
+        '<div class="name">' + cat.name + '</div>' +
+        '<div class="count">' + (cat.count || '') + '</div>';
+      card.appendChild(head);
+
+      var ul = document.createElement('ul');
+      ul.className = 'pack-list';
+      cat.items.forEach(function (item) {
+        var li = document.createElement('li');
+        li.className = (item.hl ? 'hl ' : '') + (item.checked ? 'checked' : '');
+
+        var chk = document.createElement('span');
+        chk.className = 'chk' + (item.checked ? ' on' : '');
+        chk.onclick = function () {
+          item.checked = !item.checked;
+          save();
+          render();
+        };
+        li.appendChild(chk);
+
+        var label = document.createElement('span');
+        label.className = 'label';
+        label.textContent = item.label + (item.note ? ' ' : '');
+        if (item.note) {
+          var note = document.createElement('span');
+          note.className = 'note';
+          note.textContent = item.note;
+          label.appendChild(note);
+        }
+        label.onclick = chk.onclick;
+        li.appendChild(label);
+
+        var del = document.createElement('button');
+        del.className = 'del';
+        del.type = 'button';
+        del.setAttribute('aria-label', '삭제');
+        del.textContent = '×';
+        del.onclick = function () {
+          cat.items = cat.items.filter(function (it) { return it.id !== item.id; });
+          save();
+          render();
+        };
+        li.appendChild(del);
+
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+
+      var addRow = document.createElement('div');
+      addRow.className = 'pack-add-row';
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = '항목 추가';
+      var addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.textContent = '+ 추가';
+      function addItem() {
+        var v = input.value.trim();
+        if (!v) return;
+        cat.items.push({ id: uid(), label: v, checked: false });
+        input.value = '';
+        save();
+        render();
+      }
+      addBtn.onclick = addItem;
+      input.onkeydown = function (e) { if (e.key === 'Enter') addItem(); };
+      addRow.appendChild(input);
+      addRow.appendChild(addBtn);
+      card.appendChild(addRow);
+
+      wrap.appendChild(card);
+    });
+  }
+
+  function setSyncStatus(live) {
+    var badge = document.getElementById('syncBadge');
+    var text = document.getElementById('syncText');
+    badge.className = 'sync-badge' + (live ? ' live' : '');
+    text.textContent = live ? '실시간 동기화 중 — 체크하면 바로 저장돼요' : '연결 중...';
+  }
+
+  docRef.onSnapshot(function (snap) {
+    if (snap.exists && snap.data().categories) {
+      state = snap.data().categories;
+    } else if (!state) {
+      state = DEFAULT_CATEGORIES;
+      docRef.set({ categories: state, updatedAt: Date.now() });
+    }
+    render();
+    setSyncStatus(true);
+  }, function (err) {
+    console.error('checklist load failed', err);
+    if (!state) { state = DEFAULT_CATEGORIES; render(); }
+    setSyncStatus(false);
+    document.getElementById('syncText').textContent = '오프라인 — 체크는 이 화면에서만 유지돼요';
+  });
+  </script>
 </body>
 </html>

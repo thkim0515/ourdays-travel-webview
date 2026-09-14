@@ -169,6 +169,31 @@
   }
   .note-card b { color: #7A4A08; }
 
+  /* 안내/순서 카드 */
+  .info-card {
+    background: #fff; border: 1px solid var(--line); border-radius: 20px;
+    padding: 16px 18px 18px;
+  }
+  .info-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+  .info-list li { font-size: 12.5px; color: #40454F; line-height: 1.6; }
+  .info-list li b {
+    display: inline-block; min-width: 62px; margin-right: 2px;
+    color: var(--ink); font-weight: 800;
+  }
+  .info-tip {
+    margin-top: 12px; padding: 10px 12px; background: var(--amber-soft);
+    border-radius: 12px; font-size: 12px; color: #B45309; line-height: 1.6;
+  }
+  .step-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .step-list li {
+    display: flex; gap: 10px; font-size: 12.5px; color: #40454F; line-height: 1.6;
+  }
+  .step-list li .num {
+    flex-shrink: 0; width: 20px; height: 20px; border-radius: 999px;
+    background: var(--green-soft); color: #067A5A; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+
   .footer { text-align: center; font-size: 11px; color: #B4BAC2; margin-top: 26px; }
 </style>
 </head>
@@ -203,7 +228,7 @@
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time go">06:40<span>기상</span></div>
+          <div class="tl-time go">06:20<span>기상</span></div>
           <div class="tl-body">
             <div class="t">기상 · 준비</div>
             <div class="d">씻고 짐 챙기기. 전날 밤 미리 싸둔 짐 최종 확인.</div>
@@ -212,7 +237,7 @@
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time go">06:50<span>픽업</span></div>
+          <div class="tl-time go">06:30<span>픽업</span></div>
           <div class="tl-body">
             <div class="t">렌트카 픽업</div>
             <div class="d">예약 내역 · 신분증 · 운전면허증 확인.</div>
@@ -221,7 +246,7 @@
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time go">07:20<span>출발</span></div>
+          <div class="tl-time go">07:00<span>출발</span></div>
           <div class="tl-body">
             <div class="t"><b>정발산역 출발</b></div>
             <div class="d">차량 탑승 완료, 바로 출발.</div>
@@ -230,7 +255,7 @@
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time mid">08:10<span>도착</span></div>
+          <div class="tl-time mid">07:50<span>도착</span></div>
           <div class="tl-body">
             <div class="t"><b>토담한방사우나 도착</b></div>
             <div class="d">이동 약 <b>50분</b>. 세면도구·수건 등 가벼운 짐만 챙겨 입장, 액세서리는 차에 보관.</div>
@@ -239,32 +264,58 @@
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time mid">08:10<br>~12:20<span>활동</span></div>
+          <div class="tl-time mid">07:50<br>~14:00<span>활동</span></div>
           <div class="tl-body">
             <div class="t">계곡놀이 · 숯불고기 · 찜질 · 샤워</div>
-            <div class="d">약 <b>4시간</b> 동안 알차게 즐기기 — 계곡놀이 → 숯불고기 식사 → 찜질 → 마무리 샤워.</div>
+            <div class="d">약 <b>6시간 10분</b> 동안 알차게 즐기기 — 계곡놀이 → 숯불고기 식사 → 찜질 → 마무리 샤워.</div>
           </div>
         </div>
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time back">12:20<span>복귀</span></div>
+          <div class="tl-time back">14:00<span>복귀</span></div>
           <div class="tl-body">
             <div class="t"><b>바로 복귀 출발</b></div>
-            <div class="d">짐 정리하고 차량 탑승, 정발산역 방향으로 출발.</div>
+            <div class="d">짐 정리하고 차량 탑승, 정발산역 방향으로 출발. 차량 반납 시간(16:20)에 맞춰 여유 있게 출발.</div>
           </div>
         </div>
 
         <div class="tl-item">
           <div class="tl-line"></div>
-          <div class="tl-time back">13:10<span>도착</span></div>
+          <div class="tl-time back">14:50<span>도착</span></div>
           <div class="tl-body">
             <div class="t">정발산역 도착</div>
-            <div class="d">렌트카 반납 및 일정 종료.</div>
+            <div class="d">렌트카 반납(16:20) 및 일정 종료.</div>
           </div>
         </div>
 
-        <div class="duration-strip">⏱️ 총 활동 시간 약 4시간 · 이동 왕복 약 1시간 40분</div>
+        <div class="duration-strip">⏱️ 총 활동 시간 약 6시간 10분 · 이동 왕복 약 1시간 40분</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot" style="background:var(--amber)"></span>토담참숯가마 야외 구이장</div>
+      <div class="info-card">
+        <ul class="info-list">
+          <li><b>위치</b>경기 양주시 백석읍 권율로847번길 7-11 (기산저수지 부근)</li>
+          <li><b>영업시간</b>08:30~23:00 (연중무휴)</li>
+          <li><b>입장료</b>성인 16,000원 / 어린이 11,000원</li>
+          <li><b>대여</b>현장 매표소(카운터)에서 예약, 석쇠+숯 세트 10,000원, 이용시간 테이블당 2시간</li>
+          <li><b>재료</b>고기·채소·고구마·감자 등 구울 재료는 전부 직접 지참 (현장 판매 없음, 매점엔 과자·음료·식혜·참숯 정도만 있음)</li>
+        </ul>
+        <div class="info-tip">⚠️ 토요일은 주차장이 꽉 찰 정도로 혼잡한 편이라 여유 있게 도착하는 걸 추천해요.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot" style="background:var(--green)"></span>고기 굽는 순서</div>
+      <div class="info-card">
+        <ol class="step-list">
+          <li><span class="num">1</span><span>양은냄비를 숯불 옆(화력 약한 쪽)에 올려 예열</span></li>
+          <li><span class="num">2</span><span>삼겹살을 냄비에 넣고 초벌 — 기름이 어느 정도 나올 때까지 굽기</span></li>
+          <li><span class="num">3</span><span>초벌된 고기는 석쇠로 옮겨 불향 입히며 마무리 굽기</span></li>
+          <li><span class="num">4</span><span>냄비에 남은 기름에 물기를 살짝 짠 김치를 넣고 구워 먹기</span></li>
+        </ol>
       </div>
     </div>
 
@@ -316,7 +367,8 @@
         { id: 'e5', label: '물티슈 · 쓰레기봉투', checked: false },
         { id: 'e6', label: '아이스박스', note: '(고기 보냉용)', checked: false },
         { id: 'e7', label: '돗자리', checked: false },
-        { id: 'e8', label: '벌레기피제', note: '(계곡 근처)', checked: false }
+        { id: 'e8', label: '벌레기피제', note: '(계곡 근처)', checked: false },
+        { id: 'e9', label: '열장갑', note: '(석쇠 · 냄비 다룰 때)', checked: false, hl: true }
       ]
     },
     {

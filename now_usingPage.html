@@ -320,7 +320,7 @@
     </div>
 
     <div class="section">
-      <div class="section-title"><span class="dot" style="background:var(--blue)"></span>준비물 체크리스트</div>
+      <div class="section-title"><span class="dot" style="background:var(--blue)"></span>구매처별 쇼핑 리스트</div>
       <div id="packCards"></div>
       <div class="cash-row" style="padding: 0 0; margin: 2px 0 0;">
         <div class="cash-chip"><div class="n">100원 × 10개</div><div class="l">동전 사물함 등</div></div>
@@ -349,35 +349,45 @@
   // 최초 접속 시(캐시도 Firestore 문서도 없을 때)에만 쓰는 기본 체크리스트.
   var DEFAULT_CATEGORIES = [
     {
-      id: 'food', icon: '🥩', iconBg: 'var(--pink-soft)', name: '식재료', count: '금요일 장보기',
+      id: 'daiso', icon: '🏪', iconBg: 'var(--pink-soft)', name: '다이소 구매목록', count: '',
       items: [
-        { id: 'f1', label: '삼겹살', checked: false },
-        { id: 'f2', label: '쌈장 · 허브솔트', checked: false },
-        { id: 'f3', label: '컵라면 또는 라면', note: '(양은냄비 지참)', checked: false },
-        { id: 'f4', label: '음료', checked: false }
+        { id: 'd1', label: '쌈장 · 허브솔트', checked: false },
+        { id: 'd2', label: '컵라면 또는 라면', checked: false },
+        { id: 'd3', label: '햇반 2개', checked: false },
+        { id: 'd4', label: '일회용 접시 · 식기류', checked: false },
+        { id: 'd5', label: '집게 · 고기가위', checked: false },
+        { id: 'd6', label: '양은냄비', checked: false },
+        { id: 'd7', label: '세면도구', note: '(샴푸 · 바디워시 소분)', checked: false },
+        { id: 'd8', label: '수건 2장', checked: false }
       ]
     },
     {
-      id: 'etc', icon: '🍽️', iconBg: 'var(--amber-soft)', name: '식기류 · 기타', count: '까먹기 쉬운 것들',
+      id: 'coupang', icon: '📦', iconBg: 'var(--amber-soft)', name: '쿠팡 구매목록', count: '',
       items: [
-        { id: 'e1', label: '일회용 접시 · 식기류', checked: false },
-        { id: 'e2', label: '집게 · 고기가위', checked: false },
-        { id: 'e3', label: '일회용 비닐장갑', checked: false },
-        { id: 'e4', label: '호일', checked: false },
-        { id: 'e5', label: '물티슈 · 쓰레기봉투', checked: false },
-        { id: 'e6', label: '아이스박스', note: '(고기 보냉용)', checked: false },
-        { id: 'e7', label: '돗자리', checked: false },
-        { id: 'e8', label: '벌레기피제', note: '(계곡 근처)', checked: false },
-        { id: 'e9', label: '열장갑', note: '(석쇠 · 냄비 다룰 때)', checked: false, hl: true }
+        { id: 'c1', label: '삼겹살', checked: false }
       ]
     },
     {
-      id: 'sauna', icon: '♨️', iconBg: 'var(--blue-soft)', name: '사우나 준비물', count: '필수',
+      id: 'cvs', icon: '🏬', iconBg: 'var(--blue-soft)', name: '편의점 구매목록', count: '',
       items: [
-        { id: 's1', label: '세면도구', note: '(샴푸 · 바디워시 소분)', checked: false },
-        { id: 's2', label: '수건 2장', note: '(기본 1장 제공, 막 쓸 용도 추가)', checked: false, hl: true },
-        { id: 's3', label: '수면양말 또는 양말', checked: false, hl: true },
-        { id: 's4', label: '계곡놀이용: 수영복 · 아쿠아슈즈 · 여벌 옷', checked: false }
+        { id: 'v1', label: '음료', checked: false }
+      ]
+    },
+    {
+      id: 'lakebake', icon: '🥐', iconBg: 'var(--pink-soft)', name: '레이크베이크', count: '',
+      items: [
+        { id: 'l1', label: '수저', checked: false },
+        { id: 'l2', label: '생수', checked: false },
+        { id: 'l3', label: '종이컵', checked: false }
+      ]
+    },
+    {
+      id: 'assign', icon: '👥', iconBg: 'var(--amber-soft)', name: '담당자별 준비물', count: '참고',
+      items: [
+        { id: 'a1', label: '고구마 4개', note: '(호일 챙기기) · 허니', checked: false },
+        { id: 'a2', label: '돗자리', note: '(양이)', checked: false },
+        { id: 'a3', label: '수면양말', note: '(양이)', checked: false },
+        { id: 'a4', label: '방수팩', note: '(양이)', checked: false }
       ]
     }
   ];

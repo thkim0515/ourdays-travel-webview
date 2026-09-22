@@ -19,6 +19,8 @@ GitHub Pages로 서빙되며, 앱은 재설치 없이 이 저장소의 최신 �
 ## 파일 구성 및 저장 규칙
 
 - **`now_usingPage.html`** — 앱이 실제로 불러오는 **현재 여행** 페이지(고정 경로). "지금 사용 중인 페이지"라는 뜻의 이름으로, 한 번 정해진 뒤로는 **절대 바꾸지 않습니다**(앱 쪽 `TRAVEL_WEBVIEW_URL`이 이 경로로 고정돼 있어, 파일명을 바꾸면 앱도 다시 빌드·재설치해야 합니다). 여행 내용이 바뀔 때는 이 파일의 **내용만** 덮어씁니다.
+- **`index.html`** — 지금까지의 모든 여행을 최신순으로 모아보는 **메인(목록) 페이지**. `data/trips.json`을 읽어서 카드 목록을 렌더링합니다. 앱이 불러오는 고정 경로는 아니고, 사람이 직접 열어보는 용도예요.
+- `data/trips.json` — `index.html`이 읽는 여행 목록 데이터. 여행마다 `{ id, title, subtitle, date, emoji, url }`을 담은 배열이며, `date`(YYYY-MM-DD) 기준 최신순으로 정렬돼 표시됩니다. **새 여행으로 교체할 때마다 이 배열에 새 항목을 하나 추가하세요.** 현재 여행의 `url`은 `now_usingPage.html`을, 지나간 여행은 `archive/...` 경로를 가리킵니다.
 - `data/meta.json` — `updatedAt`(오늘 날짜)과 `title`을 담고 있으며, 앱의 "우리의 여행 웹 보기" 버튼에 최근 갱신일로 표시됩니다. `now_usingPage.html`을 바꿀 때 반드시 함께 갱신하세요.
 - `archive/` — 이전에 `now_usingPage.html`이었던 내용을 **덮어쓰기 전에** 그대로 복사해 보관하는 폴더. git 커밋 이력에도 남지만, 실제 파일로도 과거 여행 페이지를 바로 열어볼 수 있도록 별도 보관합니다.
   - 파일명 규칙: `honeyyang_trip_YYYYMMDD.html` (예: `honeyyang_trip_20260913.html`)
@@ -29,13 +31,15 @@ GitHub Pages로 서빙되며, 앱은 재설치 없이 이 저장소의 최신 �
 1. 현재 `now_usingPage.html`을 `archive/honeyyang_trip_YYYYMMDD.html`(오늘 날짜)로 복사해 보관합니다.
 2. `now_usingPage.html`을 새 여행 내용으로 덮어씁니다. **파일명은 절대 바꾸지 않습니다.**
 3. `data/meta.json`의 `updatedAt`(과 필요하면 `title`)을 오늘 날짜로 갱신합니다.
-4. 이 README의 "갱신 이력" 표에 오늘 날짜 + 여행 내용을 한 줄 추가합니다.
-5. 체크리스트를 쓰는 여행이라면 `now_usingPage.html` 안의 `TRIP_ID` 상수도 새 여행에 맞는 값으로 바꿉니다(아래 "준비물 체크리스트" 참고).
-6. **반드시 `main` 브랜치에 바로 push합니다.** (다른 브랜치에서 작업했다면 이 단계에서 `main`으로 병합 후 push까지 마쳐야 합니다.) `main`에 반영되지 않으면 GitHub Pages와 앱에 절대 표시되지 않습니다. 앱은 다음에 웹뷰를 열 때(캐시 방지를 위해 매번 타임스탬프를 붙여 요청) 새 내용을 바로 받아옵니다.
+4. `data/trips.json`에 **직전까지 `now_usingPage.html`이었던 여행**을 `archive/...` 경로로 가리키는 새 항목으로 추가하고(1번에서 복사한 파일), **기존에 있던 "현재 여행" 항목**(url이 `now_usingPage.html`인 항목)의 `title`/`subtitle`/`date`/`emoji`를 오늘의 새 여행 내용으로 덮어씁니다. (즉, `now_usingPage.html`을 가리키는 항목은 항상 1개만 유지)
+5. 이 README의 "갱신 이력" 표에 오늘 날짜 + 여행 내용을 한 줄 추가합니다.
+6. 체크리스트를 쓰는 여행이라면 `now_usingPage.html` 안의 `TRIP_ID` 상수도 새 여행에 맞는 값으로 바꿉니다(아래 "준비물 체크리스트" 참고).
+7. **반드시 `main` 브랜치에 바로 push합니다.** (다른 브랜치에서 작업했다면 이 단계에서 `main`으로 병합 후 push까지 마쳐야 합니다.) `main`에 반영되지 않으면 GitHub Pages와 앱에 절대 표시되지 않습니다. 앱은 다음에 웹뷰를 열 때(캐시 방지를 위해 매번 타임스탬프를 붙여 요청) 새 내용을 바로 받아옵니다.
 
 ## 배포 주소
 
-- 페이지: https://thkim0515.github.io/ourdays-travel-webview/now_usingPage.html
+- 현재 여행 페이지(앱이 불러오는 고정 경로): https://thkim0515.github.io/ourdays-travel-webview/now_usingPage.html
+- **여행 모아보기(메인 페이지)**: https://thkim0515.github.io/ourdays-travel-webview/index.html
 - 메타(최근 갱신일): https://thkim0515.github.io/ourdays-travel-webview/data/meta.json
 
 ## 준비물 체크리스트 — 체크 저장 / 항목 추가·삭제

@@ -154,7 +154,28 @@
     margin: 30px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.7;
     border-top: 1px solid var(--line); padding-top: 14px;
   }
+
+  /* 네이버 지도 */
+  .map-embed-wrap .naver-map { width: 100%; height: 220px; }
+  .map-fallback {
+    display: flex; align-items: center; justify-content: center; height: 220px;
+    padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
+  }
+  .nv-pin {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #3E7A80);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .nv-pin-active {
+    background: linear-gradient(135deg, var(--coral), #C85A44);
+    transform: scale(1.25); box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  }
 </style>
+<!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=imimukiww3"></script>
 </head>
 <body>
 <div class="wrap">
@@ -181,8 +202,8 @@
       </div>
     </div>
 
-    <a class="map-btn" id="fullRouteLink" href="#" target="_blank" rel="noopener">
-      🗺️ 전체 경로 구글맵에서 보기
+    <a class="map-btn" id="fullRouteLink" href="#" rel="noopener" onclick="return openFullRoute(event);">
+      🗺️ 전체 경로 네이버 지도에서 보기
     </a>
   </div>
 
@@ -191,8 +212,7 @@
     <div class="dir-note">⬇️ 대전(동쪽)에서 논산(서쪽)으로, 위에서 아래 순서로 진행돼요</div>
     <div id="railList"></div>
     <div class="map-embed-wrap">
-      <iframe id="routeIframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="대전-논산 드라이브 전체 경로 지도"></iframe>
+      <div id="routeMap" class="naver-map" role="img" aria-label="대전-논산 드라이브 전체 경로 지도"></div>
     </div>
   </div>
 
@@ -267,29 +287,86 @@
     }
   ];
 
-  function mapsSearchUrl(lat, lng) {
-    return "https://www.google.com/maps/search/?api=1&query=" + lat + "," + lng;
+  // 네이버 지도 프록시 게이트웨이 (Client Secret은 서버에만 있고, 이 엔드포인트만 호출)
+  var GATEWAY = "https://naver-map-gateway.vercel.app/api/naver-map";
+  var NMAP_APPNAME = "com.couple.ourdays"; // OurDays 앱 Android 패키지 ID
+
+  // 장소 하나를 네이버 지도로 열기 (앱이 있으면 nmap:// 딥링크, 없으면 지도 검색으로 폴백)
+  function openInNaverMap(name, lat, lng) {
+    var deepLink = "nmap://place?lat=" + lat + "&lng=" + lng +
+      "&name=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME;
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var fellBack = false;
+    var timer = setTimeout(function () {
+      if (document.hidden) return; // 앱으로 전환됐으면 폴백하지 않음
+      fellBack = true;
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
   }
 
-  function buildFullRouteUrl(stops) {
-    var origin = stops[0].lat + "," + stops[0].lng;
-    var dest = stops[stops.length - 1];
-    var destination = dest.lat + "," + dest.lng;
-    var mid = stops.slice(1, -1).map(function (s) { return s.lat + "," + s.lng; }).join("|");
-    var url = "https://www.google.com/maps/dir/?api=1&origin=" + origin +
-      "&destination=" + destination + "&travelmode=driving";
-    if (mid) url += "&waypoints=" + encodeURIComponent(mid);
+  // 전체 경로: 출발지 + 경유지(최대 5곳) + 도착지 (nmap 스킴 제한)
+  function buildFullRouteDeepLink(stops) {
+    var start = stops[0], end = stops[stops.length - 1];
+    var mids = stops.slice(1, -1).slice(0, 5); // v1~v5까지만 지원
+    var url = "nmap://route/car?slat=" + start.lat + "&slng=" + start.lng +
+      "&sname=" + encodeURIComponent(start.name) +
+      "&dlat=" + end.lat + "&dlng=" + end.lng +
+      "&dname=" + encodeURIComponent(end.name);
+    mids.forEach(function (s, i) {
+      var n = i + 1;
+      url += "&v" + n + "lat=" + s.lat + "&v" + n + "lng=" + s.lng +
+        "&v" + n + "name=" + encodeURIComponent(s.name);
+    });
+    url += "&appname=" + NMAP_APPNAME;
     return url;
   }
 
-  function buildEmbedUrl(stops) {
-    var saddr = stops[0].lat + "," + stops[0].lng;
-    var rest = stops.slice(1).map(function (s) { return s.lat + "," + s.lng; }).join("+to:");
-    return "https://www.google.com/maps?saddr=" + saddr + "&daddr=" + rest + "&output=embed";
+  function openFullRoute(e) {
+    if (e) e.preventDefault();
+    var end = STOPS[STOPS.length - 1];
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(end.name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return;
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = buildFullRouteDeepLink(STOPS);
+    return false;
   }
 
-  document.getElementById("fullRouteLink").href = buildFullRouteUrl(STOPS);
-  document.getElementById("routeIframe").src = buildEmbedUrl(STOPS);
+  // Reverse Geocoding: 좌표 → 실제 도로명주소 (게이트웨이 경유, Secret은 서버에만 존재)
+  function fetchRoadAddress(lat, lng) {
+    var url = GATEWAY + "?type=reverse-geocode&coords=" + lng + "," + lat +
+      "&output=json&orders=roadaddr,addr";
+    return fetch(url)
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        var r = data && data.results && data.results[0];
+        if (!r) return null;
+        var region = r.region || {};
+        var land = r.land || {};
+        var area = [region.area1, region.area2, region.area3]
+          .map(function (a) { return a && a.name; })
+          .filter(Boolean).join(" ");
+        var number = [land.number1, land.number2].filter(Boolean).join("-");
+        var roadPart = [land.name, number].filter(Boolean).join(" ");
+        var text = [area, roadPart].filter(Boolean).join(" ");
+        return text || null;
+      })
+      .catch(function () { return null; });
+  }
 
   var railHtml = "";
   STOPS.forEach(function (s, i) {
@@ -306,11 +383,11 @@
 
   var timelineHtml = "";
   STOPS.forEach(function (s, i) {
-    var mapUrl = mapsSearchUrl(s.lat, s.lng);
     timelineHtml += '<div class="stop">' +
       '<div class="num">' + (i + 1) + '</div>' +
       '<div class="stop-card">' +
-        '<a class="card-link" href="' + mapUrl + '" target="_blank" rel="noopener">' +
+        '<a class="card-link" href="#" onclick="return (function(e){e.preventDefault();openInNaverMap(' +
+          JSON.stringify(s.name) + ',' + s.lat + ',' + s.lng + ');return false;})(event);">' +
           '<div class="photo">' +
             '<img src="' + s.img + '" alt="' + s.name + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" />' +
             '<div class="ph-fallback" style="display:none;">' +
@@ -322,8 +399,8 @@
             '<p class="desc">' + s.desc + '</p>' +
             (s.warn ? '<div class="warn">' + s.warn + '</div>' : '') +
             '<div class="meta-row">' +
-              '<span class="coord">' + s.lat.toFixed(4) + ', ' + s.lng.toFixed(4) + '</span>' +
-              '<span class="go-map">구글맵에서 보기 →</span>' +
+              '<span class="coord" id="addr-' + i + '">' + s.lat.toFixed(4) + ', ' + s.lng.toFixed(4) + '</span>' +
+              '<span class="go-map">네이버 지도에서 보기 →</span>' +
             '</div>' +
           '</div>' +
         '</a>' +
@@ -335,6 +412,62 @@
     }
   });
   document.getElementById("timeline").innerHTML = timelineHtml;
+
+  // 각 장소의 실제 도로명주소를 게이트웨이로 조회해서 좌표 대신 표시
+  STOPS.forEach(function (s, i) {
+    fetchRoadAddress(s.lat, s.lng).then(function (addr) {
+      if (!addr) return;
+      var el = document.getElementById("addr-" + i);
+      if (el) el.textContent = addr;
+    });
+  });
+
+  /* ── 네이버 지도: 전체 동선 (마커 + 경로선) ── */
+  var routeMap = null, routeMarkers = [];
+
+  function initRouteMap() {
+    if (!(window.naver && naver.maps)) return;
+    var el = document.getElementById("routeMap");
+    if (!el) return;
+    routeMap = new naver.maps.Map(el, {
+      zoom: 10,
+      mapTypeControl: false,
+      scaleControl: false,
+      logoControl: true,
+      zoomControl: false,
+    });
+    var bounds = new naver.maps.LatLngBounds();
+    var path = STOPS.map(function (s) {
+      var pos = new naver.maps.LatLng(s.lat, s.lng);
+      bounds.extend(pos);
+      return pos;
+    });
+    new naver.maps.Polyline({
+      map: routeMap, path: path, strokeColor: "#2F5D62",
+      strokeWeight: 3, strokeOpacity: 0.85, strokeStyle: "shortdash",
+    });
+    routeMarkers = STOPS.map(function (s, i) {
+      var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(s.lat, s.lng), map: routeMap,
+        title: s.name, zIndex: 100,
+        icon: { content: '<div class="nv-pin">' + (i + 1) + '</div>', anchor: new naver.maps.Point(12, 12) },
+      });
+      naver.maps.Event.addListener(marker, "click", function () { openInNaverMap(s.name, s.lat, s.lng); });
+      return marker;
+    });
+    routeMap.fitBounds(bounds, { top: 24, right: 24, bottom: 24, left: 24 });
+  }
+
+  window.navermap_authFailure = function () {
+    var el = document.getElementById("routeMap");
+    if (el) {
+      el.innerHTML = '<div class="map-fallback">네이버 지도 인증 실패<br>NCP 콘솔에서 이 사이트 도메인이 ' +
+        '허용 목록(Web 서비스 URL)에 등록되어 있는지 확인해주세요.</div>';
+    }
+  };
+
+  if (window.naver && naver.maps) initRouteMap();
+  else window.addEventListener("load", initRouteMap);
 </script>
 </body>
 </html>

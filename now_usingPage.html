@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>대전·논산 데이트 드라이브 코스</title>
+<title>우리의 여행 모아보기</title>
 <style>
   :root {
     color-scheme: light;
@@ -12,7 +12,6 @@
     --amber: #E8A33D;
     --amber-soft: #FDF3E3;
     --coral: #E2725B;
-    --coral-soft: #FBEAE6;
     --cream: #FBF7F0;
     --card: #FFFFFF;
     --ink: #2A2E2B;
@@ -34,7 +33,6 @@
   a { color: inherit; text-decoration: none; }
   .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
 
-  /* 히어로 */
   .hero {
     background: linear-gradient(135deg, var(--teal) 0%, #3E7A80 100%);
     padding: 32px 22px 26px;
@@ -49,105 +47,36 @@
     padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
   }
   .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
-  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 18px; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0; }
 
-  .stat-row {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    background: rgba(255,255,255,0.14); border-radius: 16px; padding: 14px 8px;
-    gap: 4px;
-  }
-  .stat-row .stat { text-align: center; }
-  .stat-row .stat .num { font-size: 16px; font-weight: 800; }
-  .stat-row .stat .label { font-size: 10.5px; opacity: 0.85; margin-top: 2px; }
-  .stat-row .divider { width: 1px; background: rgba(255,255,255,0.25); }
-
-  .map-btn {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    margin-top: 14px; background: #fff; color: var(--teal);
-    font-size: 13.5px; font-weight: 700; padding: 12px; border-radius: 14px;
-  }
-
-  /* 동선 미니맵 */
   .section-title {
     font-size: 13px; font-weight: 800; color: var(--sub);
     letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
   }
-  .rail {
-    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
-    border-radius: 18px; padding: 16px 18px;
-  }
-  .rail .dir-note {
-    font-size: 11.5px; color: var(--sub); margin-bottom: 12px; display: flex; align-items: center; gap: 5px;
-  }
-  .rail-item {
-    display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 12.5px;
-  }
-  .rail-item .dot {
-    width: 22px; height: 22px; border-radius: 50%; background: var(--teal-soft); color: var(--teal);
-    display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0;
-  }
-  .rail-item .name { font-weight: 700; flex: 1; }
-  .rail-item .time { color: var(--sub); font-size: 11.5px; }
-  .rail-line {
-    width: 1px; height: 14px; background: var(--line); margin-left: 11px;
-  }
-  .map-embed-wrap {
-    margin: 12px 0 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line);
-    background: #F1EEE6;
-  }
-  .map-embed-wrap iframe { width: 100%; height: 220px; border: 0; display: block; }
 
-  /* 타임라인 */
-  .timeline { margin: 8px 22px 0; position: relative; }
-  .stop {
-    position: relative; padding-left: 30px; padding-bottom: 26px;
-  }
-  .stop::before {
-    content: ""; position: absolute; left: 9px; top: 26px; bottom: 0;
-    width: 2px; background: var(--line);
-  }
-  .stop:last-child::before { display: none; }
-  .stop .num {
-    position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
-    background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .stop-card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+  .trip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 12px; }
+  .trip-card {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 16px 16px; position: relative;
     box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
   }
-  .stop-card a.card-link { display: block; }
-  .photo {
-    width: 100%; aspect-ratio: 16 / 9; background: #E4E0D3; position: relative;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  .trip-card .top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .trip-card .emoji {
+    width: 36px; height: 36px; border-radius: 12px; background: var(--teal-soft);
+    display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
   }
-  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo .ph-fallback {
-    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #9B9585; gap: 6px;
+  .trip-card h3 { font-size: 15.5px; margin: 0; line-height: 1.35; }
+  .trip-card .date {
+    font-size: 10.5px; font-weight: 700; color: var(--sub);
+    white-space: nowrap; margin-left: auto; padding-top: 2px;
   }
-  .photo .ph-fallback .icon { font-size: 22px; }
-  .photo .ph-fallback .txt { font-size: 12px; font-weight: 700; }
-  .stop-body { padding: 14px 16px 16px; }
-  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
-  .stop-head h3 { font-size: 15.5px; margin: 0; }
-  .stop-head .time-chip {
-    font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
-    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  .trip-card .subtitle { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0 0 4px 46px; }
+  .trip-card .latest-chip {
+    display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--amber);
+    background: var(--amber-soft); padding: 3px 9px; border-radius: 999px; margin: 2px 0 0 46px;
   }
-  .desc { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0 0 8px; }
-  .warn {
-    font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
-    border-radius: 10px; padding: 7px 10px; margin-bottom: 8px; line-height: 1.5;
-  }
-  .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .coord { font-size: 10.5px; color: #A8A190; font-family: ui-monospace, "SFMono-Regular", monospace; }
-  .go-map {
-    font-size: 11.5px; font-weight: 700; color: var(--teal); display: flex; align-items: center; gap: 4px;
-  }
-  .connector {
-    display: flex; align-items: center; gap: 6px; padding: 8px 0 8px 30px;
-    font-size: 11.5px; color: var(--sub);
+  .empty-state {
+    margin: 40px 22px; text-align: center; color: var(--sub); font-size: 13px; line-height: 1.7;
   }
 
   footer {
@@ -160,181 +89,64 @@
 <div class="wrap">
 
   <div class="hero">
-    <span class="badge">🚗 당일치기 드라이브 데이트</span>
-    <h1>대전 → 논산<br/>한 방향 드라이브 코스</h1>
-    <p class="sub">대전역 렌터카 픽업부터 강경구락부까지, 동쪽에서 서쪽으로만 쭉 이어지는 하루 코스예요. 되돌아가는 동선 없이 순서대로 따라가면 돼요.</p>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="num">7곳</div>
-        <div class="label">방문 장소</div>
-      </div>
-      <div class="divider"></div>
-      <div class="stat">
-        <div class="num">약 7시간</div>
-        <div class="label">08:20 ~ 15:20</div>
-      </div>
-      <div class="divider"></div>
-      <div class="stat">
-        <div class="num">약 52km</div>
-        <div class="label">이동거리(직선)</div>
-      </div>
-    </div>
-
-    <a class="map-btn" id="fullRouteLink" href="#" target="_blank" rel="noopener">
-      🗺️ 전체 경로 구글맵에서 보기
-    </a>
+    <span class="badge">🧳 우리의 여행 모아보기</span>
+    <h1>지금까지 함께한<br/>여행들</h1>
+    <p class="sub">가장 최근 여행이 맨 위에 와요. 카드를 누르면 그 여행의 상세 페이지로 이동해요.</p>
   </div>
 
-  <div class="section-title">전체 동선 한눈에 보기</div>
-  <div class="rail">
-    <div class="dir-note">⬇️ 대전(동쪽)에서 논산(서쪽)으로, 위에서 아래 순서로 진행돼요</div>
-    <div id="railList"></div>
-    <div class="map-embed-wrap">
-      <iframe id="routeIframe" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="대전-논산 드라이브 전체 경로 지도"></iframe>
-    </div>
-  </div>
-
-  <div class="section-title">타임라인</div>
-  <div class="timeline" id="timeline"></div>
+  <div class="section-title">여행 목록</div>
+  <div class="trip-list" id="tripList"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">아직 등록된 여행이 없어요.</div>
 
   <footer>
-    사진은 저작권 문제를 피하기 위해 자리표시자(placeholder)로 비워뒀어요. <br/>
-    <code>assets/</code> 폴더에 아래 파일명으로 직접 찍은 사진을 넣으면 자동으로 대체됩니다.<br/>
-    예: <code>assets/daejeon-station.jpg</code>
+    새 여행이 생길 때마다 이 목록에 자동으로 쌓여요. <br/>
+    데이터 출처: <code>data/trips.json</code>
   </footer>
 
 </div>
 
 <script>
-  var STOPS = [
-    {
-      name: "대전역 (렌터카 픽업)",
-      time: "08:20",
-      lat: 36.3325, lng: 127.4344,
-      desc: "렌터카를 픽업하고 드라이브 코스를 시작하는 곳이에요.",
-      img: "assets/daejeon-station.jpg",
-      warn: null
-    },
-    {
-      name: "카페벌곡",
-      time: "09:20",
-      lat: 36.1953, lng: 127.2651,
-      desc: "계곡 뷰가 예쁜 카페예요. 투명카약 체험도 할 수 있어요.",
-      img: "assets/cafe-beolgok.jpg",
-      warn: null
-    },
-    {
-      name: "온빛자연휴양림",
-      time: "10:10",
-      lat: 36.2030, lng: 127.2520,
-      desc: "캐나다풍 목조주택이 모여있어 포토존이 많아요.",
-      img: "assets/onbit-forest.jpg",
-      warn: null
-    },
-    {
-      name: "반야사",
-      time: "11:30",
-      lat: 36.1111, lng: 127.1735,
-      desc: "절벽 위에 자리한 사찰이라 전망이 정말 좋아요.",
-      img: "assets/banyasa.jpg",
-      warn: null
-    },
-    {
-      name: "선샤인스튜디오",
-      time: "12:40",
-      lat: 36.1028, lng: 127.1051,
-      desc: "드라마 '미스터 션샤인' 촬영지예요. 개화기 의상 대여도 가능해요.",
-      img: "assets/sunshine-studio.jpg",
-      warn: "⚠️ 매주 수요일 정기휴무 · 운영시간 10:00~18:00 (방문 전 요일 꼭 확인!)"
-    },
-    {
-      name: "미내다리",
-      time: "14:40",
-      lat: 36.1528, lng: 127.0311,
-      desc: "논산을 대표하는 옛 다리로, 사진 명소로 유명해요.",
-      img: "assets/minae-bridge.jpg",
-      warn: null
-    },
-    {
-      name: "강경구락부",
-      time: "15:20",
-      lat: 36.1622, lng: 127.0152,
-      desc: "근대 건축물을 개조한 카페 겸 레스토랑이에요. 하루를 마무리하기 좋은 곳.",
-      img: "assets/ganggyeong-club.jpg",
-      warn: null
-    }
-  ];
-
-  function mapsSearchUrl(lat, lng) {
-    return "https://www.google.com/maps/search/?api=1&query=" + lat + "," + lng;
+  function formatDate(dateStr) {
+    var parts = dateStr.split("-").map(Number);
+    var d = new Date(parts[0], parts[1] - 1, parts[2]);
+    var days = ["일", "월", "화", "수", "목", "금", "토"];
+    return parts[0] + "." + String(parts[1]).padStart(2, "0") + "." + String(parts[2]).padStart(2, "0") +
+      " (" + days[d.getDay()] + ")";
   }
 
-  function buildFullRouteUrl(stops) {
-    var origin = stops[0].lat + "," + stops[0].lng;
-    var dest = stops[stops.length - 1];
-    var destination = dest.lat + "," + dest.lng;
-    var mid = stops.slice(1, -1).map(function (s) { return s.lat + "," + s.lng; }).join("|");
-    var url = "https://www.google.com/maps/dir/?api=1&origin=" + origin +
-      "&destination=" + destination + "&travelmode=driving";
-    if (mid) url += "&waypoints=" + encodeURIComponent(mid);
-    return url;
-  }
+  fetch("data/trips.json?t=" + Date.now())
+    .then(function (res) { return res.json(); })
+    .then(function (trips) {
+      var listEl = document.getElementById("tripList");
+      var emptyEl = document.getElementById("emptyState");
 
-  function buildEmbedUrl(stops) {
-    var saddr = stops[0].lat + "," + stops[0].lng;
-    var rest = stops.slice(1).map(function (s) { return s.lat + "," + s.lng; }).join("+to:");
-    return "https://www.google.com/maps?saddr=" + saddr + "&daddr=" + rest + "&output=embed";
-  }
+      if (!trips || !trips.length) {
+        emptyEl.style.display = "block";
+        return;
+      }
 
-  document.getElementById("fullRouteLink").href = buildFullRouteUrl(STOPS);
-  document.getElementById("routeIframe").src = buildEmbedUrl(STOPS);
+      var sorted = trips.slice().sort(function (a, b) {
+        return b.date.localeCompare(a.date);
+      });
 
-  var railHtml = "";
-  STOPS.forEach(function (s, i) {
-    railHtml += '<div class="rail-item"><div class="dot">' + (i + 1) + '</div>' +
-      '<div class="name">' + s.name + '</div><div class="time">' + s.time + '</div></div>';
-    if (i < STOPS.length - 1) railHtml += '<div class="rail-line"></div>';
-  });
-  document.getElementById("railList").innerHTML = railHtml;
-
-  function minutesBetween(t1, t2) {
-    var a = t1.split(":").map(Number), b = t2.split(":").map(Number);
-    return (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
-  }
-
-  var timelineHtml = "";
-  STOPS.forEach(function (s, i) {
-    var mapUrl = mapsSearchUrl(s.lat, s.lng);
-    timelineHtml += '<div class="stop">' +
-      '<div class="num">' + (i + 1) + '</div>' +
-      '<div class="stop-card">' +
-        '<a class="card-link" href="' + mapUrl + '" target="_blank" rel="noopener">' +
-          '<div class="photo">' +
-            '<img src="' + s.img + '" alt="' + s.name + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" />' +
-            '<div class="ph-fallback" style="display:none;">' +
-              '<div class="icon">📷</div><div class="txt">' + s.name + '</div>' +
-            '</div>' +
+      var html = "";
+      sorted.forEach(function (trip, i) {
+        html += '<a class="trip-card" href="' + trip.url + '">' +
+          '<div class="top-row">' +
+            '<div class="emoji">' + (trip.emoji || "🗺️") + '</div>' +
+            '<h3>' + trip.title + '</h3>' +
+            '<div class="date">' + formatDate(trip.date) + '</div>' +
           '</div>' +
-          '<div class="stop-body">' +
-            '<div class="stop-head"><h3>' + s.name + '</h3><span class="time-chip">' + s.time + '</span></div>' +
-            '<p class="desc">' + s.desc + '</p>' +
-            (s.warn ? '<div class="warn">' + s.warn + '</div>' : '') +
-            '<div class="meta-row">' +
-              '<span class="coord">' + s.lat.toFixed(4) + ', ' + s.lng.toFixed(4) + '</span>' +
-              '<span class="go-map">구글맵에서 보기 →</span>' +
-            '</div>' +
-          '</div>' +
-        '</a>' +
-      '</div>' +
-    '</div>';
-    if (i < STOPS.length - 1) {
-      var mins = minutesBetween(s.time, STOPS[i + 1].time);
-      timelineHtml += '<div class="connector">🚗 다음 장소까지 약 ' + mins + '분 (이동 + 관람 포함)</div>';
-    }
-  });
-  document.getElementById("timeline").innerHTML = timelineHtml;
+          (trip.subtitle ? '<p class="subtitle">' + trip.subtitle + '</p>' : '') +
+          (i === 0 ? '<span class="latest-chip">최신 여행</span>' : '') +
+        '</a>';
+      });
+      listEl.innerHTML = html;
+    })
+    .catch(function () {
+      document.getElementById("emptyState").textContent = "여행 목록을 불러오지 못했어요.";
+      document.getElementById("emptyState").style.display = "block";
+    });
 </script>
 </body>
 </html>

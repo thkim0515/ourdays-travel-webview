@@ -347,7 +347,7 @@
   }
 
   // Reverse Geocoding: 좌표 → 실제 도로명주소 (게이트웨이 경유, Secret은 서버에만 존재)
-  function fetchRoadAddress(lat, lng) {
+  function fetchRoadAddressOnce(lat, lng) {
     var url = GATEWAY + "?type=reverse-geocode&coords=" + lng + "," + lat +
       "&output=json&orders=roadaddr,addr";
     return fetch(url)
@@ -364,8 +364,16 @@
         var roadPart = [land.name, number].filter(Boolean).join(" ");
         var text = [area, roadPart].filter(Boolean).join(" ");
         return text || null;
-      })
-      .catch(function () { return null; });
+      });
+  }
+
+  // 일시적인 네트워크 오류에 대비해 실패 시 짧은 대기 후 한 번 더 시도
+  function fetchRoadAddress(lat, lng) {
+    return fetchRoadAddressOnce(lat, lng).catch(function () {
+      return new Promise(function (resolve) { setTimeout(resolve, 600); })
+        .then(function () { return fetchRoadAddressOnce(lat, lng); })
+        .catch(function () { return null; });
+    });
   }
 
   var railHtml = "";

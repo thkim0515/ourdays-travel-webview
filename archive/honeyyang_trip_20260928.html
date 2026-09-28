@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>임진강 노을 + 밤 불멍 데이트 코스</title>
+<style>
+  :root {
+    color-scheme: light;
+    --teal: #2F5D62;
+    --teal-soft: #E9F1F0;
+    --amber: #E8A33D;
+    --amber-soft: #FDF3E3;
+    --coral: #E2725B;
+    --coral-soft: #FBEAE6;
+    --cream: #FBF7F0;
+    --card: #FFFFFF;
+    --ink: #2A2E2B;
+    --sub: #7C8580;
+    --line: #E9E4D8;
+  }
+  * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8D2C2 transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C2; border-radius: 999px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
+
+  /* 히어로 */
+  .hero {
+    background: linear-gradient(135deg, var(--teal) 0%, #3E7A80 100%);
+    padding: 32px 22px 26px;
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 10px 24px -14px rgba(47,93,98,0.55);
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 16px; }
+  .sunset-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 10px 14px; font-size: 12.5px; font-weight: 700;
+  }
+  .sunset-badge .emoji { font-size: 16px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 800; color: var(--sub);
+    letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
+  }
+
+  /* 타임라인 */
+  .timeline { margin: 8px 22px 0; position: relative; }
+  .stop { position: relative; padding-left: 30px; padding-bottom: 4px; }
+  .stop::before {
+    content: ""; position: absolute; left: 9px; top: 26px; bottom: -4px;
+    width: 2px; background: var(--line);
+  }
+  .stop:last-child::before { display: none; }
+  .stop .num {
+    position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stop.optional .num { background: var(--sub); }
+  .stop-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stop.optional .stop-card { opacity: 0.62; }
+  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .stop-head h3 { font-size: 15.5px; margin: 0; }
+  .stop-head .time-chip {
+    font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber);
+  }
+  .tag.optional-tag { background: #EDEBE4; color: var(--sub); }
+  .addr { font-size: 12px; color: var(--sub); margin: 0 0 4px; line-height: 1.5; }
+  .hours { font-size: 12px; color: var(--sub); margin: 0 0 10px; line-height: 1.5; }
+  .desc { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+  .note {
+    font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
+    border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.55;
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    flex: 1 1 auto; min-width: 84px; text-align: center;
+    font-size: 12px; font-weight: 700; padding: 10px 10px; border-radius: 12px;
+    border: 1px solid var(--line); color: var(--teal); background: var(--teal-soft);
+  }
+  .btn.tel { color: var(--coral); background: var(--coral-soft); }
+  .connector {
+    display: flex; align-items: center; gap: 6px; padding: 10px 0 10px 30px;
+    font-size: 11.5px; color: var(--sub);
+  }
+
+  /* 전체 경로 지도 */
+  .map-wrap {
+    margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    background: #EFEAE0;
+  }
+  #routeMap { width: 100%; height: 260px; }
+  .leaflet-pin {
+    width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+    background: var(--teal); border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leaflet-pin span { transform: rotate(45deg); color: #fff; font-size: 11px; font-weight: 800; }
+  .leaflet-pin.optional-pin { background: var(--sub); }
+
+  /* 비용 표 */
+  .cost-table {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 4px 16px; overflow: hidden;
+  }
+  .cost-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; font-size: 13px; border-bottom: 1px solid var(--line);
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-row .label { color: var(--sub); }
+  .cost-row .amount { font-weight: 800; }
+  .cost-row.total .label, .cost-row.total .amount { color: var(--teal); font-weight: 800; }
+
+  /* 체크리스트 */
+  .check-list {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 6px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px; cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; }
+  .check-item.checked span { color: var(--sub); text-decoration: line-through; }
+
+  /* 참고사항 */
+  .tip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .tip {
+    background: var(--amber-soft); border-radius: 14px; padding: 12px 14px;
+    font-size: 12.5px; color: #8A5E1F; line-height: 1.6;
+  }
+
+  footer {
+    margin: 30px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.7;
+    border-top: 1px solid var(--line); padding-top: 14px;
+  }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge">🌆 노을 + 밤 불멍 데이트</span>
+    <h1>임진강 노을 + 밤 불멍<br/>데이트 코스</h1>
+    <p class="sub">파주 문산·파주읍 드라이브 · 주말 기준</p>
+    <div class="sunset-badge"><span class="emoji">🌇</span> 일몰 오후 6시 12~15분경 (10월 초 파주 기준)</div>
+  </div>
+
+  <div class="section-title">타임라인</div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="section-title">전체 경로 지도</div>
+  <div class="map-wrap"><div id="routeMap"></div></div>
+
+  <div class="section-title">예상 비용 (2인)</div>
+  <div class="cost-table" id="costTable"></div>
+
+  <div class="section-title">준비물 체크리스트</div>
+  <div class="check-list" id="checkList"></div>
+
+  <div class="section-title">참고 사항</div>
+  <div class="tip-list" id="tipList"></div>
+
+  <footer>
+    영업시간·메뉴·가격은 방문 전 다시 한 번 확인해주세요. <br/>
+    체크리스트는 이 기기에만 저장돼요.
+  </footer>
+
+</div>
+
+<script>
+  var STOPS = [
+    {
+      name: "바리루즈",
+      time: "14:30",
+      optional: true,
+      tags: ["선택 코스", "대형 베이커리카페"],
+      addr: "경기도 파주시 파주읍 봉서산로 245",
+      lat: 37.8330197, lng: 126.8034666,
+      hours: "월~목 10:00~21:00 / 금~일 10:00~02:00",
+      tel: "031-953-0060",
+      desc: "초대형 베이커리카페, 공간마다 콘셉트가 다름. 브런치·빵으로 가볍게 시작.",
+      note: "저녁에 고기를 먹으니 빵은 조금만. 저녁부터 시작하면 생략 가능해요."
+    },
+    {
+      name: "화석정",
+      time: "17:20",
+      optional: false,
+      tags: ["경치 · 노을 명소"],
+      addr: "경기도 파주시 파평면 화석정로 152-72",
+      lat: 37.8878702, lng: 126.8053405,
+      hours: null,
+      tel: null,
+      desc: "임진강 절벽 위 정자. 율곡 이이와 얽힌 이야기, 오래된 소나무와 강 풍경이 펼쳐져요.",
+      note: "해 지기 30분 전부터 사진이 가장 예뻐요. 벤치·화장실 있음. 도로 옆이라 차 소리 있음. 해 지면 금방 어두워지니 18:30쯤 이동해요."
+    },
+    {
+      name: "소곰집 파주문산점",
+      time: "18:45",
+      optional: false,
+      tags: ["고깃집 · 저녁 식사"],
+      addr: "경기도 파주시 문산읍 문향로56번길 7",
+      lat: 37.8571912, lng: 126.7854052,
+      hours: "평일 15:00~23:00 / 주말 12:00~23:00 (매달 1·3번째 화요일 휴무)",
+      tel: "031-953-9866",
+      desc: "소금 약 10종을 골라 찍어 먹어요, 직원이 직접 구워줘요. 추천 메뉴는 실속세트1(46,000원, 갈비삼겹 2인분+목살)과 항정살(17,000원). 그 외 갈비삼겹 16,000원 · 오겹살 16,000원 · 양념돼지갈비(600g) 39,000원 · 갈비세트 54,000원.",
+      note: "주말 저녁엔 예약 권장(전화). 주차는 도보 2분 거리 공영주차장 이용."
+    },
+    {
+      name: "온더레일",
+      time: "20:40",
+      optional: false,
+      tags: ["대형카페 · 밤 데이트 마무리"],
+      addr: "경기도 파주시 문산읍 마정리 648",
+      lat: 37.8875434, lng: 126.7574001,
+      hours: "매일 12:00~24:00",
+      tel: null,
+      desc: "철길 콘셉트 포토존, 높은 층고, 야외 모닥불 불멍을 즐길 수 있어요.",
+      note: "밤에 쌀쌀하니 겉옷 필수예요."
+    }
+  ];
+
+  function kakaoMapUrl(s) {
+    return "https://map.kakao.com/link/map/" + encodeURIComponent(s.name) + "," + s.lat + "," + s.lng;
+  }
+  function kakaoRouteUrl(s) {
+    return "https://map.kakao.com/link/to/" + encodeURIComponent(s.name) + "," + s.lat + "," + s.lng;
+  }
+
+  function minutesBetween(t1, t2) {
+    var a = t1.split(":").map(Number), b = t2.split(":").map(Number);
+    return (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
+  }
+
+  var TRAVEL_MIN = { 0: 20, 1: 15, 2: 10 }; // 각 구간 실제 이동 시간(차로)
+
+  var timelineHtml = "";
+  STOPS.forEach(function (s, i) {
+    timelineHtml += '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
+      '<div class="num">' + (i + 1) + '</div>' +
+      '<div class="stop-card">' +
+        '<div class="stop-head"><h3>' + s.name + '</h3><span class="time-chip">' + s.time + '</span></div>' +
+        '<div class="tag-row">' +
+          s.tags.map(function (t) {
+            return '<span class="tag' + (s.optional && t === "선택 코스" ? ' optional-tag' : '') + '">' + t + '</span>';
+          }).join("") +
+        '</div>' +
+        '<p class="addr">📍 ' + s.addr + '</p>' +
+        (s.hours ? '<p class="hours">🕒 ' + s.hours + '</p>' : '') +
+        '<p class="desc">' + s.desc + '</p>' +
+        (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
+        '<div class="btn-row">' +
+          '<a class="btn" href="' + kakaoMapUrl(s) + '" target="_blank" rel="noopener">🗺️ 지도 보기</a>' +
+          '<a class="btn" href="' + kakaoRouteUrl(s) + '" target="_blank" rel="noopener">🚗 길찾기</a>' +
+          (s.tel ? '<a class="btn tel" href="tel:' + s.tel + '">📞 ' + s.tel + '</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+    if (i < STOPS.length - 1) {
+      timelineHtml += '<div class="connector">🚗 차로 약 ' + TRAVEL_MIN[i] + '분 이동</div>';
+    }
+  });
+  document.getElementById("timeline").innerHTML = timelineHtml;
+
+  /* ── 전체 경로 지도 (Leaflet + OpenStreetMap) ── */
+  var map = L.map("routeMap", { zoomControl: false, scrollWheelZoom: false });
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors", maxZoom: 19
+  }).addTo(map);
+
+  var latlngs = STOPS.map(function (s) { return [s.lat, s.lng]; });
+  L.polyline(latlngs, { color: "#2F5D62", weight: 3, opacity: 0.85, dashArray: "6 6" }).addTo(map);
+
+  STOPS.forEach(function (s, i) {
+    var icon = L.divIcon({
+      className: "",
+      html: '<div class="leaflet-pin' + (s.optional ? ' optional-pin' : '') + '"><span>' + (i + 1) + '</span></div>',
+      iconSize: [26, 26], iconAnchor: [13, 26]
+    });
+    L.marker([s.lat, s.lng], { icon: icon }).addTo(map)
+      .bindPopup("<b>" + s.name + "</b><br/>" + s.time);
+  });
+  map.fitBounds(L.latLngBounds(latlngs), { padding: [28, 28] });
+
+  /* ── 예상 비용 ── */
+  var costHtml =
+    '<div class="cost-row"><span class="label">카페 2곳</span><span class="amount">약 4~5만 원</span></div>' +
+    '<div class="cost-row"><span class="label">저녁 고기</span><span class="amount">약 5~6만 원</span></div>' +
+    '<div class="cost-row total"><span class="label">합계 (2인)</span><span class="amount">약 10만 원 안팎</span></div>';
+  document.getElementById("costTable").innerHTML = costHtml;
+
+  /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
+  var CHECK_KEY = "checklist_yeonjucheon-imjingang-20260928";
+  var CHECK_ITEMS = [
+    "겉옷 (밤 야외 모닥불용)",
+    "보조배터리",
+    "소곰집 예약 확인",
+    "카메라 또는 삼각대 (노을 사진용)"
+  ];
+  var checkedState = {};
+  try { checkedState = JSON.parse(localStorage.getItem(CHECK_KEY)) || {}; } catch (e) { checkedState = {}; }
+
+  function renderCheckList() {
+    var html = "";
+    CHECK_ITEMS.forEach(function (item, i) {
+      var checked = !!checkedState[i];
+      html += '<label class="check-item' + (checked ? ' checked' : '') + '">' +
+        '<input type="checkbox" data-idx="' + i + '"' + (checked ? ' checked' : '') + ' />' +
+        '<span>' + item + '</span>' +
+      '</label>';
+    });
+    document.getElementById("checkList").innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll(".check-item input"), function (input) {
+      input.addEventListener("change", function () {
+        checkedState[this.dataset.idx] = this.checked;
+        localStorage.setItem(CHECK_KEY, JSON.stringify(checkedState));
+        renderCheckList();
+      });
+    });
+  }
+  renderCheckList();
+
+  /* ── 참고 사항 ── */
+  var TIPS = [
+    "10월 3일(토)은 개천절이라 붐빌 수 있어요, 일요일이 더 여유로워요.",
+    "운전하므로 고깃집에서는 음료로 함께해요."
+  ];
+  document.getElementById("tipList").innerHTML = TIPS.map(function (t) {
+    return '<div class="tip">' + t + '</div>';
+  }).join("");
+</script>
+</body>
+</html>

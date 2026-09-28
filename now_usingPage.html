@@ -52,7 +52,16 @@
   .section-title {
     font-size: 13px; font-weight: 800; color: var(--sub);
     letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
   }
+
+  .sort-row { margin: 0 22px 4px; display: flex; gap: 8px; }
+  .sort-btn {
+    flex: 1; text-align: center; font-size: 12px; font-weight: 700;
+    padding: 9px 8px; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--card); color: var(--sub); cursor: pointer;
+  }
+  .sort-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
 
   .trip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 12px; }
   .trip-card {
@@ -60,6 +69,7 @@
     border-radius: 18px; padding: 16px 16px; position: relative;
     box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
   }
+  .trip-card.past { opacity: 0.55; }
   .trip-card .top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   .trip-card .emoji {
     width: 36px; height: 36px; border-radius: 12px; background: var(--teal-soft);
@@ -74,6 +84,10 @@
   .trip-card .latest-chip {
     display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--amber);
     background: var(--amber-soft); padding: 3px 9px; border-radius: 999px; margin: 2px 0 0 46px;
+  }
+  .trip-card .past-chip {
+    display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--sub);
+    background: #EDEBE4; padding: 3px 9px; border-radius: 999px; margin: 2px 0 0 46px;
   }
   .empty-state {
     margin: 40px 22px; text-align: center; color: var(--sub); font-size: 13px; line-height: 1.7;
@@ -91,10 +105,14 @@
   <div class="hero">
     <span class="badge">🧳 우리의 여행 모아보기</span>
     <h1>지금까지 함께한<br/>여행들</h1>
-    <p class="sub">가장 최근 여행이 맨 위에 와요. 카드를 누르면 그 여행의 상세 페이지로 이동해요.</p>
+    <p class="sub">다가오는 여행이 맨 위에 와요. 카드를 누르면 그 여행의 상세 페이지로 이동해요.</p>
   </div>
 
   <div class="section-title">여행 목록</div>
+  <div class="sort-row">
+    <button type="button" class="sort-btn" id="sortAsc">날짜 오름차순</button>
+    <button type="button" class="sort-btn" id="sortDesc">날짜 내림차순</button>
+  </div>
   <div class="trip-list" id="tripList"></div>
   <div class="empty-state" id="emptyState" style="display:none;">아직 등록된 여행이 없어요.</div>
 
@@ -114,34 +132,89 @@
       " (" + days[d.getDay()] + ")";
   }
 
+  // 오늘 날짜(자정 기준). "지나지 않은 여행"인지 판단하는 기준이 됨
+  function todayStr() {
+    var now = new Date();
+    return now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0") + "-" + String(now.getDate()).padStart(2, "0");
+  }
+
+  var TODAY = todayStr();
+  var allTrips = [];
+  var currentMode = "default"; // "default" | "asc" | "desc"
+
+  // 기본 정렬: 지나지 않은 여행은 날짜가 가까운 순(오름차순)으로 위에, 지난 여행은 그 아래에 최신순으로 배치
+  function sortDefault(trips) {
+    var upcoming = trips.filter(function (t) { return t.date >= TODAY; })
+      .sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var past = trips.filter(function (t) { return t.date < TODAY; })
+      .sort(function (a, b) { return b.date.localeCompare(a.date); });
+    return upcoming.concat(past);
+  }
+
+  function sortAsc(trips) {
+    return trips.slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
+  }
+
+  function sortDesc(trips) {
+    return trips.slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
+  }
+
+  function render() {
+    var listEl = document.getElementById("tripList");
+    var sorted;
+    if (currentMode === "asc") sorted = sortAsc(allTrips);
+    else if (currentMode === "desc") sorted = sortDesc(allTrips);
+    else sorted = sortDefault(allTrips);
+
+    var firstUpcomingIdx = -1;
+    for (var k = 0; k < sorted.length; k++) {
+      if (sorted[k].date >= TODAY) { firstUpcomingIdx = k; break; }
+    }
+
+    var html = "";
+    sorted.forEach(function (trip, i) {
+      var isPast = trip.date < TODAY;
+      var chip = "";
+      if (currentMode === "default" && i === firstUpcomingIdx) {
+        chip = '<span class="latest-chip">가장 가까운 여행</span>';
+      } else if (isPast) {
+        chip = '<span class="past-chip">지난 여행</span>';
+      }
+      html += '<a class="trip-card' + (isPast ? ' past' : '') + '" href="' + trip.url + '">' +
+        '<div class="top-row">' +
+          '<div class="emoji">' + (trip.emoji || "🗺️") + '</div>' +
+          '<h3>' + trip.title + '</h3>' +
+          '<div class="date">' + formatDate(trip.date) + '</div>' +
+        '</div>' +
+        (trip.subtitle ? '<p class="subtitle">' + trip.subtitle + '</p>' : '') +
+        chip +
+      '</a>';
+    });
+    listEl.innerHTML = html;
+
+    document.getElementById("sortAsc").classList.toggle("active", currentMode === "asc");
+    document.getElementById("sortDesc").classList.toggle("active", currentMode === "desc");
+  }
+
+  document.getElementById("sortAsc").addEventListener("click", function () {
+    currentMode = currentMode === "asc" ? "default" : "asc";
+    render();
+  });
+  document.getElementById("sortDesc").addEventListener("click", function () {
+    currentMode = currentMode === "desc" ? "default" : "desc";
+    render();
+  });
+
   fetch("data/trips.json?t=" + Date.now())
     .then(function (res) { return res.json(); })
     .then(function (trips) {
-      var listEl = document.getElementById("tripList");
       var emptyEl = document.getElementById("emptyState");
-
       if (!trips || !trips.length) {
         emptyEl.style.display = "block";
         return;
       }
-
-      var sorted = trips.slice().sort(function (a, b) {
-        return b.date.localeCompare(a.date);
-      });
-
-      var html = "";
-      sorted.forEach(function (trip, i) {
-        html += '<a class="trip-card" href="' + trip.url + '">' +
-          '<div class="top-row">' +
-            '<div class="emoji">' + (trip.emoji || "🗺️") + '</div>' +
-            '<h3>' + trip.title + '</h3>' +
-            '<div class="date">' + formatDate(trip.date) + '</div>' +
-          '</div>' +
-          (trip.subtitle ? '<p class="subtitle">' + trip.subtitle + '</p>' : '') +
-          (i === 0 ? '<span class="latest-chip">최신 여행</span>' : '') +
-        '</a>';
-      });
-      listEl.innerHTML = html;
+      allTrips = trips;
+      render();
     })
     .catch(function () {
       document.getElementById("emptyState").textContent = "여행 목록을 불러오지 못했어요.";

@@ -32,6 +32,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
   .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
 
   /* 히어로 */
@@ -49,61 +50,24 @@
     padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
   }
   .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
-  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 18px; }
-
-  .stat-row {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    background: rgba(255,255,255,0.14); border-radius: 16px; padding: 14px 8px;
-    gap: 4px;
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 16px; }
+  .sunset-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 10px 14px; font-size: 12.5px; font-weight: 700;
   }
-  .stat-row .stat { text-align: center; }
-  .stat-row .stat .num { font-size: 16px; font-weight: 800; }
-  .stat-row .stat .label { font-size: 10.5px; opacity: 0.85; margin-top: 2px; }
-  .stat-row .divider { width: 1px; background: rgba(255,255,255,0.25); }
+  .sunset-badge .emoji { font-size: 16px; }
 
-  .map-btn {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    margin-top: 14px; background: #fff; color: var(--teal);
-    font-size: 13.5px; font-weight: 700; padding: 12px; border-radius: 14px;
-  }
-
-  /* 동선 미니맵 */
   .section-title {
     font-size: 13px; font-weight: 800; color: var(--sub);
     letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
   }
-  .rail {
-    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
-    border-radius: 18px; padding: 16px 18px;
-  }
-  .rail .dir-note {
-    font-size: 11.5px; color: var(--sub); margin-bottom: 12px; display: flex; align-items: center; gap: 5px;
-  }
-  .rail-item {
-    display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 12.5px;
-  }
-  .rail-item .dot {
-    width: 22px; height: 22px; border-radius: 50%; background: var(--teal-soft); color: var(--teal);
-    display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0;
-  }
-  .rail-item .name { font-weight: 700; flex: 1; }
-  .rail-item .time { color: var(--sub); font-size: 11.5px; }
-  .rail-line {
-    width: 1px; height: 14px; background: var(--line); margin-left: 11px;
-  }
-  .map-embed-wrap {
-    margin: 12px 0 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line);
-    background: #F1EEE6;
-  }
-  .map-embed-wrap iframe { width: 100%; height: 220px; border: 0; display: block; }
 
   /* 타임라인 */
   .timeline { margin: 8px 22px 0; position: relative; }
-  .stop {
-    position: relative; padding-left: 30px; padding-bottom: 26px;
-  }
+  .stop { position: relative; padding-left: 30px; padding-bottom: 4px; }
   .stop::before {
-    content: ""; position: absolute; left: 9px; top: 26px; bottom: 0;
+    content: ""; position: absolute; left: 9px; top: 26px; bottom: -4px;
     width: 2px; background: var(--line);
   }
   .stop:last-child::before { display: none; }
@@ -112,42 +76,104 @@
     background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
     display: flex; align-items: center; justify-content: center;
   }
+  .stop.optional .num { background: var(--sub); }
   .stop-card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px 16px;
     box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
   }
-  .stop-card a.card-link { display: block; }
-  .photo {
-    width: 100%; aspect-ratio: 16 / 9; background: #E4E0D3; position: relative;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-  }
-  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo .ph-fallback {
-    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: #9B9585; gap: 6px;
-  }
-  .photo .ph-fallback .icon { font-size: 22px; }
-  .photo .ph-fallback .txt { font-size: 12px; font-weight: 700; }
-  .stop-body { padding: 14px 16px 16px; }
-  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .stop.optional .stop-card { opacity: 0.62; }
+  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
   .stop-head h3 { font-size: 15.5px; margin: 0; }
   .stop-head .time-chip {
     font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
     padding: 3px 9px; border-radius: 999px; white-space: nowrap;
   }
-  .desc { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0 0 8px; }
-  .warn {
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber);
+  }
+  .tag.optional-tag { background: #EDEBE4; color: var(--sub); }
+  .addr { font-size: 12px; color: var(--sub); margin: 0 0 4px; line-height: 1.5; }
+  .hours { font-size: 12px; color: var(--sub); margin: 0 0 10px; line-height: 1.5; }
+  .desc { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+  .note {
     font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
-    border-radius: 10px; padding: 7px 10px; margin-bottom: 8px; line-height: 1.5;
+    border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.55;
   }
-  .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .coord { font-size: 10.5px; color: #A8A190; font-family: ui-monospace, "SFMono-Regular", monospace; }
-  .go-map {
-    font-size: 11.5px; font-weight: 700; color: var(--teal); display: flex; align-items: center; gap: 4px;
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    flex: 1 1 auto; min-width: 84px; text-align: center;
+    font-size: 12px; font-weight: 700; padding: 10px 10px; border-radius: 12px;
+    border: 1px solid var(--line); color: var(--teal); background: var(--teal-soft);
   }
+  .btn.tel { color: var(--coral); background: var(--coral-soft); }
   .connector {
-    display: flex; align-items: center; gap: 6px; padding: 8px 0 8px 30px;
-    font-size: 11.5px; color: var(--sub);
+    display: flex; align-items: center; gap: 6px; margin: 6px 0 10px 30px;
+    padding: 10px 14px; border-radius: 12px;
+    font-size: 15px; font-weight: 800; line-height: 1.4;
+    color: #fff; background: var(--teal);
+  }
+
+  /* 소이벤트(동선 계산용) */
+  .day-title {
+    margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
+    background: var(--teal-soft); border-radius: 999px; padding: 6px 14px; display: inline-block;
+  }
+  .mini { position: relative; padding-left: 30px; padding-bottom: 2px; }
+  .mini::before {
+    content: ""; position: absolute; left: 9px; top: 14px; bottom: -2px;
+    width: 2px; background: var(--line);
+  }
+  .mini:last-child::before { display: none; }
+  .mini .dot {
+    position: absolute; left: 5px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--amber);
+  }
+  .mini-body {
+    display: flex; align-items: baseline; gap: 8px; padding: 2px 0 8px;
+    font-size: 14.5px; line-height: 1.55;
+  }
+  .mini-time {
+    font-size: 13px; font-weight: 800; color: #8A5E1F; background: var(--amber-soft);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-text { color: var(--ink); font-weight: 700; }
+  .mini-text small { display: block; color: #4A524D; font-size: 13px; margin-top: 2px; }
+
+  /* 전체 경로 지도 */
+  .map-wrap {
+    margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    background: #EFEAE0;
+  }
+  #routeMap { width: 100%; height: 260px; }
+  .leaflet-pin {
+    width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+    background: var(--teal); border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .leaflet-pin span { transform: rotate(45deg); color: #fff; font-size: 11px; font-weight: 800; }
+  .leaflet-pin.optional-pin { background: var(--sub); }
+
+  /* 체크리스트 */
+  .check-list {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 6px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px; cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; }
+  .check-item.checked span { color: var(--sub); text-decoration: line-through; }
+
+  /* 참고사항 */
+  .tip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .tip {
+    background: var(--amber-soft); border-radius: 14px; padding: 12px 14px;
+    font-size: 12.5px; color: #8A5E1F; line-height: 1.6;
   }
 
   footer {
@@ -156,9 +182,9 @@
   }
 
   /* 네이버 지도 */
-  .map-embed-wrap .naver-map { width: 100%; height: 220px; }
+  .map-wrap .naver-map { width: 100%; height: 260px; }
   .map-fallback {
-    display: flex; align-items: center; justify-content: center; height: 220px;
+    display: flex; align-items: center; justify-content: center; height: 260px;
     padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
   }
   .nv-pin {
@@ -168,10 +194,6 @@
     display: flex; align-items: center; justify-content: center;
     border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
     cursor: pointer;
-  }
-  .nv-pin-active {
-    background: linear-gradient(135deg, var(--coral), #C85A44);
-    transform: scale(1.25); box-shadow: 0 4px 12px rgba(0,0,0,0.45);
   }
 </style>
 <!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
@@ -184,45 +206,18 @@
     <span class="badge">🚗 당일치기 드라이브 데이트</span>
     <h1>대전 → 논산<br/>한 방향 드라이브 코스</h1>
     <p class="sub">대전역 렌터카 픽업부터 강경구락부까지, 동쪽에서 서쪽으로만 쭉 이어지는 하루 코스예요. 되돌아가는 동선 없이 순서대로 따라가면 돼요.</p>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="num">7곳</div>
-        <div class="label">방문 장소</div>
-      </div>
-      <div class="divider"></div>
-      <div class="stat">
-        <div class="num">약 7시간</div>
-        <div class="label">08:20 ~ 15:20</div>
-      </div>
-      <div class="divider"></div>
-      <div class="stat">
-        <div class="num">약 52km</div>
-        <div class="label">이동거리(직선)</div>
-      </div>
-    </div>
-
-    <a class="map-btn" id="fullRouteLink" href="#" rel="noopener" onclick="return openFullRoute(event);">
-      🗺️ 전체 경로 네이버 지도에서 보기
-    </a>
-  </div>
-
-  <div class="section-title">전체 동선 한눈에 보기</div>
-  <div class="rail">
-    <div class="dir-note">⬇️ 대전(동쪽)에서 논산(서쪽)으로, 위에서 아래 순서로 진행돼요</div>
-    <div id="railList"></div>
-    <div class="map-embed-wrap">
-      <div id="routeMap" class="naver-map" role="img" aria-label="대전-논산 드라이브 전체 경로 지도"></div>
-    </div>
+    <div class="sunset-badge"><span class="emoji">🗺️</span> 7곳 · 08:20 ~ 15:20 · 약 52km(직선)</div>
   </div>
 
   <div class="section-title">타임라인</div>
   <div class="timeline" id="timeline"></div>
 
+  <div class="section-title">전체 경로 지도</div>
+  <div class="map-wrap"><div id="routeMap" class="naver-map" role="img" aria-label="대전-논산 드라이브 전체 경로 지도"></div></div>
+  <div style="margin:12px 22px 0;"><a class="btn" id="fullRouteLink" href="#" rel="noopener" onclick="return openFullRoute(event);" style="display:block;">🗺️ 전체 경로 네이버 지도에서 보기</a></div>
+
   <footer>
-    사진은 저작권 문제를 피하기 위해 자리표시자(placeholder)로 비워뒀어요. <br/>
-    <code>assets/</code> 폴더에 아래 파일명으로 직접 찍은 사진을 넣으면 자동으로 대체됩니다.<br/>
-    예: <code>assets/daejeon-station.jpg</code>
+    영업시간·운영 요일은 방문 전 다시 한 번 확인해주세요.
   </footer>
 
 </div>
@@ -376,42 +371,43 @@
     });
   }
 
-  var railHtml = "";
-  STOPS.forEach(function (s, i) {
-    railHtml += '<div class="rail-item"><div class="dot">' + (i + 1) + '</div>' +
-      '<div class="name">' + s.name + '</div><div class="time">' + s.time + '</div></div>';
-    if (i < STOPS.length - 1) railHtml += '<div class="rail-line"></div>';
-  });
-  document.getElementById("railList").innerHTML = railHtml;
-
   function minutesBetween(t1, t2) {
     var a = t1.split(":").map(Number), b = t2.split(":").map(Number);
     return (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
   }
 
+  // 장소 하나로 네이버 지도 앱 길찾기(자동차) 열기
+  function openRouteToPlace(name, lat, lng) {
+    var deepLink = "nmap://route/car?dlat=" + lat + "&dlng=" + lng +
+      "&dname=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME;
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return;
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
+  }
+
   var timelineHtml = "";
   STOPS.forEach(function (s, i) {
+    var nameJs = JSON.stringify(s.name).replace(/"/g, "&quot;");
     timelineHtml += '<div class="stop">' +
       '<div class="num">' + (i + 1) + '</div>' +
       '<div class="stop-card">' +
-        '<a class="card-link" href="#" onclick="return (function(e){e.preventDefault();openInNaverMap(' +
-          JSON.stringify(s.name) + ',' + s.lat + ',' + s.lng + ');return false;})(event);">' +
-          '<div class="photo">' +
-            '<img src="' + s.img + '" alt="' + s.name + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" />' +
-            '<div class="ph-fallback" style="display:none;">' +
-              '<div class="icon">📷</div><div class="txt">' + s.name + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="stop-body">' +
-            '<div class="stop-head"><h3>' + s.name + '</h3><span class="time-chip">' + s.time + '</span></div>' +
-            '<p class="desc">' + s.desc + '</p>' +
-            (s.warn ? '<div class="warn">' + s.warn + '</div>' : '') +
-            '<div class="meta-row">' +
-              '<span class="coord" id="addr-' + i + '">' + s.lat.toFixed(4) + ', ' + s.lng.toFixed(4) + '</span>' +
-              '<span class="go-map">네이버 지도에서 보기 →</span>' +
-            '</div>' +
-          '</div>' +
-        '</a>' +
+        '<div class="stop-head"><h3>' + s.name + '</h3><span class="time-chip">' + s.time + '</span></div>' +
+        '<p class="addr">📍 <span id="addr-' + i + '">' + s.lat.toFixed(4) + ', ' + s.lng.toFixed(4) + '</span></p>' +
+        '<p class="desc">' + s.desc + '</p>' +
+        (s.warn ? '<div class="note">' + s.warn + '</div>' : '') +
+        '<div class="btn-row">' +
+          '<a class="btn" href="#" onclick="openInNaverMap(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🗺️ 지도 보기</a>' +
+          '<a class="btn" href="#" onclick="openRouteToPlace(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🚗 길찾기</a>' +
+        '</div>' +
       '</div>' +
     '</div>';
     if (i < STOPS.length - 1) {

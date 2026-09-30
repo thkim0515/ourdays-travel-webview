@@ -156,20 +156,6 @@
   .leaflet-pin span { transform: rotate(45deg); color: #fff; font-size: 11px; font-weight: 800; }
   .leaflet-pin.optional-pin { background: var(--sub); }
 
-  /* 비용 표 */
-  .cost-table {
-    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
-    border-radius: 18px; padding: 4px 16px; overflow: hidden;
-  }
-  .cost-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; font-size: 13px; border-bottom: 1px solid var(--line);
-  }
-  .cost-row:last-child { border-bottom: none; }
-  .cost-row .label { color: var(--sub); }
-  .cost-row .amount { font-weight: 800; }
-  .cost-row.total .label, .cost-row.total .amount { color: var(--teal); font-weight: 800; }
-
   /* 체크리스트 */
   .check-list {
     margin: 0 22px; background: var(--card); border: 1px solid var(--line);
@@ -213,9 +199,6 @@
 
   <div class="section-title">전체 경로 지도</div>
   <div class="map-wrap"><div id="routeMap"></div></div>
-
-  <div class="section-title">예상 비용 (2인)</div>
-  <div class="cost-table" id="costTable"></div>
 
   <div class="section-title">준비물 체크리스트</div>
   <div class="check-list" id="checkList"></div>
@@ -326,7 +309,7 @@
   }
 
   var timelineHtml = '<div class="day-title">1일차 · 출발 & 메인 코스</div>' + miniHtml(MINI_BEFORE) +
-    '<div class="connector">🚗 일산 예광교회 → 바리루즈 차로 약 35분 (13:00 도착)</div>';
+    '<div class="connector">🚗 차로 약 35분 이동</div>';
   STOPS.forEach(function (s, i) {
     timelineHtml += '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
       '<div class="num">' + (i + 1) + '</div>' +
@@ -374,13 +357,6 @@
       .bindPopup("<b>" + s.name + "</b><br/>" + s.time);
   });
   map.fitBounds(L.latLngBounds(latlngs), { padding: [28, 28] });
-
-  /* ── 예상 비용 ── */
-  var costHtml =
-    '<div class="cost-row"><span class="label">카페 2곳</span><span class="amount">약 4~5만 원</span></div>' +
-    '<div class="cost-row"><span class="label">저녁 고기</span><span class="amount">약 5~6만 원</span></div>' +
-    '<div class="cost-row total"><span class="label">합계 (2인)</span><span class="amount">약 10만 원 안팎</span></div>';
-  document.getElementById("costTable").innerHTML = costHtml;
 
   /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
   var CHECK_KEY = "checklist_yeonjucheon-imjingang-20260928";

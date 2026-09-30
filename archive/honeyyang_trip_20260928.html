@@ -160,13 +160,19 @@
     background: #EFEAE0;
   }
   #routeMap { width: 100%; height: 260px; }
-  .leaflet-pin {
-    width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
-    background: var(--teal); border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-    display: flex; align-items: center; justify-content: center;
+  .map-fallback {
+    display: flex; align-items: center; justify-content: center; height: 260px;
+    padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
   }
-  .leaflet-pin span { transform: rotate(45deg); color: #fff; font-size: 11px; font-weight: 800; }
-  .leaflet-pin.optional-pin { background: var(--sub); }
+  .nv-pin {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #3E7A80);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .nv-pin.optional-pin { background: var(--sub); }
 
   /* 체크리스트 */
   .check-list {
@@ -193,8 +199,8 @@
     border-top: 1px solid var(--line); padding-top: 14px;
   }
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=imimukiww3"></script>
 </head>
 <body>
 <div class="wrap">
@@ -300,11 +306,32 @@
     }
   ];
 
-  function kakaoMapUrl(s) {
-    return "https://map.kakao.com/link/map/" + encodeURIComponent(s.name) + "," + s.lat + "," + s.lng;
+  var NMAP_APPNAME = "com.couple.ourdays"; // OurDays 앱 Android 패키지 ID
+
+  // 네이버 지도 앱 딥링크를 열고, 앱이 없으면 지도 검색 웹으로 폴백
+  function openNaverDeepLink(deepLink, name) {
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return; // 앱으로 전환됐으면 폴백하지 않음
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
   }
-  function kakaoRouteUrl(s) {
-    return "https://map.kakao.com/link/to/" + encodeURIComponent(s.name) + "," + s.lat + "," + s.lng;
+
+  function openInNaverMap(name, lat, lng) {
+    openNaverDeepLink("nmap://place?lat=" + lat + "&lng=" + lng +
+      "&name=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  function openRouteToPlace(name, lat, lng) {
+    openNaverDeepLink("nmap://route/car?dlat=" + lat + "&dlng=" + lng +
+      "&dname=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
   }
 
   function minutesBetween(t1, t2) {
@@ -348,6 +375,7 @@
   var timelineHtml = '<div class="day-title">1일차 · 출발 & 메인 코스</div>' + miniHtml(MINI_BEFORE) +
     '<div class="connector">🚗 차로 약 35분 이동</div>';
   STOPS.forEach(function (s, i) {
+    var nameJs = JSON.stringify(s.name).replace(/"/g, "&quot;");
     timelineHtml += '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
       '<div class="num">' + (i + 1) + '</div>' +
       '<div class="stop-card">' +
@@ -363,8 +391,8 @@
         (s.extra || '') +
         (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
         '<div class="btn-row">' +
-          '<a class="btn" href="' + kakaoMapUrl(s) + '" target="_blank" rel="noopener">🗺️ 지도 보기</a>' +
-          '<a class="btn" href="' + kakaoRouteUrl(s) + '" target="_blank" rel="noopener">🚗 길찾기</a>' +
+          '<a class="btn" href="#" onclick="openInNaverMap(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🗺️ 지도 보기</a>' +
+          '<a class="btn" href="#" onclick="openRouteToPlace(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🚗 길찾기</a>' +
           (s.tel ? '<a class="btn tel" href="tel:' + s.tel + '">📞 ' + s.tel + '</a>' : '') +
         '</div>' +
       '</div>' +
@@ -376,25 +404,48 @@
   timelineHtml += miniHtml(MINI_AFTER) + '<div class="connector">🚗 차로 약 25분 이동</div>' + miniHtml(MINI_AFTER_2) + '<div class="day-title">2일차 · 브런치 & 체크인</div>' + miniHtml(MINI_DAY2);
   document.getElementById("timeline").innerHTML = timelineHtml;
 
-  /* ── 전체 경로 지도 (Leaflet + OpenStreetMap) ── */
-  var map = L.map("routeMap", { zoomControl: false, scrollWheelZoom: false });
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors", maxZoom: 19
-  }).addTo(map);
-
-  var latlngs = STOPS.map(function (s) { return [s.lat, s.lng]; });
-  L.polyline(latlngs, { color: "#2F5D62", weight: 3, opacity: 0.85, dashArray: "6 6" }).addTo(map);
-
-  STOPS.forEach(function (s, i) {
-    var icon = L.divIcon({
-      className: "",
-      html: '<div class="leaflet-pin' + (s.optional ? ' optional-pin' : '') + '"><span>' + (i + 1) + '</span></div>',
-      iconSize: [26, 26], iconAnchor: [13, 26]
+  /* ── 네이버 지도: 전체 동선 (마커 + 경로선) ── */
+  function initRouteMap() {
+    if (!(window.naver && naver.maps)) return;
+    var el = document.getElementById("routeMap");
+    if (!el) return;
+    var routeMap = new naver.maps.Map(el, {
+      zoom: 10, mapTypeControl: false, scaleControl: false, logoControl: true, zoomControl: false
     });
-    L.marker([s.lat, s.lng], { icon: icon }).addTo(map)
-      .bindPopup("<b>" + s.name + "</b><br/>" + s.time);
-  });
-  map.fitBounds(L.latLngBounds(latlngs), { padding: [28, 28] });
+    var bounds = new naver.maps.LatLngBounds();
+    var path = STOPS.map(function (s) {
+      var pos = new naver.maps.LatLng(s.lat, s.lng);
+      bounds.extend(pos);
+      return pos;
+    });
+    new naver.maps.Polyline({
+      map: routeMap, path: path, strokeColor: "#2F5D62",
+      strokeWeight: 3, strokeOpacity: 0.85, strokeStyle: "shortdash"
+    });
+    STOPS.forEach(function (s, i) {
+      var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(s.lat, s.lng), map: routeMap,
+        title: s.name, zIndex: 100,
+        icon: {
+          content: '<div class="nv-pin' + (s.optional ? ' optional-pin' : '') + '">' + (i + 1) + '</div>',
+          anchor: new naver.maps.Point(12, 12)
+        }
+      });
+      naver.maps.Event.addListener(marker, "click", function () { openInNaverMap(s.name, s.lat, s.lng); });
+    });
+    routeMap.fitBounds(bounds, { top: 24, right: 24, bottom: 24, left: 24 });
+  }
+
+  window.navermap_authFailure = function () {
+    var el = document.getElementById("routeMap");
+    if (el) {
+      el.innerHTML = '<div class="map-fallback">네이버 지도 인증 실패<br>NCP 콘솔에서 이 사이트 도메인이 ' +
+        '허용 목록(Web 서비스 URL)에 등록되어 있는지 확인해주세요.</div>';
+    }
+  };
+
+  if (window.naver && naver.maps) initRouteMap();
+  else window.addEventListener("load", initRouteMap);
 
   /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
   var CHECK_KEY = "checklist_yeonjucheon-imjingang-20260928";

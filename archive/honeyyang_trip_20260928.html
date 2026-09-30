@@ -228,6 +228,18 @@
       note: "13:00~15:00, 약 2시간 여유롭게 머물러요. 저녁에 고기를 먹으니 빵은 조금만!"
     },
     {
+      name: "임진각 평화누리공원",
+      time: "15:20",
+      optional: false,
+      tags: ["경치 · 산책"],
+      addr: "경기도 파주시 문산읍 임진각로 148-40",
+      lat: 37.8899, lng: 126.7409,
+      hours: "연중무휴 24시간 (입장 무료)",
+      tel: null,
+      desc: "넓은 잔디밭과 바람개비, 평화의 곤돌라가 있는 탁 트인 공원. 15:20~16:55, 약 1시간 30분 여유롭게 걸어요.",
+      note: "평화의 곤돌라는 운영시간·요금이 따로예요. 타고 싶으면 미리 확인하세요."
+    },
+    {
       name: "화석정",
       time: "17:20",
       optional: false,
@@ -277,7 +289,7 @@
     return (b[0] * 60 + b[1]) - (a[0] * 60 + a[1]);
   }
 
-  var TRAVEL_MIN = { 0: 20, 1: 15, 2: 10 }; // 각 구간 실제 이동 시간(차로)
+  var TRAVEL_MIN = { 0: 20, 1: 25, 2: 15, 3: 10 }; // 각 구간 실제 이동 시간(차로)
 
   /* 소이벤트: 동선 계산용 (메인 코스 앞뒤) */
   var MINI_BEFORE = [
@@ -289,15 +301,7 @@
     { time: "22:40", text: "온더레일 출발 → 파주 힐즈 이동" }
   ];
   var MINI_AFTER_2 = [
-    { time: "23:05", text: "파주 힐즈 호텔 복귀 🌙", small: "경기도 파주시 탄현면 성동로 20-41" }
-  ];
-  /* 바리루즈 후 ~ 화석정 전: 호텔 먼저 들러 체크인 */
-  var MINI_MID = [
-    { time: "15:00", text: "바리루즈 출발 → 파주 힐즈 이동" }
-  ];
-  var MINI_MID_2 = [
-    { time: "15:30", text: "파주 힐즈 호텔 도착 · 체크인 · 휴식 🏨", small: "경기도 파주시 탄현면 성동로 20-41 · 짐 내려놓고 잠깐 쉬기" },
-    { time: "16:40", text: "파주 힐즈 출발 → 화석정 이동" }
+    { time: "23:05", text: "파주 힐즈 호텔 도착 · 체크인 🌙", small: "경기도 파주시 탄현면 성동로 20-41" }
   ];
   var MINI_DAY2 = [
     { time: "08:00", text: "기상 ☀️" },
@@ -341,10 +345,7 @@
         '</div>' +
       '</div>' +
     '</div>';
-    if (i === 0) {
-      timelineHtml += miniHtml(MINI_MID) + '<div class="connector">🚗 차로 약 30분 이동</div>' +
-        miniHtml(MINI_MID_2) + '<div class="connector">🚗 차로 약 40분 이동</div>';
-    } else if (i < STOPS.length - 1) {
+    if (i < STOPS.length - 1) {
       timelineHtml += '<div class="connector">🚗 차로 약 ' + TRAVEL_MIN[i] + '분 이동</div>';
     }
   });

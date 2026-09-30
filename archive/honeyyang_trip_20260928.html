@@ -114,6 +114,32 @@
     font-size: 11.5px; color: var(--sub);
   }
 
+  /* 소이벤트(동선 계산용) */
+  .day-title {
+    margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
+    background: var(--teal-soft); border-radius: 999px; padding: 6px 14px; display: inline-block;
+  }
+  .mini { position: relative; padding-left: 30px; padding-bottom: 2px; }
+  .mini::before {
+    content: ""; position: absolute; left: 9px; top: 14px; bottom: -2px;
+    width: 2px; background: var(--line);
+  }
+  .mini:last-child::before { display: none; }
+  .mini .dot {
+    position: absolute; left: 5px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--amber);
+  }
+  .mini-body {
+    display: flex; align-items: baseline; gap: 8px; padding: 2px 0 8px;
+    font-size: 12.5px; line-height: 1.55;
+  }
+  .mini-time {
+    font-size: 11px; font-weight: 800; color: var(--amber); background: var(--amber-soft);
+    padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-text { color: var(--ink); }
+  .mini-text small { display: block; color: var(--sub); font-size: 11.5px; }
+
   /* 전체 경로 지도 */
   .map-wrap {
     margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
@@ -176,7 +202,7 @@
   <div class="hero">
     <span class="badge">🌆 노을 + 밤 불멍 데이트</span>
     <h1>임진강 노을 + 밤 불멍<br/>데이트 코스</h1>
-    <p class="sub">파주 문산·파주읍 드라이브 · 주말 기준</p>
+    <p class="sub">파주 문산·파주읍 드라이브 · 1박 2일 (파주 힐즈 숙박)</p>
     <div class="sunset-badge"><span class="emoji">🌇</span> 일몰 오후 6시 12~15분경 (10월 초 파주 기준)</div>
   </div>
 
@@ -206,15 +232,15 @@
   var STOPS = [
     {
       name: "바리루즈",
-      time: "14:30",
-      optional: true,
-      tags: ["선택 코스", "대형 베이커리카페"],
+      time: "13:00",
+      optional: false,
+      tags: ["대형 베이커리카페 · 브런치"],
       addr: "경기도 파주시 파주읍 봉서산로 245",
       lat: 37.8330197, lng: 126.8034666,
       hours: "월~목 10:00~21:00 / 금~일 10:00~02:00",
       tel: "031-953-0060",
       desc: "초대형 베이커리카페, 공간마다 콘셉트가 다름. 브런치·빵으로 가볍게 시작.",
-      note: "저녁에 고기를 먹으니 빵은 조금만. 저녁부터 시작하면 생략 가능해요."
+      note: "저녁에 고기를 먹으니 빵은 조금만. 17:00쯤 출발하면 화석정 노을 시간에 맞춰요."
     },
     {
       name: "화석정",
@@ -268,7 +294,37 @@
 
   var TRAVEL_MIN = { 0: 20, 1: 15, 2: 10 }; // 각 구간 실제 이동 시간(차로)
 
-  var timelineHtml = "";
+  /* 소이벤트: 동선 계산용 (메인 코스 앞뒤) */
+  var MINI_BEFORE = [
+    { time: "10:30", text: "허니 출발" },
+    { time: "11:40", text: "허니 정발산역 도착" },
+    { time: "12:25", text: "허니 차량 픽업 및 양이 집앞(일산 예광교회) 도착", small: "여기서 함께 출발!" }
+  ];
+  var MINI_AFTER = [
+    { time: "21:35", text: "온더레일 출발 → 파주 힐즈 이동", small: "차로 약 25분" },
+    { time: "22:00", text: "파주 힐즈 호텔 도착 · 체크인", small: "경기도 파주시 탄현면 성동로 20-41" }
+  ];
+  var MINI_DAY2 = [
+    { time: "08:00", text: "기상 ☀️" },
+    { time: "09:30", text: "파주 힐즈 출발 → 벙커힐 이동", small: "차로 약 5분 (성동로 60)" },
+    { time: "09:40", text: "벙커힐 도착 · 브런치 먹기 🥐", small: "경기도 파주시 탄현면 성동로 60 · 10:00~22:00 영업, 오픈 시간 확인" },
+    { time: "11:15", text: "벙커힐 출발 → 차량 반납 장소 이동", small: "차로 약 30분 · 차량 반납 마감 12:00, 반납 장소는 미리 확인" },
+    { time: "12:00", text: "차량 반납 🚗" },
+    { time: "12:30", text: "점심 식사 🍚" },
+    { time: "15:00", text: "레이크베이크 체크인 🏡", small: "체크인 가능 시간은 미리 확인해요" }
+  ];
+
+  function miniHtml(list) {
+    return list.map(function (m) {
+      return '<div class="mini"><div class="dot"></div><div class="mini-body">' +
+        '<span class="mini-time">' + m.time + '</span>' +
+        '<span class="mini-text">' + m.text + (m.small ? '<small>' + m.small + '</small>' : '') + '</span>' +
+      '</div></div>';
+    }).join("");
+  }
+
+  var timelineHtml = '<div class="day-title">1일차 · 출발 & 메인 코스</div>' + miniHtml(MINI_BEFORE) +
+    '<div class="connector">🚗 일산 예광교회 → 바리루즈 차로 약 35분 (13:00 도착)</div>';
   STOPS.forEach(function (s, i) {
     timelineHtml += '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
       '<div class="num">' + (i + 1) + '</div>' +
@@ -294,6 +350,7 @@
       timelineHtml += '<div class="connector">🚗 차로 약 ' + TRAVEL_MIN[i] + '분 이동</div>';
     }
   });
+  timelineHtml += miniHtml(MINI_AFTER) + '<div class="day-title">2일차 · 브런치 & 체크인</div>' + miniHtml(MINI_DAY2);
   document.getElementById("timeline").innerHTML = timelineHtml;
 
   /* ── 전체 경로 지도 (Leaflet + OpenStreetMap) ── */

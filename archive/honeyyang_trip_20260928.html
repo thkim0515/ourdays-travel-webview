@@ -116,6 +116,18 @@
     color: #fff; background: var(--teal);
   }
 
+  .gondola {
+    background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .gondola > b { display: block; font-size: 14.5px; color: var(--teal); margin-bottom: 6px; }
+  .gondola ul { margin: 0; padding-left: 0; list-style: none; }
+  .gondola li { margin-bottom: 3px; }
+  .gondola-warn {
+    margin-top: 8px; padding: 8px 10px; border-radius: 10px;
+    background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 13px;
+  }
+
   /* 소이벤트(동선 계산용) */
   .day-title {
     margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
@@ -225,19 +237,30 @@
       hours: "월~목 10:00~21:00 / 금~일 10:00~02:00",
       tel: "031-953-0060",
       desc: "초대형 베이커리카페, 공간마다 콘셉트가 다름. 브런치·빵으로 가볍게 시작.",
-      note: "13:00~15:00, 약 2시간 여유롭게 머물러요. 저녁에 고기를 먹으니 빵은 조금만!"
+      note: "13:00~14:30, 약 1시간 30분 여유롭게 머물러요. 저녁에 고기를 먹으니 빵은 조금만!"
     },
     {
       name: "임진각 평화누리공원",
-      time: "15:20",
+      time: "14:50",
       optional: false,
-      tags: ["경치 · 산책"],
+      tags: ["경치 · 산책", "평화의 곤돌라 🚡"],
       addr: "경기도 파주시 문산읍 임진각로 148-40",
       lat: 37.8899, lng: 126.7409,
       hours: "연중무휴 24시간 (입장 무료)",
       tel: null,
-      desc: "넓은 잔디밭과 바람개비, 평화의 곤돌라가 있는 탁 트인 공원. 15:20~16:55, 약 1시간 30분 여유롭게 걸어요.",
-      note: "평화의 곤돌라는 운영시간·요금이 따로예요. 타고 싶으면 미리 확인하세요."
+      desc: "넓은 잔디밭과 바람개비가 있는 탁 트인 공원. 14:50~16:55, 약 2시간 동안 곤돌라 타고 산책해요. (예: 15:10 곤돌라 탑승 → DMZ 스테이션 구경 → 16:00쯤 복귀 후 공원 산책)",
+      extra: '<div class="gondola">' +
+        '<b>🚡 평화의 곤돌라</b>' +
+        '<ul>' +
+          '<li>민통선을 넘어 남북을 잇는 DMZ 하늘길 곤돌라예요. 임진강 풍경, 독개다리, 철책선을 볼 수 있어요.</li>' +
+          '<li>📍 경기 파주시 문산읍 임진각로 148-73 (임진각국민관광지 내)</li>' +
+          '<li>🕒 평일 09:00~18:00 / 주말·휴일 09:00~19:00 (발권 마감은 종료 30분 전)</li>' +
+          '<li>💰 왕복 · 일반 캐빈 대인 12,000원 / 크리스탈 캐빈(바닥 투명) 대인 15,000원</li>' +
+          '<li>⏱️ 편도 약 7~10분 (임진각 승강장 ⇄ DMZ 스테이션, 임진강평화전망대·캠프 그리브스 전시관)</li>' +
+        '</ul>' +
+        '<div class="gondola-warn">🪪 민통선 구간이라 <b>신분증 필수</b>! 대표자 1명이 동행자 신분증을 모아 가거나 보안서약서로 대체할 수 있어요.</div>' +
+      '</div>',
+      note: "평화의 곤돌라는 주말 인기가 많아 대기가 있을 수 있어요. 도착하면 곤돌라 발권부터 하는 걸 추천해요."
     },
     {
       name: "화석정",
@@ -337,6 +360,7 @@
         '<p class="addr">📍 ' + s.addr + '</p>' +
         (s.hours ? '<p class="hours">🕒 ' + s.hours + '</p>' : '') +
         '<p class="desc">' + s.desc + '</p>' +
+        (s.extra || '') +
         (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
         '<div class="btn-row">' +
           '<a class="btn" href="' + kakaoMapUrl(s) + '" target="_blank" rel="noopener">🗺️ 지도 보기</a>' +
@@ -375,6 +399,7 @@
   /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
   var CHECK_KEY = "checklist_yeonjucheon-imjingang-20260928";
   var CHECK_ITEMS = [
+    "신분증 (평화의 곤돌라 탑승용, 동행자 것도)",
     "겉옷 (밤 야외 모닥불용)",
     "보조배터리",
     "소곰집 예약 확인",
@@ -406,6 +431,7 @@
   /* ── 참고 사항 ── */
   var TIPS = [
     "10월 3일(토)은 개천절이라 붐빌 수 있어요, 일요일이 더 여유로워요.",
+    "평화의 곤돌라는 민통선을 지나서 신분증이 꼭 필요해요. 운영시간(주말 09:00~19:00, 발권 마감 30분 전)도 확인!",
     "운전하므로 고깃집에서는 음료로 함께해요."
   ];
   document.getElementById("tipList").innerHTML = TIPS.map(function (t) {

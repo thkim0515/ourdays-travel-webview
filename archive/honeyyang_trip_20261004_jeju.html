@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>제주 4박 5일 여행 코스</title>
+<style>
+  :root {
+    color-scheme: light;
+    --teal: #2F5D62;
+    --teal-soft: #E9F1F0;
+    --amber: #E8A33D;
+    --amber-soft: #FDF3E3;
+    --coral: #E2725B;
+    --coral-soft: #FBEAE6;
+    --cream: #FBF7F0;
+    --card: #FFFFFF;
+    --ink: #2A2E2B;
+    --sub: #7C8580;
+    --line: #E9E4D8;
+  }
+  * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8D2C2 transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C2; border-radius: 999px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
+
+  /* 히어로 */
+  .hero {
+    background: linear-gradient(135deg, var(--teal) 0%, #3E7A80 100%);
+    padding: 32px 22px 26px;
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 10px 24px -14px rgba(47,93,98,0.55);
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 16px; }
+  .sunset-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 10px 14px; font-size: 12.5px; font-weight: 700;
+  }
+  .sunset-badge .emoji { font-size: 16px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 800; color: var(--sub);
+    letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
+  }
+
+  /* 타임라인 */
+  .timeline { margin: 8px 22px 0; position: relative; }
+  .stop { position: relative; padding-left: 30px; padding-bottom: 4px; }
+  .stop::before {
+    content: ""; position: absolute; left: 9px; top: 26px; bottom: -4px;
+    width: 2px; background: var(--line);
+  }
+  .stop:last-child::before { display: none; }
+  .stop .num {
+    position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stop.optional .num { background: var(--sub); }
+  .stop-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stop.optional .stop-card { opacity: 0.62; }
+  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .stop-head h3 { font-size: 15.5px; margin: 0; }
+  .stop-head .time-chip {
+    font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber);
+  }
+  .tag.optional-tag { background: #EDEBE4; color: var(--sub); }
+  .addr { font-size: 12px; color: var(--sub); margin: 0 0 4px; line-height: 1.5; }
+  .hours { font-size: 12px; color: var(--sub); margin: 0 0 10px; line-height: 1.5; }
+  .desc { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+  .note {
+    font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
+    border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.55;
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    flex: 1 1 auto; min-width: 84px; text-align: center;
+    font-size: 12px; font-weight: 700; padding: 10px 10px; border-radius: 12px;
+    border: 1px solid var(--line); color: var(--teal); background: var(--teal-soft);
+  }
+  .btn.tel { color: var(--coral); background: var(--coral-soft); }
+  .connector {
+    display: flex; align-items: center; gap: 6px; margin: 6px 0 10px 30px;
+    padding: 10px 14px; border-radius: 12px;
+    font-size: 15px; font-weight: 800; line-height: 1.4;
+    color: #fff; background: var(--teal);
+  }
+
+  .gondola {
+    background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .gondola > b { display: block; font-size: 14.5px; color: var(--teal); margin-bottom: 6px; }
+  .gondola ul { margin: 0; padding-left: 0; list-style: none; }
+  .gondola li { margin-bottom: 3px; }
+  .gondola-warn {
+    margin-top: 8px; padding: 8px 10px; border-radius: 10px;
+    background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 13px;
+  }
+
+  /* 소이벤트(동선 계산용) */
+  .day-title {
+    margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
+    background: var(--teal-soft); border-radius: 999px; padding: 6px 14px; display: inline-block;
+  }
+  .mini { position: relative; padding-left: 30px; padding-bottom: 2px; }
+  .mini::before {
+    content: ""; position: absolute; left: 9px; top: 14px; bottom: -2px;
+    width: 2px; background: var(--line);
+  }
+  .mini:last-child::before { display: none; }
+  .mini .dot {
+    position: absolute; left: 5px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--amber);
+  }
+  .mini-body {
+    display: flex; align-items: baseline; gap: 8px; padding: 2px 0 8px;
+    font-size: 14.5px; line-height: 1.55;
+  }
+  .mini-time {
+    font-size: 13px; font-weight: 800; color: #8A5E1F; background: var(--amber-soft);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-text { color: var(--ink); font-weight: 700; }
+  .mini-text small { display: block; color: #4A524D; font-size: 13px; margin-top: 2px; }
+
+  /* 전체 경로 지도 */
+  .map-wrap {
+    margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    background: #EFEAE0;
+  }
+  #routeMap { width: 100%; height: 260px; }
+  .map-fallback {
+    display: flex; align-items: center; justify-content: center; height: 260px;
+    padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
+  }
+  .nv-pin {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #3E7A80);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .nv-pin.optional-pin { background: var(--sub); }
+
+  /* 체크리스트 */
+  .check-list {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 6px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px; cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; }
+  .check-item.checked span { color: var(--sub); text-decoration: line-through; }
+
+  /* 참고사항 */
+  .tip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .tip {
+    background: var(--amber-soft); border-radius: 14px; padding: 12px 14px;
+    font-size: 12.5px; color: #8A5E1F; line-height: 1.6;
+  }
+
+  /* 일차별 핀 색상 + 지도 범례 */
+  .nv-pin.d2 { background: linear-gradient(135deg, var(--coral), #EC8B76); }
+  .nv-pin.d3 { background: linear-gradient(135deg, var(--amber), #F0B95E); }
+  .nv-pin.d4 { background: linear-gradient(135deg, #5B6FB5, #7A8CCB); }
+  .nv-pin.d5 { background: linear-gradient(135deg, #7A5BA8, #9479BE); }
+  .map-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 8px 22px 0; font-size: 11.5px; color: var(--sub); }
+  .map-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+  .map-note { margin: 6px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.6; }
+
+  /* 장소 사진 */
+  .photo-row { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 10px; padding-bottom: 2px; }
+  .photo-row img { height: 92px; border-radius: 10px; flex-shrink: 0; object-fit: cover; background: #EFEAE0; }
+
+  /* 숙소 카드 */
+  .stay-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .stay {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px; box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stay h3 { font-size: 15px; margin: 0 0 6px; }
+  .stay .time-chip {
+    display: inline-block; font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; margin-bottom: 8px;
+  }
+
+  footer {
+    margin: 30px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.7;
+    border-top: 1px solid var(--line); padding-top: 14px;
+  }
+</style>
+<!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=imimukiww3"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge">🍊 제주 커플 여행</span>
+    <h1>제주 4박 5일<br/>여행 코스</h1>
+    <p class="sub">제주시 해안 · 우도 사이드카 · 서귀포 액티비티 · 함덕 바다</p>
+    <div class="sunset-badge"><span class="emoji">✈️</span> 제주공항 15:30 도착 → 5일차 18:45 출발</div>
+  </div>
+
+  <div class="section-title">타임라인</div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="section-title">전체 경로 지도</div>
+  <div class="map-wrap"><div id="routeMap"></div></div>
+  <div class="map-legend" id="mapLegend"></div>
+  <p class="map-note">지도의 숫자는 각 일차 안에서의 순서예요. 좌표를 확인하지 못한 장소는 지도에서 빠져 있어요.</p>
+
+  <div class="section-title">준비물 체크리스트</div>
+  <div class="check-list" id="checkList"></div>
+
+  <div class="section-title">참고 사항</div>
+  <div class="tip-list" id="tipList"></div>
+
+  <footer>
+    영업시간·메뉴·가격은 방문 전 다시 한 번 확인해주세요. <br/>
+    체크리스트는 이 기기에만 저장돼요.
+  </footer>
+
+</div>
+
+<script>
+  var DAYS = [
+    {
+      title: "1일차 · 제주 도착 & 제주시 해안", short: "1일차",
+      stops: [
+        {
+          name: "제주공항", time: "15:30~16:20", tags: ["도착 · 렌트카"],
+          lat: 33.5070711, lng: 126.4916441,
+          desc: "제주 도착! 짐 찾고 렌트카 받아서 제주시 해안 코스로 출발해요."
+        },
+        {
+          name: "도두동 무지개 해안도로", time: "16:30~17:00", tags: ["해안도로 · 사진", "30분"],
+          moveBefore: "🚗 차로 약 10분 이동", query: "도두동 무지개해안도로",
+          desc: "알록달록한 무지개색 방호벽이 이어지는 해안도로. 바다 배경 커플 사진 찍기 좋아요."
+        },
+        {
+          name: "선물고팡 제주소품샵 공항점", time: "17:10~17:40", tags: ["소품샵", "30분"],
+          moveBefore: "🚗 차로 약 10분 이동", query: "선물고팡 공항점",
+          desc: "제주 감성 소품·기념품 구경."
+        },
+        {
+          name: "용두암", time: "17:50~18:20", tags: ["바다 명소", "30분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.5160353, lng: 126.511988,
+          desc: "용의 머리를 닮은 해안 바위. 해 질 무렵 바다 풍경이 예뻐요."
+        },
+        {
+          name: "용연구름다리", time: "18:30~19:00", tags: ["산책 · 야경", "30분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.514877, lng: 126.514384,
+          desc: "용연 계곡 위 출렁다리. 용두암에서 가까워 이어서 산책하기 좋아요."
+        },
+        {
+          name: "바이제주", time: "19:10~20:20", tags: ["저녁", "1시간 10분"],
+          moveBefore: "🚗 차로 약 10분 이동", query: "바이제주",
+          desc: "1일차 저녁 식사."
+        }
+      ]
+    },
+    {
+      title: "2일차 · 우도 사이드카 투어", short: "2일차",
+      stops: [
+        {
+          name: "서귀피안 베이커리", time: "08:00~08:30", tags: ["아침 · 베이커리"],
+          query: "서귀피안 베이커리",
+          desc: "빵으로 가볍게 아침 시작."
+        },
+        {
+          name: "해일리 카페", time: "09:00~09:30", tags: ["카페"],
+          moveBefore: "🚗 차로 약 10분 이동", query: "해일리 카페",
+          desc: "배 타기 전 커피 한 잔."
+        },
+        {
+          name: "성산항", time: "09:30~09:45", tags: ["배편 준비", "15분"],
+          lat: 33.470318, lng: 126.93008,
+          desc: "우도행 배편 승선 준비.",
+          note: "승선 신고서 작성과 신분증이 필요해요. 차량을 두고 들어가면 우도에서 사이드카로 이동해요."
+        },
+        {
+          name: "우도 천진항", time: "10:00", tags: ["우도 도착", "사이드카 대여 🛵"],
+          moveBefore: "⛴️ 배로 약 10분 이동",
+          lat: 33.492818, lng: 126.9516017,
+          desc: "우도 도착! 사이드카 빌려서 섬 한 바퀴 시작."
+        },
+        {
+          name: "서빈백사 해수욕장", time: "10:30~12:00", tags: ["해변", "1시간 30분"],
+          moveBefore: "🛵 사이드카로 약 15분 이동", query: "우도 서빈백사",
+          desc: "하얀 홍조단괴 모래와 에메랄드빛 바다(우도 산호해변). 사진 찍고 바다에서 놀기."
+        },
+        {
+          name: "우도올레보트", time: "12:30~13:30", tags: ["보트 체험", "1시간"],
+          moveBefore: "🛵 사이드카로 약 10분 이동", query: "우도올레보트",
+          desc: "보트 타고 우도 해안 절벽과 동굴 구경."
+        },
+        {
+          name: "망루등대", time: "13:40~14:10", tags: ["등대", "30분"],
+          moveBefore: "🛵 사이드카로 약 10분 이동", query: "우도 망루등대",
+          desc: "우도 바다 전망 포인트."
+        },
+        {
+          name: "하고수동 해변", time: "14:20~14:50", tags: ["해변", "30분"],
+          moveBefore: "🛵 사이드카로 약 15분 이동",
+          lat: 33.5143388, lng: 126.9576924,
+          desc: "얕고 맑은 물빛이 예쁜 우도 북동쪽 해변."
+        },
+        {
+          name: "온오프", time: "15:00~15:45", tags: ["쉬어가기", "45분"],
+          moveBefore: "🛵 사이드카로 약 5분 이동", query: "우도 온오프",
+          desc: "사이드카 투어 중간에 잠깐 쉬어가는 코스."
+        },
+        {
+          name: "우도 카페 3곳 투어", time: "16:00~16:15", tags: ["디저트 · 테이크아웃"],
+          query: "우도우 베이커리",
+          desc: "우도우 베이커리 · 우도샌드 · 우도아카이브 중에서 골라 디저트 테이크아웃."
+        },
+        {
+          name: "달그리안", time: "16:25~17:05", tags: ["카페", "45분"],
+          moveBefore: "🛵 사이드카로 약 10분 이동", query: "우도 달그리안",
+          desc: "우도에서의 마지막 카페 타임."
+        },
+        {
+          name: "천진낭만", time: "17:20~18:00", tags: ["카페", "사이드카 반납 🛵"],
+          moveBefore: "🛵 사이드카로 약 15분 이동", query: "우도 천진낭만",
+          desc: "천진항 근처 카페. 사이드카 반납하고 배 타고 성산으로 복귀해요."
+        }
+      ]
+    },
+    {
+      title: "3일차 · 서귀포 액티비티 데이", short: "3일차",
+      stops: [
+        {
+          name: "뷰제주하늘 승마&ATV", time: "08:50~09:50", tags: ["승마 · ATV", "1시간"],
+          moveBefore: "🚗 차로 약 20분 이동", query: "뷰제주하늘",
+          desc: "아침 액티비티로 하루 시작."
+        },
+        {
+          name: "낙타 트레킹", time: "10:00~11:00", tags: ["체험", "1시간"],
+          query: "제주 낙타트레킹",
+          desc: "제주에서 낙타 타 보기."
+        },
+        {
+          name: "녹차 동굴", time: "11:30~12:30", tags: ["녹차밭 · 사진", "1시간"],
+          moveBefore: "🚗 차로 약 20분 이동", query: "녹차동굴",
+          desc: "녹차밭 사이 동굴 포토 스폿. 근처 '오늘은 녹차한잔'에서 쉬어가도 좋아요."
+        },
+        {
+          name: "서귀피안 브런치 베이커리", time: "12:50~13:20", tags: ["브런치", "30분"],
+          moveBefore: "🚗 차로 약 20분 이동", query: "서귀피안 베이커리",
+          desc: "점심 겸 브런치.",
+          note: "대안 베이커리: 보래드베이커스"
+        },
+        {
+          name: "서귀포 유람선", time: "14:00~15:30", tags: ["유람선", "1시간 30분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.239783, lng: 126.563933,
+          desc: "서귀포항에서 출발해 바다 위에서 해안 절벽과 섬 풍경 감상.",
+          note: "지도 위치는 서귀포항 기준이에요."
+        },
+        {
+          name: "소랑 ATV", time: "15:50~16:50", tags: ["ATV", "1시간"],
+          moveBefore: "🚗 차로 약 20분 이동", query: "소랑ATV",
+          desc: "오프로드 ATV 체험."
+        },
+        {
+          name: "쇠소깍", time: "17:10~18:40", tags: ["계곡 · 산책", "1시간 30분"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 33.2525937, lng: 126.6234661,
+          desc: "민물과 바닷물이 만나는 에메랄드빛 계곡. 산책로 따라 천천히 걸어요."
+        },
+        {
+          name: "꺼멍목장", time: "19:00~20:00", tags: ["저녁 식사", "1시간"],
+          moveBefore: "🚗 차로 약 30분 이동", query: "꺼멍목장",
+          desc: "3일차 저녁 식사."
+        },
+        {
+          name: "산방산탄산온천", time: "20:10~21:40", tags: ["온천 · 휴식", "1시간 30분"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 33.2489406, lng: 126.298749,
+          desc: "액티비티 가득한 하루를 탄산 온천으로 마무리."
+        }
+      ]
+    },
+    {
+      title: "4일차 · 서쪽 자유 코스 (시간 미정)", short: "4일차",
+      stops: [
+        { name: "제주소품샵 모이소", tags: ["소품샵"], query: "제주 모이소", desc: "제주 감성 소품샵 구경." },
+        { name: "노형수퍼마켙", tags: ["미디어아트 전시"], query: "노형수퍼마켙", desc: "레트로 슈퍼마켓 콘셉트의 미디어아트 전시." },
+        { name: "신창풍차해안도로", tags: ["해안도로 · 노을"], query: "신창풍차해안도로", desc: "바다 위 풍력발전기가 늘어선 해안도로 드라이브." },
+        { name: "요조조", tags: ["가볼 곳"], query: "제주 요조조", desc: "후보 장소." },
+        {
+          name: "금능해수욕장", tags: ["해변"],
+          lat: 33.389465, lng: 126.235648,
+          desc: "비양도가 보이는 맑은 바다. 협재 옆이라 조금 더 한적해요."
+        }
+      ]
+    },
+    {
+      title: "5일차 · 함덕 바다 & 귀가", short: "5일차",
+      before: [
+        { time: "09:00", text: "제주공항 인근 숙소 출발" }
+      ],
+      stops: [
+        {
+          name: "언더워터플레이 함덕점", time: "09:20~10:20", tags: ["체험", "1시간"],
+          moveBefore: "🚗 차로 약 20분 이동", query: "언더워터플레이 함덕",
+          desc: "수중 콘셉트 실내 체험."
+        },
+        {
+          name: "함덕해수욕장", time: "10:25~12:55", tags: ["해변 · 물놀이", "2시간 30분"],
+          moveBefore: "🚶 약 5분 이동",
+          lat: 33.5431881, lng: 126.6698794,
+          desc: "에메랄드빛 얕은 바다. 마지막 날 바다 실컷 즐기기."
+        },
+        {
+          name: "파인더 웨이브 함덕점", time: "13:00~13:30", tags: ["사진", "30분"],
+          moveBefore: "🚶 약 5분 이동", query: "파인더 웨이브 함덕",
+          desc: "함덕 바다 앞에서 기념사진."
+        },
+        {
+          name: "갈치옥 함덕", time: "13:45~14:45", tags: ["점심 · 갈치", "1시간"],
+          moveBefore: "🚗 약 15분 이동", query: "갈치옥 함덕",
+          desc: "제주 갈치 요리로 점심."
+        },
+        {
+          name: "델문도", time: "15:05~16:05", tags: ["오션뷰 카페", "1시간"],
+          moveBefore: "🚗 약 20분 이동", query: "델문도 함덕",
+          desc: "함덕 바다 바로 앞 카페."
+        },
+        {
+          name: "서우봉 둘레길", time: "16:20~17:20", tags: ["산책", "1시간"],
+          moveBefore: "🚶 약 15분 이동",
+          lat: 33.5458447, lng: 126.6775825,
+          desc: "함덕 해변 옆 오름 둘레길. 위에서 내려다보는 바다 풍경이 예뻐요."
+        },
+        {
+          name: "제주공항", time: "17:45~18:45", tags: ["렌트카 반납 · 귀가 ✈️"],
+          moveBefore: "🚗 차로 약 25분 이동",
+          lat: 33.5070711, lng: 126.4916441,
+          desc: "렌트카 반납하고 집으로."
+        }
+      ]
+    }
+  ];
+
+  var CHECK_KEY = "checklist_jeju-20250701";
+  var CHECK_ITEMS = [
+    "신분증 (항공 · 우도 배편 승선)",
+    "운전면허증 (렌트카 · 사이드카)",
+    "수영복 · 비치타월 (함덕·서빈백사)",
+    "온천용 세면도구",
+    "선크림 · 모자 · 선글라스",
+    "보조배터리 · 충전기"
+  ];
+
+  var TIPS = [
+    "2일차 우도는 배 시간과 사이드카 반납 시간을 꼭 확인해요. 마지막 배를 놓치지 않게!",
+    "3일차는 액티비티(승마·낙타·ATV·유람선)가 많아서 예약 시간을 미리 맞춰두면 좋아요.",
+    "4일차는 시간표 없이 서쪽(애월·한림) 후보 장소만 정해둔 자유 일정이에요.",
+    "좌표를 확인한 장소만 지도에 표시되고, 나머지는 '지도에서 찾기' 버튼으로 검색해요."
+  ];
+  var STAYS = [];
+
+  var NMAP_APPNAME = "com.couple.ourdays"; // OurDays 앱 Android 패키지 ID
+
+  // 네이버 지도 앱 딥링크를 열고, 앱이 없으면 지도 검색 웹으로 폴백
+  function openNaverDeepLink(deepLink, name) {
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return; // 앱으로 전환됐으면 폴백하지 않음
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
+  }
+
+  function openInNaverMap(name, lat, lng) {
+    openNaverDeepLink("nmap://place?lat=" + lat + "&lng=" + lng +
+      "&name=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  function openRouteToPlace(name, lat, lng) {
+    openNaverDeepLink("nmap://route/car?dlat=" + lat + "&dlng=" + lng +
+      "&dname=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  // 좌표를 확인하지 못한 장소는 이름으로 검색
+  function searchInNaverMap(query) {
+    openNaverDeepLink("nmap://search?query=" + encodeURIComponent(query) + "&appname=" + NMAP_APPNAME, query);
+  }
+
+  function miniHtml(list) {
+    return (list || []).map(function (m) {
+      return '<div class="mini"><div class="dot"></div><div class="mini-body">' +
+        '<span class="mini-time">' + m.time + '</span>' +
+        '<span class="mini-text">' + m.text + (m.small ? '<small>' + m.small + '</small>' : '') + '</span>' +
+      '</div></div>';
+    }).join("");
+  }
+
+  function stopHtml(s, num, day) {
+    var nameJs = JSON.stringify(s.name).replace(/"/g, "&quot;");
+    var queryJs = JSON.stringify(s.query || s.name).replace(/"/g, "&quot;");
+    var hasPos = typeof s.lat === "number";
+    return '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
+      '<div class="num">' + num + '</div>' +
+      '<div class="stop-card">' +
+        '<div class="stop-head"><h3>' + s.name + '</h3>' + (s.time ? '<span class="time-chip">' + s.time + '</span>' : '') + '</div>' +
+        (s.tags && s.tags.length ? '<div class="tag-row">' + s.tags.map(function (t) {
+          return '<span class="tag' + (t === "선택 코스" ? ' optional-tag' : '') + '">' + t + '</span>';
+        }).join("") + '</div>' : '') +
+        (s.addr ? '<p class="addr">📍 ' + s.addr + '</p>' : '') +
+        (s.hours ? '<p class="hours">🕒 ' + s.hours + '</p>' : '') +
+        (s.photos ? '<div class="photo-row">' + s.photos.map(function (p) {
+          return '<img src="' + p + '" alt="' + s.name + '" loading="lazy" />';
+        }).join("") + '</div>' : '') +
+        (s.desc ? '<p class="desc">' + s.desc + '</p>' : '') +
+        (s.extra || '') +
+        (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
+        '<div class="btn-row">' +
+          (hasPos
+            ? '<a class="btn" href="#" onclick="openInNaverMap(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🗺️ 지도 보기</a>' +
+              '<a class="btn" href="#" onclick="openRouteToPlace(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🚗 길찾기</a>'
+            : '<a class="btn" href="#" onclick="searchInNaverMap(' + queryJs + ');return false;">🔍 지도에서 찾기</a>') +
+          (s.tel ? '<a class="btn tel" href="tel:' + s.tel + '">📞 ' + s.tel + '</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var timelineHtml = "";
+  DAYS.forEach(function (d, di) {
+    timelineHtml += '<div class="day-title">' + d.title + '</div>' + miniHtml(d.before);
+    (d.stops || []).forEach(function (s, i) {
+      if (s.moveBefore) timelineHtml += '<div class="connector">' + s.moveBefore + '</div>';
+      timelineHtml += stopHtml(s, i + 1, di + 1);
+    });
+    if (d.moveAfter) timelineHtml += '<div class="connector">' + d.moveAfter + '</div>';
+    timelineHtml += miniHtml(d.after);
+  });
+  document.getElementById("timeline").innerHTML = timelineHtml;
+
+  /* ── 숙소 ── */
+  var stayEl = document.getElementById("stayList");
+  if (stayEl) {
+    stayEl.innerHTML = STAYS.map(function (h) {
+      return '<div class="stay"><h3>🏨 ' + h.name + '</h3><span class="time-chip">' + h.when + '</span>' +
+        '<p class="desc">' + h.desc + '</p></div>';
+    }).join("");
+  }
+
+  /* ── 네이버 지도: 전체 동선 (일차별 색상 마커 + 경로선) ── */
+  var DAY_COLORS = ["#2F5D62", "#E2725B", "#E8A33D", "#5B6FB5", "#7A5BA8"];
+  function initRouteMap() {
+    if (!(window.naver && naver.maps)) return;
+    var el = document.getElementById("routeMap");
+    if (!el) return;
+    var routeMap = new naver.maps.Map(el, {
+      zoom: 10, mapTypeControl: false, scaleControl: false, logoControl: true, zoomControl: false
+    });
+    var bounds = new naver.maps.LatLngBounds();
+    DAYS.forEach(function (d, di) {
+      var path = [];
+      (d.stops || []).forEach(function (s, i) {
+        if (typeof s.lat !== "number") return;
+        var pos = new naver.maps.LatLng(s.lat, s.lng);
+        bounds.extend(pos);
+        path.push(pos);
+        var marker = new naver.maps.Marker({
+          position: pos, map: routeMap, title: s.name, zIndex: 100,
+          icon: {
+            content: '<div class="nv-pin d' + (di + 1) + '">' + (i + 1) + '</div>',
+            anchor: new naver.maps.Point(12, 12)
+          }
+        });
+        naver.maps.Event.addListener(marker, "click", function () { openInNaverMap(s.name, s.lat, s.lng); });
+      });
+      if (path.length > 1) {
+        new naver.maps.Polyline({
+          map: routeMap, path: path, strokeColor: DAY_COLORS[di % DAY_COLORS.length],
+          strokeWeight: 3, strokeOpacity: 0.85, strokeStyle: "shortdash"
+        });
+      }
+    });
+    routeMap.fitBounds(bounds, { top: 24, right: 24, bottom: 24, left: 24 });
+  }
+
+  document.getElementById("mapLegend").innerHTML = DAYS.map(function (d, di) {
+    var has = (d.stops || []).some(function (s) { return typeof s.lat === "number"; });
+    return has ? '<span><i style="background:' + DAY_COLORS[di % DAY_COLORS.length] + '"></i>' + d.short + '</span>' : '';
+  }).join("");
+
+  window.navermap_authFailure = function () {
+    var el = document.getElementById("routeMap");
+    if (el) {
+      el.innerHTML = '<div class="map-fallback">네이버 지도 인증 실패<br>NCP 콘솔에서 이 사이트 도메인이 ' +
+        '허용 목록(Web 서비스 URL)에 등록되어 있는지 확인해주세요.</div>';
+    }
+  };
+
+  if (window.naver && naver.maps) initRouteMap();
+  else window.addEventListener("load", initRouteMap);
+
+  /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
+  var checkedState = {};
+  try { checkedState = JSON.parse(localStorage.getItem(CHECK_KEY)) || {}; } catch (e) { checkedState = {}; }
+
+  function renderCheckList() {
+    var html = "";
+    CHECK_ITEMS.forEach(function (item, i) {
+      var checked = !!checkedState[i];
+      html += '<label class="check-item' + (checked ? ' checked' : '') + '">' +
+        '<input type="checkbox" data-idx="' + i + '"' + (checked ? ' checked' : '') + ' />' +
+        '<span>' + item + '</span>' +
+      '</label>';
+    });
+    document.getElementById("checkList").innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll(".check-item input"), function (input) {
+      input.addEventListener("change", function () {
+        checkedState[this.dataset.idx] = this.checked;
+        try { localStorage.setItem(CHECK_KEY, JSON.stringify(checkedState)); } catch (e) {}
+        renderCheckList();
+      });
+    });
+  }
+  renderCheckList();
+
+  /* ── 참고 사항 ── */
+  document.getElementById("tipList").innerHTML = TIPS.map(function (t) {
+    return '<div class="tip">' + t + '</div>';
+  }).join("");
+</script>
+</body>
+</html>

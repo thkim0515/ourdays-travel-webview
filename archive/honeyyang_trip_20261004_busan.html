@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>부산 여행 · 2026 여름</title>
+<style>
+  :root {
+    color-scheme: light;
+    --teal: #2F5D62;
+    --teal-soft: #E9F1F0;
+    --amber: #E8A33D;
+    --amber-soft: #FDF3E3;
+    --coral: #E2725B;
+    --coral-soft: #FBEAE6;
+    --cream: #FBF7F0;
+    --card: #FFFFFF;
+    --ink: #2A2E2B;
+    --sub: #7C8580;
+    --line: #E9E4D8;
+  }
+  * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8D2C2 transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C2; border-radius: 999px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
+
+  /* 히어로 */
+  .hero {
+    background: linear-gradient(135deg, var(--teal) 0%, #3E7A80 100%);
+    padding: 32px 22px 26px;
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 10px 24px -14px rgba(47,93,98,0.55);
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 16px; }
+  .sunset-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 10px 14px; font-size: 12.5px; font-weight: 700;
+  }
+  .sunset-badge .emoji { font-size: 16px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 800; color: var(--sub);
+    letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
+  }
+
+  /* 타임라인 */
+  .timeline { margin: 8px 22px 0; position: relative; }
+  .stop { position: relative; padding-left: 30px; padding-bottom: 4px; }
+  .stop::before {
+    content: ""; position: absolute; left: 9px; top: 26px; bottom: -4px;
+    width: 2px; background: var(--line);
+  }
+  .stop:last-child::before { display: none; }
+  .stop .num {
+    position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stop.optional .num { background: var(--sub); }
+  .stop-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stop.optional .stop-card { opacity: 0.62; }
+  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .stop-head h3 { font-size: 15.5px; margin: 0; }
+  .stop-head .time-chip {
+    font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber);
+  }
+  .tag.optional-tag { background: #EDEBE4; color: var(--sub); }
+  .addr { font-size: 12px; color: var(--sub); margin: 0 0 4px; line-height: 1.5; }
+  .hours { font-size: 12px; color: var(--sub); margin: 0 0 10px; line-height: 1.5; }
+  .desc { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+  .note {
+    font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
+    border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.55;
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    flex: 1 1 auto; min-width: 84px; text-align: center;
+    font-size: 12px; font-weight: 700; padding: 10px 10px; border-radius: 12px;
+    border: 1px solid var(--line); color: var(--teal); background: var(--teal-soft);
+  }
+  .btn.tel { color: var(--coral); background: var(--coral-soft); }
+  .connector {
+    display: flex; align-items: center; gap: 6px; margin: 6px 0 10px 30px;
+    padding: 10px 14px; border-radius: 12px;
+    font-size: 15px; font-weight: 800; line-height: 1.4;
+    color: #fff; background: var(--teal);
+  }
+
+  .gondola {
+    background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .gondola > b { display: block; font-size: 14.5px; color: var(--teal); margin-bottom: 6px; }
+  .gondola ul { margin: 0; padding-left: 0; list-style: none; }
+  .gondola li { margin-bottom: 3px; }
+  .gondola-warn {
+    margin-top: 8px; padding: 8px 10px; border-radius: 10px;
+    background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 13px;
+  }
+
+  /* 소이벤트(동선 계산용) */
+  .day-title {
+    margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
+    background: var(--teal-soft); border-radius: 999px; padding: 6px 14px; display: inline-block;
+  }
+  .mini { position: relative; padding-left: 30px; padding-bottom: 2px; }
+  .mini::before {
+    content: ""; position: absolute; left: 9px; top: 14px; bottom: -2px;
+    width: 2px; background: var(--line);
+  }
+  .mini:last-child::before { display: none; }
+  .mini .dot {
+    position: absolute; left: 5px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--amber);
+  }
+  .mini-body {
+    display: flex; align-items: baseline; gap: 8px; padding: 2px 0 8px;
+    font-size: 14.5px; line-height: 1.55;
+  }
+  .mini-time {
+    font-size: 13px; font-weight: 800; color: #8A5E1F; background: var(--amber-soft);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-text { color: var(--ink); font-weight: 700; }
+  .mini-text small { display: block; color: #4A524D; font-size: 13px; margin-top: 2px; }
+
+  /* 전체 경로 지도 */
+  .map-wrap {
+    margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    background: #EFEAE0;
+  }
+  #routeMap { width: 100%; height: 260px; }
+  .map-fallback {
+    display: flex; align-items: center; justify-content: center; height: 260px;
+    padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
+  }
+  .nv-pin {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #3E7A80);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .nv-pin.optional-pin { background: var(--sub); }
+
+  /* 체크리스트 */
+  .check-list {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 6px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px; cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; }
+  .check-item.checked span { color: var(--sub); text-decoration: line-through; }
+
+  /* 참고사항 */
+  .tip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .tip {
+    background: var(--amber-soft); border-radius: 14px; padding: 12px 14px;
+    font-size: 12.5px; color: #8A5E1F; line-height: 1.6;
+  }
+
+  /* 일차별 핀 색상 + 지도 범례 */
+  .nv-pin.d2 { background: linear-gradient(135deg, var(--coral), #EC8B76); }
+  .nv-pin.d3 { background: linear-gradient(135deg, var(--amber), #F0B95E); }
+  .nv-pin.d4 { background: linear-gradient(135deg, #5B6FB5, #7A8CCB); }
+  .nv-pin.d5 { background: linear-gradient(135deg, #7A5BA8, #9479BE); }
+  .map-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 8px 22px 0; font-size: 11.5px; color: var(--sub); }
+  .map-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+  .map-note { margin: 6px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.6; }
+
+  /* 장소 사진 */
+  .photo-row { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 10px; padding-bottom: 2px; }
+  .photo-row img { height: 92px; border-radius: 10px; flex-shrink: 0; object-fit: cover; background: #EFEAE0; }
+
+  /* 숙소 카드 */
+  .stay-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .stay {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px; box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stay h3 { font-size: 15px; margin: 0 0 6px; }
+  .stay .time-chip {
+    display: inline-block; font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; margin-bottom: 8px;
+  }
+
+  footer {
+    margin: 30px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.7;
+    border-top: 1px solid var(--line); padding-top: 14px;
+  }
+</style>
+<!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=imimukiww3"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge">🏖️ 커플 여름 바다 여행</span>
+    <h1>부산 3박 4일<br/>여름 바다 여행</h1>
+    <p class="sub">송정 바다 · 스카이캡슐 · 광안대교 야경 · 태종대</p>
+    <div class="sunset-badge"><span class="emoji">📅</span> 2026.08.04(화) ~ 08.07(금) · 3박 4일</div>
+  </div>
+
+  <div class="section-title">숙소</div>
+  <div class="stay-list" id="stayList"></div>
+
+  <div class="section-title">타임라인</div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="section-title">전체 경로 지도</div>
+  <div class="map-wrap"><div id="routeMap"></div></div>
+  <div class="map-legend" id="mapLegend"></div>
+  <p class="map-note">지도의 숫자는 각 일차 안에서의 순서예요. 1일차는 이동만 있어서 지도에 표시하지 않아요.</p>
+
+  <div class="section-title">준비물 체크리스트</div>
+  <div class="check-list" id="checkList"></div>
+
+  <div class="section-title">참고 사항</div>
+  <div class="tip-list" id="tipList"></div>
+
+  <footer>
+    영업시간·메뉴·가격은 방문 전 다시 한 번 확인해주세요. <br/>
+    체크리스트는 이 기기에만 저장돼요.
+  </footer>
+
+</div>
+
+<script>
+  var DAYS = [
+    {
+      title: "1일차 · 8/4(화) · 부산 이동", short: "1일차",
+      before: [
+        { time: "퇴근 후", text: "서울 → 부산 KTX 출발 🚆", small: "서울-부산 약 2시간 30분" },
+        { time: "밤", text: "부산역 도착 → 송정으로 이동" },
+        { time: "밤", text: "송정 브라운도트호텔 체크인 🌙", small: "송정해수욕장 인근 · 2박" }
+      ]
+    },
+    {
+      title: "2일차 · 8/5(수) · 송정 바다 & 노을", short: "2일차",
+      before: [
+        { time: "출발", text: "송정 브라운도트호텔 출발", small: "도보로 바로 해변 이동 가능" }
+      ],
+      stops: [
+        {
+          name: "송정해수욕장", time: "09:00", tags: ["바다 · 물놀이"],
+          lat: 35.1793, lng: 129.2000,
+          desc: "해운대보다 한적한 서퍼들의 성지. 서핑 체험도 가능해요(2시간 5만원대).",
+          note: "파라솔 대여 1만원. 오전 10시 전에 자리 잡아야 그늘 확보!"
+        },
+        {
+          name: "Garookang Table", time: "12:30", tags: ["오션뷰 레스토랑 · 점심"],
+          lat: 35.1799, lng: 129.1997,
+          desc: "송정해변 끝자락 오션뷰 레스토랑 ★4.3. 파스타·스테이크 메뉴, 런치 코스 2만원대. 물놀이 후 깔끔한 식사로 딱.",
+          note: "2층 창가석 예약 추천."
+        },
+        {
+          name: "수월경화 카페", time: "14:00", tags: ["한식 디저트 카페"],
+          lat: 35.1789, lng: 129.1996,
+          desc: "전통 한식 디저트 전문 ★4.7. 인절미빙수·말차·식혜 추천. 해수욕장 도보 1분.",
+          note: "4층 바다뷰 자리 필수(웨이팅 있을 수 있음)."
+        },
+        {
+          name: "블루라인파크 스카이캡슐 🌅", time: "18:30", tags: ["노을 타임", "2인 전용 캡슐"],
+          lat: 35.1793, lng: 129.1974,
+          desc: "해안선 따라 송정↔미포 4.8km를 황금빛 노을과 함께. 이 시간대가 가장 아름다워요.",
+          note: "사전 예약 필수 — 18:30 시간대 지정! 8월 성수기는 2~3주 전 매진돼요."
+        },
+        {
+          name: "블루라인파크 해변열차", time: "19:30", tags: ["해변열차 · 복귀"],
+          lat: 35.1613, lng: 129.1611,
+          desc: "스카이캡슐로 미포 도착 후 해변열차로 복귀. 어두워지는 바다를 창밖으로 감상하며 송정으로."
+        },
+        {
+          name: "구덕포끝집고기", time: "20:30", tags: ["바다뷰 고깃집 · 저녁"],
+          lat: 35.1705, lng: 129.1973,
+          desc: "송정~구덕포 해안 산책로 끝자락 바다뷰 고깃집 ★4.2. 삼겹살+목살 세트 추천.",
+          note: "테라스석 요청하기."
+        },
+        {
+          name: "Oldmug 카페", time: "21:30", tags: ["밤바다 · 수제맥주"],
+          lat: 35.1716, lng: 129.1977,
+          desc: "해변 바람 맞으며 수제맥주 한 잔 or 디저트. 송정 밤바다 감상하며 내일을 위한 충전. 야외석 추천."
+        }
+      ],
+      after: [
+        { time: "복귀", text: "송정 브라운도트호텔 복귀", small: "내일 렌트카 픽업 준비" }
+      ]
+    },
+    {
+      title: "3일차 · 8/6(목) · 명소 탐방 & 광안리", short: "3일차",
+      before: [
+        { time: "아침", text: "렌트카 수령 🚗", small: "해운대·송정 지점" },
+        { time: "출발", text: "송정 브라운도트호텔 체크아웃 후 출발" }
+      ],
+      stops: [
+        {
+          name: "해동용궁사", time: "09:00", tags: ["해안 절벽 사찰"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 35.1885, lng: 129.2234,
+          desc: "한국 유일의 해안 절벽 사찰. 108계단 올라가며 소원 빌기. 주차장에서 도보 10분.",
+          note: "아침 일찍 가야 성수기에도 한적하게 볼 수 있어요."
+        },
+        {
+          name: "전설의 우대갈비 해운대", time: "11:00", tags: ["소갈비 · 점심"],
+          lat: 35.1586, lng: 129.1612,
+          desc: "소갈비 특화 ★4.9. 직원이 직접 구워주는 전통 서비스. 2인 세트 추천.",
+          note: "오션뷰 테이블 요청 필수!"
+        },
+        {
+          name: "광안리 해변 카페 & 자유시간", time: "13:00", tags: ["카페 · 자유시간"],
+          lat: 35.1535, lng: 129.1200,
+          desc: "광안리 카페거리 구경하며 바다 감상. 해변 포토존에서 커플 사진 찍기."
+        },
+        {
+          name: "민락수변공원", time: "17:30", tags: ["노을 · 광안대교 뷰"],
+          lat: 35.1565, lng: 129.1275,
+          desc: "광안리 바로 옆 수변공원. 조개구이 포장마차 거리와 버스킹 공연, 광안대교 정면 뷰가 일품. 노을부터 초저녁까지 로맨틱한 시간."
+        },
+        {
+          name: "광안제일돼지국밥", time: "20:30", tags: ["돼지국밥 · 저녁"],
+          lat: 35.1539, lng: 129.1283,
+          desc: "광안리 단골 ★4.8. 부산 정통 돼지국밥, 24시간 운영. 수육 추가 추천."
+        },
+        {
+          name: "광안대교 야경", time: "21:30", tags: ["야경 스폿"],
+          lat: 35.1532, lng: 129.1186,
+          desc: "부산 최고의 야경 스폿. 광안리 해변 산책하며 라이트업 된 다리 감상. 편의점 맥주 한 캔과 함께.",
+          note: "폭염 대책: 엑스더스카이(엘시티 전망대) — 실내 전망대. 마감 20:30이라 점심(우대갈비) 직후 낮에 방문하고, 저녁 야경 산책은 생략."
+        }
+      ],
+      moveAfter: "🚗 차로 약 15분 이동",
+      after: [
+        { time: "도착", text: "영도 그랜드 베른 호텔 체크인 🌙", small: "체크인 후 휴식" }
+      ]
+    },
+    {
+      title: "4일차 · 8/7(금) · 영도 & 남포동", short: "4일차",
+      before: [
+        { time: "출발", text: "영도 그랜드 베른 호텔 체크아웃" }
+      ],
+      stops: [
+        {
+          name: "흰여울문화마을", time: "09:00", tags: ["절벽마을 · 산책"],
+          moveBefore: "🚶 도보 약 5분 이동",
+          lat: 35.0776, lng: 129.0445,
+          desc: "아침 일찍이라 관광객 없는 조용한 절벽마을. 해안 산책로 따라 카페 & 벤치에서 바다 감상. 사진 명소.",
+          note: "폭염 대책: 흰여울비치 — 마을 초입 도보 3~4분, 루프탑 포함 4층 오션뷰 카페. 화·수요일 휴무."
+        },
+        {
+          name: "태종대", time: "11:00", tags: ["해안 절경 · 등대"],
+          moveBefore: "🚗 차로 약 15분 이동",
+          lat: 35.0540, lng: 129.0857,
+          desc: "절벽 & 등대의 해안 절경. 다누비열차(2,000원) 탑승 추천. 전망대에서 대마도가 보여요.",
+          note: "폭염 대책: 영도등대 SEE&SEA 갤러리 — 태종대 안 실내 전시공간(해양도서실·영상관·갤러리). 다누비열차로 약 10분."
+        },
+        {
+          name: "원앙분식", time: "14:30", tags: ["부산 향토 분식 · 점심"],
+          lat: 35.0980, lng: 129.0288,
+          desc: "충무김밥+냄비우동 세트 추천. 돌솥비빔밥도 별미."
+        },
+        {
+          name: "남포동 BIFF광장 & 씨앗호떡", time: "16:30", tags: ["간식 투어 · 쇼핑거리"],
+          lat: 35.0984, lng: 129.0291,
+          desc: "부산 명물 씨앗호떡(견과류 가득, 1개 2천원)과 거리 간식 투어. 광복로 쇼핑거리 산책도 가능.",
+          note: "폭염 대책: 국제시장 아케이드 구간 — 도보 5분, 지붕형이라 비·땡볕 걱정 없이 구경 가능."
+        },
+        {
+          name: "용두산공원 부산타워", time: "18:30", tags: ["전망대 · 노을~야경"],
+          moveBefore: "🚶 도보 약 5분 이동",
+          lat: 35.1010, lng: 129.0325,
+          desc: "부산항·영도·광안대교가 한눈에 보이는 전망대. 여행 마무리 사진 찍기 🧡",
+          note: "전망대 입장료 12,000원, 사전 예약 없이 현장 매표."
+        }
+      ],
+      moveAfter: "🚗 차로 약 10분 이동",
+      after: [
+        { time: "귀가", text: "렌트카 반납 → 부산역 KTX 탑승 🚆" }
+      ]
+    }
+  ];
+
+  var STAYS = [
+    { name: "송정 브라운도트호텔", when: "8/4(화) ~ 8/6(목) · 2박",
+      desc: "송정해수욕장 인근. 1일차 야간 도착부터 2일차 송정 물놀이·블루라인파크까지 2박, 3일차 해동용궁사 출발에도 유리해요. ✅ 예약 완료" },
+    { name: "영도 그랜드 베른 호텔", when: "8/6(목) ~ 8/7(금) · 1박",
+      desc: "4일차 흰여울·태종대 동선의 출발점. 마지막 날 이동 거리가 크게 줄고 부산역 KTX 귀가에도 가까워요. ✅ 예약 완료" }
+  ];
+
+  var CHECK_KEY = "checklist_busan-20260804";
+  var CHECK_ITEMS = [
+    "블루라인파크 스카이캡슐 18:30 예약 (bluelinepark.com)",
+    "KTX 왕복 예매 (8/4 출발 · 8/7 귀가)",
+    "렌트카 예약 (8/6 아침 해운대·송정 지점 수령)",
+    "수영복 · 래시가드",
+    "선크림 SPF50+ · 모자 · 선글라스",
+    "방수팩 · 비치타월",
+    "슬리퍼(샌들) + 운동화",
+    "보조배터리 · 충전기",
+    "상비약 (진통제 · 소화제 · 멀미약)"
+  ];
+
+  var TIPS = [
+    "8월 성수기라 스카이캡슐·숙소·KTX는 2~3주 전에 매진돼요. 스카이캡슐 예약이 최우선!",
+    "폭염이 심한 날은 각 장소의 '폭염 대책' 실내 대안으로 바꿔서 움직여요.",
+    "3·4일차는 렌트카 이동이에요. 운전하는 날은 저녁 맥주는 숙소 근처에서만!",
+    "부산타워는 노을~야경 시간대가 가장 예뻐요. 4일차 마지막 일정으로 여유 있게."
+  ];
+
+
+  var NMAP_APPNAME = "com.couple.ourdays"; // OurDays 앱 Android 패키지 ID
+
+  // 네이버 지도 앱 딥링크를 열고, 앱이 없으면 지도 검색 웹으로 폴백
+  function openNaverDeepLink(deepLink, name) {
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return; // 앱으로 전환됐으면 폴백하지 않음
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
+  }
+
+  function openInNaverMap(name, lat, lng) {
+    openNaverDeepLink("nmap://place?lat=" + lat + "&lng=" + lng +
+      "&name=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  function openRouteToPlace(name, lat, lng) {
+    openNaverDeepLink("nmap://route/car?dlat=" + lat + "&dlng=" + lng +
+      "&dname=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  // 좌표를 확인하지 못한 장소는 이름으로 검색
+  function searchInNaverMap(query) {
+    openNaverDeepLink("nmap://search?query=" + encodeURIComponent(query) + "&appname=" + NMAP_APPNAME, query);
+  }
+
+  function miniHtml(list) {
+    return (list || []).map(function (m) {
+      return '<div class="mini"><div class="dot"></div><div class="mini-body">' +
+        '<span class="mini-time">' + m.time + '</span>' +
+        '<span class="mini-text">' + m.text + (m.small ? '<small>' + m.small + '</small>' : '') + '</span>' +
+      '</div></div>';
+    }).join("");
+  }
+
+  function stopHtml(s, num, day) {
+    var nameJs = JSON.stringify(s.name).replace(/"/g, "&quot;");
+    var queryJs = JSON.stringify(s.query || s.name).replace(/"/g, "&quot;");
+    var hasPos = typeof s.lat === "number";
+    return '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
+      '<div class="num">' + num + '</div>' +
+      '<div class="stop-card">' +
+        '<div class="stop-head"><h3>' + s.name + '</h3>' + (s.time ? '<span class="time-chip">' + s.time + '</span>' : '') + '</div>' +
+        (s.tags && s.tags.length ? '<div class="tag-row">' + s.tags.map(function (t) {
+          return '<span class="tag' + (t === "선택 코스" ? ' optional-tag' : '') + '">' + t + '</span>';
+        }).join("") + '</div>' : '') +
+        (s.addr ? '<p class="addr">📍 ' + s.addr + '</p>' : '') +
+        (s.hours ? '<p class="hours">🕒 ' + s.hours + '</p>' : '') +
+        (s.photos ? '<div class="photo-row">' + s.photos.map(function (p) {
+          return '<img src="' + p + '" alt="' + s.name + '" loading="lazy" />';
+        }).join("") + '</div>' : '') +
+        (s.desc ? '<p class="desc">' + s.desc + '</p>' : '') +
+        (s.extra || '') +
+        (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
+        '<div class="btn-row">' +
+          (hasPos
+            ? '<a class="btn" href="#" onclick="openInNaverMap(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🗺️ 지도 보기</a>' +
+              '<a class="btn" href="#" onclick="openRouteToPlace(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🚗 길찾기</a>'
+            : '<a class="btn" href="#" onclick="searchInNaverMap(' + queryJs + ');return false;">🔍 지도에서 찾기</a>') +
+          (s.tel ? '<a class="btn tel" href="tel:' + s.tel + '">📞 ' + s.tel + '</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var timelineHtml = "";
+  DAYS.forEach(function (d, di) {
+    timelineHtml += '<div class="day-title">' + d.title + '</div>' + miniHtml(d.before);
+    (d.stops || []).forEach(function (s, i) {
+      if (s.moveBefore) timelineHtml += '<div class="connector">' + s.moveBefore + '</div>';
+      timelineHtml += stopHtml(s, i + 1, di + 1);
+    });
+    if (d.moveAfter) timelineHtml += '<div class="connector">' + d.moveAfter + '</div>';
+    timelineHtml += miniHtml(d.after);
+  });
+  document.getElementById("timeline").innerHTML = timelineHtml;
+
+  /* ── 숙소 ── */
+  var stayEl = document.getElementById("stayList");
+  if (stayEl) {
+    stayEl.innerHTML = STAYS.map(function (h) {
+      return '<div class="stay"><h3>🏨 ' + h.name + '</h3><span class="time-chip">' + h.when + '</span>' +
+        '<p class="desc">' + h.desc + '</p></div>';
+    }).join("");
+  }
+
+  /* ── 네이버 지도: 전체 동선 (일차별 색상 마커 + 경로선) ── */
+  var DAY_COLORS = ["#2F5D62", "#E2725B", "#E8A33D", "#5B6FB5", "#7A5BA8"];
+  function initRouteMap() {
+    if (!(window.naver && naver.maps)) return;
+    var el = document.getElementById("routeMap");
+    if (!el) return;
+    var routeMap = new naver.maps.Map(el, {
+      zoom: 10, mapTypeControl: false, scaleControl: false, logoControl: true, zoomControl: false
+    });
+    var bounds = new naver.maps.LatLngBounds();
+    DAYS.forEach(function (d, di) {
+      var path = [];
+      (d.stops || []).forEach(function (s, i) {
+        if (typeof s.lat !== "number") return;
+        var pos = new naver.maps.LatLng(s.lat, s.lng);
+        bounds.extend(pos);
+        path.push(pos);
+        var marker = new naver.maps.Marker({
+          position: pos, map: routeMap, title: s.name, zIndex: 100,
+          icon: {
+            content: '<div class="nv-pin d' + (di + 1) + '">' + (i + 1) + '</div>',
+            anchor: new naver.maps.Point(12, 12)
+          }
+        });
+        naver.maps.Event.addListener(marker, "click", function () { openInNaverMap(s.name, s.lat, s.lng); });
+      });
+      if (path.length > 1) {
+        new naver.maps.Polyline({
+          map: routeMap, path: path, strokeColor: DAY_COLORS[di % DAY_COLORS.length],
+          strokeWeight: 3, strokeOpacity: 0.85, strokeStyle: "shortdash"
+        });
+      }
+    });
+    routeMap.fitBounds(bounds, { top: 24, right: 24, bottom: 24, left: 24 });
+  }
+
+  document.getElementById("mapLegend").innerHTML = DAYS.map(function (d, di) {
+    var has = (d.stops || []).some(function (s) { return typeof s.lat === "number"; });
+    return has ? '<span><i style="background:' + DAY_COLORS[di % DAY_COLORS.length] + '"></i>' + d.short + '</span>' : '';
+  }).join("");
+
+  window.navermap_authFailure = function () {
+    var el = document.getElementById("routeMap");
+    if (el) {
+      el.innerHTML = '<div class="map-fallback">네이버 지도 인증 실패<br>NCP 콘솔에서 이 사이트 도메인이 ' +
+        '허용 목록(Web 서비스 URL)에 등록되어 있는지 확인해주세요.</div>';
+    }
+  };
+
+  if (window.naver && naver.maps) initRouteMap();
+  else window.addEventListener("load", initRouteMap);
+
+  /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
+  var checkedState = {};
+  try { checkedState = JSON.parse(localStorage.getItem(CHECK_KEY)) || {}; } catch (e) { checkedState = {}; }
+
+  function renderCheckList() {
+    var html = "";
+    CHECK_ITEMS.forEach(function (item, i) {
+      var checked = !!checkedState[i];
+      html += '<label class="check-item' + (checked ? ' checked' : '') + '">' +
+        '<input type="checkbox" data-idx="' + i + '"' + (checked ? ' checked' : '') + ' />' +
+        '<span>' + item + '</span>' +
+      '</label>';
+    });
+    document.getElementById("checkList").innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll(".check-item input"), function (input) {
+      input.addEventListener("change", function () {
+        checkedState[this.dataset.idx] = this.checked;
+        try { localStorage.setItem(CHECK_KEY, JSON.stringify(checkedState)); } catch (e) {}
+        renderCheckList();
+      });
+    });
+  }
+  renderCheckList();
+
+  /* ── 참고 사항 ── */
+  document.getElementById("tipList").innerHTML = TIPS.map(function (t) {
+    return '<div class="tip">' + t + '</div>';
+  }).join("");
+</script>
+</body>
+</html>

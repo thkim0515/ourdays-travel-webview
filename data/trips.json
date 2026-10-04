@@ -22,5 +22,29 @@
     "date": "2026-10-04",
     "emoji": "🌇",
     "url": "archive/honeyyang_trip_20260928.html"
+  },
+  {
+    "id": "gangneung-20260521",
+    "title": "강릉 여행 2·3일차 코스",
+    "subtitle": "정동진 · 경포 · 안목 카페거리 · 렌트카 이동",
+    "date": "2026-05-21",
+    "emoji": "☕",
+    "url": "archive/honeyyang_trip_20261004_gangneung.html"
+  },
+  {
+    "id": "jeju-20250701",
+    "title": "제주 4박 5일 여행 코스",
+    "subtitle": "제주시 해안 · 우도 사이드카 · 서귀포 액티비티 · 함덕 바다",
+    "date": "2025-07-01",
+    "emoji": "🍊",
+    "url": "archive/honeyyang_trip_20261004_jeju.html"
+  },
+  {
+    "id": "busan-20260804",
+    "title": "부산 3박 4일 여름 바다 여행",
+    "subtitle": "송정 바다 · 스카이캡슐 · 광안대교 야경 · 태종대 · 3박 4일",
+    "date": "2026-08-04",
+    "emoji": "🏖️",
+    "url": "archive/honeyyang_trip_20261004_busan.html"
   }
 ]

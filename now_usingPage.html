@@ -69,16 +69,23 @@
     border-radius: 18px; padding: 16px 16px; position: relative;
     box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
   }
-  .trip-card.past { opacity: 0.55; }
+  /* 지난 여행: 날짜만 빼고 흐리게 (날짜는 항상 잘 보이도록) */
+  .trip-card.past .emoji, .trip-card.past h3,
+  .trip-card.past .subtitle, .trip-card.past .past-chip { opacity: 0.55; }
+  .trip-card.past .date { color: #4A524D; }
   .trip-card .top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   .trip-card .emoji {
     width: 36px; height: 36px; border-radius: 12px; background: var(--teal-soft);
     display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
   }
-  .trip-card h3 { font-size: 15.5px; margin: 0; line-height: 1.35; }
+  .trip-card .title-block { flex: 1; min-width: 0; }
+  .trip-card h3 {
+    font-size: 15.5px; margin: 0; line-height: 1.35;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .trip-card .date {
-    font-size: 10.5px; font-weight: 700; color: var(--sub);
-    white-space: nowrap; margin-left: auto; padding-top: 2px;
+    font-size: 12px; font-weight: 800; color: var(--teal);
+    white-space: nowrap; margin-top: 2px;
   }
   .trip-card .subtitle { font-size: 12.5px; color: var(--sub); line-height: 1.55; margin: 0 0 4px 46px; }
   .trip-card .latest-chip {
@@ -183,8 +190,10 @@
       html += '<a class="trip-card' + (isPast ? ' past' : '') + '" href="' + trip.url + '">' +
         '<div class="top-row">' +
           '<div class="emoji">' + (trip.emoji || "🗺️") + '</div>' +
-          '<h3>' + trip.title + '</h3>' +
-          '<div class="date">' + formatDate(trip.date) + '</div>' +
+          '<div class="title-block">' +
+            '<h3 title="' + trip.title + '">' + trip.title + '</h3>' +
+            '<div class="date">' + formatDate(trip.date) + '</div>' +
+          '</div>' +
         '</div>' +
         (trip.subtitle ? '<p class="subtitle">' + trip.subtitle + '</p>' : '') +
         chip +

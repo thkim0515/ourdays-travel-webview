@@ -131,7 +131,10 @@
 </div>
 
 <script>
+  // 날짜 미정 여행은 "2026-??-??"처럼 ? 로 적는다 — 문자열 비교에서 '?'가 숫자보다 커서
+  // 오늘보다 앞선 "지난 여행"으로 분류되지 않고, 같은 해의 날짜가 정해진 여행들 뒤에 놓인다.
   function formatDate(dateStr) {
+    if (dateStr.indexOf("?") >= 0) return dateStr.split("-").join(".") + " 날짜 미정";
     var parts = dateStr.split("-").map(Number);
     var d = new Date(parts[0], parts[1] - 1, parts[2]);
     var days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -150,20 +153,25 @@
   var currentMode = "default"; // "default" | "asc" | "desc"
 
   // 기본 정렬: 지나지 않은 여행은 날짜가 가까운 순(오름차순)으로 위에, 지난 여행은 그 아래에 최신순으로 배치
+  // 정렬은 localeCompare 대신 문자 코드로 비교한다 — localeCompare 는 '?'를 숫자보다 앞에 둬서
+  // 날짜 미정(2026-??-??) 여행이 가장 가까운 여행보다 위로 올라왔다.
+  function cmp(a, b) { return a < b ? -1 : a > b ? 1 : 0; }
+  function isTbd(t) { return t.date.indexOf("?") >= 0; }
+
   function sortDefault(trips) {
     var upcoming = trips.filter(function (t) { return t.date >= TODAY; })
-      .sort(function (a, b) { return a.date.localeCompare(b.date); });
+      .sort(function (a, b) { return cmp(a.date, b.date); });
     var past = trips.filter(function (t) { return t.date < TODAY; })
-      .sort(function (a, b) { return b.date.localeCompare(a.date); });
+      .sort(function (a, b) { return cmp(b.date, a.date); });
     return upcoming.concat(past);
   }
 
   function sortAsc(trips) {
-    return trips.slice().sort(function (a, b) { return a.date.localeCompare(b.date); });
+    return trips.slice().sort(function (a, b) { return cmp(a.date, b.date); });
   }
 
   function sortDesc(trips) {
-    return trips.slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
+    return trips.slice().sort(function (a, b) { return cmp(b.date, a.date); });
   }
 
   function render() {
@@ -175,7 +183,7 @@
 
     var firstUpcomingIdx = -1;
     for (var k = 0; k < sorted.length; k++) {
-      if (sorted[k].date >= TODAY) { firstUpcomingIdx = k; break; }
+      if (sorted[k].date >= TODAY && !isTbd(sorted[k])) { firstUpcomingIdx = k; break; }
     }
 
     var html = "";

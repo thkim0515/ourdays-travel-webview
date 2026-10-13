@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>제주 2박 3일 여행 코스</title>
+<style>
+  :root {
+    color-scheme: light;
+    --teal: #2F5D62;
+    --teal-soft: #E9F1F0;
+    --amber: #E8A33D;
+    --amber-soft: #FDF3E3;
+    --coral: #E2725B;
+    --coral-soft: #FBEAE6;
+    --cream: #FBF7F0;
+    --card: #FFFFFF;
+    --ink: #2A2E2B;
+    --sub: #7C8580;
+    --line: #E9E4D8;
+  }
+  * { box-sizing: border-box; }
+  html { scrollbar-width: thin; scrollbar-color: #D8D2C2 transparent; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C2; border-radius: 999px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 48px; }
+
+  /* 히어로 */
+  .hero {
+    background: linear-gradient(135deg, var(--teal) 0%, #3E7A80 100%);
+    padding: 32px 22px 26px;
+    color: #fff;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 10px 24px -14px rgba(47,93,98,0.55);
+  }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 22px; margin: 0 0 6px; line-height: 1.35; }
+  .hero .sub { font-size: 13px; opacity: 0.92; line-height: 1.6; margin: 0 0 16px; }
+  .sunset-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px; padding: 10px 14px; font-size: 12.5px; font-weight: 700;
+  }
+  .sunset-badge .emoji { font-size: 16px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 800; color: var(--sub);
+    letter-spacing: 0.03em; margin: 26px 22px 10px; text-transform: uppercase;
+  }
+
+  /* 타임라인 */
+  .timeline { margin: 8px 22px 0; position: relative; }
+  .stop { position: relative; padding-left: 30px; padding-bottom: 4px; }
+  .stop::before {
+    content: ""; position: absolute; left: 9px; top: 26px; bottom: -4px;
+    width: 2px; background: var(--line);
+  }
+  .stop:last-child::before { display: none; }
+  .stop .num {
+    position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stop.optional .num { background: var(--sub); }
+  .stop-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stop.optional .stop-card { opacity: 0.62; }
+  .stop-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .stop-head h3 { font-size: 15.5px; margin: 0; }
+  .stop-head .time-chip {
+    font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber);
+  }
+  .tag.optional-tag { background: #EDEBE4; color: var(--sub); }
+  .addr { font-size: 12px; color: var(--sub); margin: 0 0 4px; line-height: 1.5; }
+  .hours { font-size: 12px; color: var(--sub); margin: 0 0 10px; line-height: 1.5; }
+  .desc { font-size: 12.5px; color: var(--ink); line-height: 1.6; margin: 0 0 8px; }
+  .note {
+    font-size: 11.5px; color: var(--coral); background: var(--coral-soft);
+    border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.55;
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .btn {
+    flex: 1 1 auto; min-width: 84px; text-align: center;
+    font-size: 12px; font-weight: 700; padding: 10px 10px; border-radius: 12px;
+    border: 1px solid var(--line); color: var(--teal); background: var(--teal-soft);
+  }
+  .btn.tel { color: var(--coral); background: var(--coral-soft); }
+  .connector {
+    display: flex; align-items: center; gap: 6px; margin: 6px 0 10px 30px;
+    padding: 10px 14px; border-radius: 12px;
+    font-size: 15px; font-weight: 800; line-height: 1.4;
+    color: #fff; background: var(--teal);
+  }
+
+  .gondola {
+    background: var(--teal-soft); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .gondola > b { display: block; font-size: 14.5px; color: var(--teal); margin-bottom: 6px; }
+  .gondola ul { margin: 0; padding-left: 0; list-style: none; }
+  .gondola li { margin-bottom: 3px; }
+  .gondola-warn {
+    margin-top: 8px; padding: 8px 10px; border-radius: 10px;
+    background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 13px;
+  }
+
+  /* 소이벤트(동선 계산용) */
+  .day-title {
+    margin: 22px 0 10px; font-size: 12.5px; font-weight: 800; color: var(--teal);
+    background: var(--teal-soft); border-radius: 999px; padding: 6px 14px; display: inline-block;
+  }
+  .mini { position: relative; padding-left: 30px; padding-bottom: 2px; }
+  .mini::before {
+    content: ""; position: absolute; left: 9px; top: 14px; bottom: -2px;
+    width: 2px; background: var(--line);
+  }
+  .mini:last-child::before { display: none; }
+  .mini .dot {
+    position: absolute; left: 5px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--amber);
+  }
+  .mini-body {
+    display: flex; align-items: baseline; gap: 8px; padding: 2px 0 8px;
+    font-size: 14.5px; line-height: 1.55;
+  }
+  .mini-time {
+    font-size: 13px; font-weight: 800; color: #8A5E1F; background: var(--amber-soft);
+    padding: 2px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .mini-text { color: var(--ink); font-weight: 700; }
+  .mini-text small { display: block; color: #4A524D; font-size: 13px; margin-top: 2px; }
+
+  /* 전체 경로 지도 */
+  .map-wrap {
+    margin: 0 22px; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    background: #EFEAE0;
+  }
+  #routeMap { width: 100%; height: 260px; }
+  .map-fallback {
+    display: flex; align-items: center; justify-content: center; height: 260px;
+    padding: 20px; text-align: center; color: var(--sub); font-size: 12px; line-height: 1.7;
+  }
+  .nv-pin {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), #3E7A80);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    cursor: pointer;
+  }
+  .nv-pin.optional-pin { background: var(--sub); }
+
+  /* 체크리스트 */
+  .check-list {
+    margin: 0 22px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 6px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--line); font-size: 13.5px; cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; }
+  .check-item.checked span { color: var(--sub); text-decoration: line-through; }
+
+  /* 참고사항 */
+  .tip-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .tip {
+    background: var(--amber-soft); border-radius: 14px; padding: 12px 14px;
+    font-size: 12.5px; color: #8A5E1F; line-height: 1.6;
+  }
+
+  /* 일차별 핀 색상 + 지도 범례 */
+  .nv-pin.d2 { background: linear-gradient(135deg, var(--coral), #EC8B76); }
+  .nv-pin.d3 { background: linear-gradient(135deg, var(--amber), #F0B95E); }
+  .nv-pin.d4 { background: linear-gradient(135deg, #5B6FB5, #7A8CCB); }
+  .nv-pin.d5 { background: linear-gradient(135deg, #7A5BA8, #9479BE); }
+  .map-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 8px 22px 0; font-size: 11.5px; color: var(--sub); }
+  .map-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; vertical-align: -1px; }
+  .map-note { margin: 6px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.6; }
+
+  /* 장소 사진 */
+  .photo-row { display: flex; gap: 6px; overflow-x: auto; margin: 0 0 10px; padding-bottom: 2px; }
+  .photo-row img { height: 92px; border-radius: 10px; flex-shrink: 0; object-fit: cover; background: #EFEAE0; }
+
+  /* 숙소 카드 */
+  .stay-list { margin: 0 22px; display: flex; flex-direction: column; gap: 8px; }
+  .stay {
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 14px 16px; box-shadow: 0 6px 16px -12px rgba(42,46,43,0.25);
+  }
+  .stay h3 { font-size: 15px; margin: 0 0 6px; }
+  .stay .time-chip {
+    display: inline-block; font-size: 11px; font-weight: 800; color: var(--teal); background: var(--teal-soft);
+    padding: 3px 9px; border-radius: 999px; margin-bottom: 8px;
+  }
+
+  footer {
+    margin: 30px 22px 0; font-size: 11px; color: #A8A190; line-height: 1.7;
+    border-top: 1px solid var(--line); padding-top: 14px;
+  }
+</style>
+<!-- 네이버 지도 JS SDK (Client ID만 사용, 공개되어도 안전 — NCP 콘솔의 도메인 등록으로 보호) -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=imimukiww3"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="badge">🍊 제주 커플 여행 · 렌트카</span>
+    <h1>제주 2박 3일<br/>여행 코스</h1>
+    <p class="sub">김녕 · 함덕 바다 · 한림 · 협재 · 신창 풍차 · 대정 · 중문</p>
+    <div class="sunset-badge"><span class="emoji">✈️</span> 1일차 08:05 제주 도착 → 3일차 18:00 렌트카 반납</div>
+  </div>
+
+  <div class="section-title">타임라인</div>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="section-title">숙소</div>
+  <div class="stay-list" id="stayList"></div>
+
+  <div class="section-title">전체 경로 지도</div>
+  <div class="map-wrap"><div id="routeMap"></div></div>
+  <div class="map-legend" id="mapLegend"></div>
+  <p class="map-note">지도의 숫자는 각 일차 안에서의 순서예요. 좌표를 확인하지 못한 장소는 지도에서 빠져 있어요.</p>
+
+  <div class="section-title">예상 경비 (2인)</div>
+  <div class="stay-list" id="costList"></div>
+
+  <div class="section-title">준비물 체크리스트</div>
+  <div class="check-list" id="checkList"></div>
+
+  <div class="section-title">참고 사항</div>
+  <div class="tip-list" id="tipList"></div>
+
+  <footer>
+    영업시간·메뉴·가격은 방문 전 다시 한 번 확인해주세요. <br/>
+    체크리스트는 이 기기에만 저장돼요. <br/>
+    참고: 노션 「제주 2박 3일 코스」(여친몬 블로그 일정) — 출발지가 달라 집~공항 이동·주차 내용은 뺐어요.
+  </footer>
+
+</div>
+
+<script>
+  var AIRPORT = { lat: 33.506923, lng: 126.492993 };
+  var JAR = { lat: 33.501496, lng: 126.488912 };
+  var DAYS = [
+    {
+      title: "1일차 · 제주 도착 & 동쪽 바다 → 한림", short: "1일차",
+      stops: [
+        {
+          name: "김포공항 → 제주공항", time: "06:55~08:05", tags: ["항공편 ✈️"], query: "김포국제공항",
+          desc: "김포공항에서 탑승 수속을 마치고 제주로 출발해요."
+        },
+        {
+          name: "제주공항 도착", tags: ["도착 · 짐 찾기"],
+          lat: AIRPORT.lat, lng: AIRPORT.lng,
+          desc: "짐 찾고 렌트카 셔틀 타는 곳으로 이동해요.",
+          note: "탐나는전 카드는 공항 1층 GATE 5 앞 제주은행에서 바로 발급받을 수 있어요."
+        },
+        {
+          name: "JAR 렌트카 대여", time: "08:40~09:00", tags: ["렌트카 🚗", "2박 3일"],
+          lat: JAR.lat, lng: JAR.lng, addr: "제주시 다호5길 17",
+          desc: "차 받아서 동쪽 김녕 바다로 출발.",
+          note: "렌트카 셔틀은 5번 게이트 5구역 8번에서 타요."
+        },
+        {
+          name: "세기알 해변", time: "09:50~11:30", tags: ["해변 · 사진", "1시간 40분"],
+          moveBefore: "🚗 차로 약 50분 이동",
+          lat: 33.557716, lng: 126.756274, addr: "제주시 구좌읍 김녕리 1200-5",
+          desc: "김녕의 작고 맑은 해변. 첫날 바다 인생샷 찍기 좋아요."
+        },
+        {
+          name: "김녕 떠오르길", time: "11:40~12:20", tags: ["카페", "40분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.557831, lng: 126.747111, addr: "제주시 구좌읍 김녕항3길 12-20",
+          desc: "김녕항 앞 바다 보이는 카페에서 잠깐 쉬어가기."
+        },
+        {
+          name: "점심 · 계절식탁 함덕점", time: "12:30~13:30", tags: ["점심 · 갈치조림", "1시간"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.542568, lng: 126.667388, addr: "제주시 조천읍 조함해안로 510 2층",
+          desc: "함덕 바다 앞 갈치조림 맛집.",
+          note: "갈치조림 2인 약 3만 1천원"
+        },
+        {
+          name: "고내리 해변길", time: "14:30~15:30", tags: ["해안 산책", "1시간"],
+          moveBefore: "🚗 차로 약 50분 이동",
+          lat: 33.473571, lng: 126.356419, addr: "제주시 애월읍 고내리 (고내포구 부근)",
+          desc: "애월 고내리 해안을 따라 걷는 조용한 바닷길.",
+          note: "지도 위치는 고내포구 기준이에요."
+        },
+        {
+          name: "다우당 체크인", time: "16:00", tags: ["숙소 🏡", "1박째"],
+          moveBefore: "🚗 차로 약 25분 이동",
+          lat: 33.403895, lng: 126.253700, addr: "제주시 한림읍 한림로 504-7",
+          desc: "한림 숙소 체크인 후 저녁 전까지 쉬어가요."
+        },
+        {
+          name: "신창 풍차해안도로", time: "19:00~20:00", tags: ["드라이브 · 노을", "1시간"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 33.342505, lng: 126.171922, addr: "제주시 한경면 신창리 1481-23",
+          desc: "바다 위 풍력발전기 사이로 해 지는 풍경. 노을 맞춰 가면 제일 예뻐요."
+        },
+        {
+          name: "저녁 · 열흘", time: "20:30~22:00", tags: ["저녁 · 흑돼지", "1시간 30분"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 33.406778, lng: 126.261073, addr: "제주시 한림읍 한림상로 61",
+          desc: "제주 흑돼지로 첫날 마무리. 숙소에서 가까워요.",
+          note: "흑돼지 2인 약 6만원"
+        }
+      ]
+    },
+    {
+      title: "2일차 · 한림 · 협재 · 금능 → 대정", short: "2일차",
+      stops: [
+        {
+          name: "아침 · 협재칼국수", time: "09:00~10:00", tags: ["아침", "1시간"],
+          lat: 33.396821, lng: 126.244480, addr: "제주시 한림읍 협재로 3",
+          desc: "따끈한 칼국수로 하루 시작.",
+          note: "2인 약 3만원"
+        },
+        {
+          name: "한림 해안로", time: "10:10~11:00", tags: ["해안도로 · 사진", "50분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.436663, lng: 126.270127, addr: "제주시 한림읍 한림해안로 456",
+          desc: "풍력발전기와 바다에 잠긴 길이 어우러져 몽환적인 분위기. 사진 꼭 찍기!"
+        },
+        {
+          name: "협재포구", time: "11:10~12:50", tags: ["바다 · 산책", "1시간 40분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.392464, lng: 126.238973, addr: "제주시 한림읍 협재리",
+          desc: "비양도가 보이는 에메랄드빛 협재 바다를 천천히 즐겨요."
+        },
+        {
+          name: "점심 · 선인장식당", time: "13:00~14:20", tags: ["점심 · 향토음식", "1시간 20분"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.377605, lng: 126.215139, addr: "제주시 한림읍 월령안길 14-3",
+          desc: "선인장 군락으로 유명한 월령리의 향토 식당.",
+          note: "2인 약 4만원"
+        },
+        {
+          name: "금능 가마쿠라", time: "14:30~15:30", tags: ["사진 명소", "1시간"],
+          moveBefore: "🚗 차로 약 10분 이동",
+          lat: 33.388305, lng: 126.224712, addr: "제주시 한림읍 금능1길 23",
+          desc: "일본 가마쿠라 느낌의 금능 골목 포토 스폿."
+        },
+        {
+          name: "밧밧 체크인", time: "16:00~19:00", tags: ["숙소 🏡", "2박째"],
+          moveBefore: "🚗 차로 약 30분 이동",
+          lat: 33.261255, lng: 126.222220, addr: "서귀포시 대정읍 영락사독로122번길 29",
+          desc: "대정 숙소로 옮겨 체크인하고 저녁 전까지 쉬어요."
+        },
+        {
+          name: "바다 기찻길", time: "19:00~20:00", tags: ["산책 · 노을", "1시간"],
+          query: "대정 바다 기찻길",
+          desc: "숙소 근처 바닷가 산책. 해 질 무렵 걷기 좋아요.",
+          note: "정확한 위치를 확인하지 못해 지도 검색으로 연결해요."
+        },
+        {
+          name: "저녁 · 부두식당", time: "20:30~", tags: ["저녁 · 모듬회"],
+          moveBefore: "🚗 차로 이동",
+          lat: 33.218825, lng: 126.251048, addr: "서귀포시 대정읍 하모항구로 62",
+          desc: "모슬포 하모항 앞 횟집에서 모듬회로 둘째 날 마무리.",
+          note: "모듬회 2인 8만 5천원"
+        }
+      ]
+    },
+    {
+      title: "3일차 · 대정 → 한경 → 중문 → 귀가", short: "3일차",
+      stops: [
+        {
+          name: "아점 · 제주할망밥상", time: "11:30~12:30", tags: ["아점 · 정식", "1시간"],
+          lat: 33.214273, lng: 126.253157, addr: "서귀포시 대정읍 최남단해안로 69 (모슬포점)",
+          desc: "느긋하게 일어나 정식으로 든든한 아점.",
+          note: "정식 2인 약 3만원"
+        },
+        {
+          name: "산양큰엉곶", time: "13:00~14:30", tags: ["숲길 · 체험", "1시간 30분"],
+          moveBefore: "🚗 차로 약 20분 이동",
+          lat: 33.290993, lng: 126.250658, addr: "제주시 한경면 연명로 179",
+          desc: "곶자왈 숲길을 따라 걷는 동화 같은 산책 코스.",
+          note: "입장료 2인 1만 8천원"
+        },
+        {
+          name: "스타벅스 제주중문점", time: "15:00~15:30", tags: ["카페", "30분"],
+          moveBefore: "🚗 차로 약 25분 이동",
+          lat: 33.251197, lng: 126.412639, addr: "서귀포시 중문관광로110번길 32",
+          desc: "중문 관광단지에서 커피 한 잔.",
+          note: "음료 2잔 약 1만원"
+        },
+        {
+          name: "점저 · 제주오성", time: "15:40~16:50", tags: ["솥밥 · 갈치조림", "1시간 10분"],
+          moveBefore: "🚗 차로 약 5분 이동",
+          lat: 33.255703, lng: 126.414666, addr: "서귀포시 중문관광로 27",
+          desc: "솥밥과 갈치조림으로 여행 마지막 식사.",
+          note: "2인 약 3만원"
+        },
+        {
+          name: "제주공항 렌트카 반납", time: "18:00", tags: ["렌트카 반납 🚗"],
+          moveBefore: "🚗 차로 약 1시간 이동",
+          lat: JAR.lat, lng: JAR.lng, addr: "제주시 다호5길 17",
+          desc: "주유하고 렌트카 반납. 셔틀 타고 공항으로."
+        },
+        {
+          name: "제주공항 → 김포공항", tags: ["귀가 ✈️"],
+          lat: AIRPORT.lat, lng: AIRPORT.lng,
+          desc: "탑승 수속하고 집으로. 2박 3일 끝!"
+        }
+      ]
+    }
+  ];
+
+  var CHECK_KEY = "checklist_jeju-2n3d-20260509";
+  var CHECK_ITEMS = [
+    "신분증 (항공 탑승)",
+    "운전면허증 (렌트카)",
+    "탐나는전 카드 (공항 1층 제주은행 발급)",
+    "산양큰엉곶 입장 시간 확인",
+    "선크림 · 모자 · 선글라스",
+    "보조배터리 · 충전기"
+  ];
+
+  var TIPS = [
+    "항공권은 트립닷컴 앱에서 시간대·항공사·가격을 한눈에 비교해 최저가로 예약하면 좋아요 (유류할증료 부담 줄이기).",
+    "제주 지역화폐 '탐나는전'으로 결제하면 결제액의 최대 13%를 포인트로 받아요. 제주공항 1층 GATE 5 앞 제주은행에서 발급.",
+    "렌트카 셔틀은 제주공항 5번 게이트 5구역 8번에서 타요.",
+    "1일차는 동쪽(김녕·함덕) → 서쪽(애월·한림)으로 크게 이동하는 날이라 운전 시간이 길어요. 중간중간 쉬어가요.",
+    "숙소가 1박째 한림(다우당), 2박째 대정(밧밧)으로 바뀌어요. 2일차 오후에 짐 챙겨 이동!"
+  ];
+  var STAYS = [
+    { name: "다우당", when: "1박째 · 1일차 16:00 체크인", desc: "제주시 한림읍 한림로 504-7 — 신창 풍차해안도로·열흘·협재와 가까워요." },
+    { name: "밧밧", when: "2박째 · 2일차 16:00 체크인", desc: "서귀포시 대정읍 영락사독로122번길 29 — 바다 기찻길·부두식당(하모항)과 가까워요." }
+  ];
+  var COSTS = [
+    { name: "항공 · 렌트 · 주유", when: "약 45만원", desc: "제주 왕복 항공권 2인 34만원 · JAR 렌트카 2박 3일 7만원 · 주유비 약 4만원" },
+    { name: "1일차", when: "약 9만 1천원", desc: "계절식탁 갈치조림 3만 1천원 · 열흘 흑돼지 약 6만원" },
+    { name: "2일차", when: "약 15만 5천원", desc: "협재칼국수 3만원 · 선인장식당 약 4만원 · 부두식당 모듬회 8만 5천원" },
+    { name: "3일차", when: "약 9만 8천원", desc: "제주할망밥상 3만원 · 산양큰엉곶 입장료 1만 8천원 · 스타벅스 약 1만원 · 제주오성 약 3만원" },
+    { name: "합계", when: "약 79만 4천원", desc: "숙소비 제외(원본에 없음)" }
+  ];
+
+  var NMAP_APPNAME = "com.couple.ourdays"; // OurDays 앱 Android 패키지 ID
+
+  // 네이버 지도 앱 딥링크를 열고, 앱이 없으면 지도 검색 웹으로 폴백
+  function openNaverDeepLink(deepLink, name) {
+    var fallbackUrl = "https://map.naver.com/p/search/" + encodeURIComponent(name);
+    var timer = setTimeout(function () {
+      if (document.hidden) return; // 앱으로 전환됐으면 폴백하지 않음
+      window.open(fallbackUrl, "_blank", "noopener");
+    }, 900);
+    document.addEventListener("visibilitychange", function onHide() {
+      if (document.hidden) {
+        clearTimeout(timer);
+        document.removeEventListener("visibilitychange", onHide);
+      }
+    });
+    window.location.href = deepLink;
+  }
+
+  function openInNaverMap(name, lat, lng) {
+    openNaverDeepLink("nmap://place?lat=" + lat + "&lng=" + lng +
+      "&name=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  function openRouteToPlace(name, lat, lng) {
+    openNaverDeepLink("nmap://route/car?dlat=" + lat + "&dlng=" + lng +
+      "&dname=" + encodeURIComponent(name) + "&appname=" + NMAP_APPNAME, name);
+  }
+
+  // 좌표를 확인하지 못한 장소는 이름으로 검색
+  function searchInNaverMap(query) {
+    openNaverDeepLink("nmap://search?query=" + encodeURIComponent(query) + "&appname=" + NMAP_APPNAME, query);
+  }
+
+  function miniHtml(list) {
+    return (list || []).map(function (m) {
+      return '<div class="mini"><div class="dot"></div><div class="mini-body">' +
+        '<span class="mini-time">' + m.time + '</span>' +
+        '<span class="mini-text">' + m.text + (m.small ? '<small>' + m.small + '</small>' : '') + '</span>' +
+      '</div></div>';
+    }).join("");
+  }
+
+  function stopHtml(s, num, day) {
+    var nameJs = JSON.stringify(s.name).replace(/"/g, "&quot;");
+    var queryJs = JSON.stringify(s.query || s.name).replace(/"/g, "&quot;");
+    var hasPos = typeof s.lat === "number";
+    return '<div class="stop' + (s.optional ? ' optional' : '') + '">' +
+      '<div class="num">' + num + '</div>' +
+      '<div class="stop-card">' +
+        '<div class="stop-head"><h3>' + s.name + '</h3>' + (s.time ? '<span class="time-chip">' + s.time + '</span>' : '') + '</div>' +
+        (s.tags && s.tags.length ? '<div class="tag-row">' + s.tags.map(function (t) {
+          return '<span class="tag' + (t === "선택 코스" ? ' optional-tag' : '') + '">' + t + '</span>';
+        }).join("") + '</div>' : '') +
+        (s.addr ? '<p class="addr">📍 ' + s.addr + '</p>' : '') +
+        (s.hours ? '<p class="hours">🕒 ' + s.hours + '</p>' : '') +
+        (s.photos ? '<div class="photo-row">' + s.photos.map(function (p) {
+          return '<img src="' + p + '" alt="' + s.name + '" loading="lazy" />';
+        }).join("") + '</div>' : '') +
+        (s.desc ? '<p class="desc">' + s.desc + '</p>' : '') +
+        (s.extra || '') +
+        (s.note ? '<div class="note">💡 ' + s.note + '</div>' : '') +
+        '<div class="btn-row">' +
+          (hasPos
+            ? '<a class="btn" href="#" onclick="openInNaverMap(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🗺️ 지도 보기</a>' +
+              '<a class="btn" href="#" onclick="openRouteToPlace(' + nameJs + ',' + s.lat + ',' + s.lng + ');return false;">🚗 길찾기</a>'
+            : '<a class="btn" href="#" onclick="searchInNaverMap(' + queryJs + ');return false;">🔍 지도에서 찾기</a>') +
+          (s.tel ? '<a class="btn tel" href="tel:' + s.tel + '">📞 ' + s.tel + '</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var timelineHtml = "";
+  DAYS.forEach(function (d, di) {
+    timelineHtml += '<div class="day-title">' + d.title + '</div>' + miniHtml(d.before);
+    (d.stops || []).forEach(function (s, i) {
+      if (s.moveBefore) timelineHtml += '<div class="connector">' + s.moveBefore + '</div>';
+      timelineHtml += stopHtml(s, i + 1, di + 1);
+    });
+    if (d.moveAfter) timelineHtml += '<div class="connector">' + d.moveAfter + '</div>';
+    timelineHtml += miniHtml(d.after);
+  });
+  document.getElementById("timeline").innerHTML = timelineHtml;
+
+  /* ── 숙소 ── */
+  var stayEl = document.getElementById("stayList");
+  if (stayEl) {
+    stayEl.innerHTML = STAYS.map(function (h) {
+      return '<div class="stay"><h3>🏨 ' + h.name + '</h3><span class="time-chip">' + h.when + '</span>' +
+        '<p class="desc">' + h.desc + '</p></div>';
+    }).join("");
+  }
+
+  /* ── 예상 경비 ── */
+  var costEl = document.getElementById("costList");
+  if (costEl) {
+    costEl.innerHTML = COSTS.map(function (c) {
+      return '<div class="stay"><h3>💵 ' + c.name + '</h3><span class="time-chip">' + c.when + '</span>' +
+        '<p class="desc">' + c.desc + '</p></div>';
+    }).join("");
+  }
+
+  /* ── 네이버 지도: 전체 동선 (일차별 색상 마커 + 경로선) ── */
+  var DAY_COLORS = ["#2F5D62", "#E2725B", "#E8A33D", "#5B6FB5", "#7A5BA8"];
+  function initRouteMap() {
+    if (!(window.naver && naver.maps)) return;
+    var el = document.getElementById("routeMap");
+    if (!el) return;
+    var routeMap = new naver.maps.Map(el, {
+      zoom: 10, mapTypeControl: false, scaleControl: false, logoControl: true, zoomControl: false
+    });
+    var bounds = new naver.maps.LatLngBounds();
+    DAYS.forEach(function (d, di) {
+      var path = [];
+      (d.stops || []).forEach(function (s, i) {
+        if (typeof s.lat !== "number") return;
+        var pos = new naver.maps.LatLng(s.lat, s.lng);
+        bounds.extend(pos);
+        path.push(pos);
+        var marker = new naver.maps.Marker({
+          position: pos, map: routeMap, title: s.name, zIndex: 100,
+          icon: {
+            content: '<div class="nv-pin d' + (di + 1) + '">' + (i + 1) + '</div>',
+            anchor: new naver.maps.Point(12, 12)
+          }
+        });
+        naver.maps.Event.addListener(marker, "click", function () { openInNaverMap(s.name, s.lat, s.lng); });
+      });
+      if (path.length > 1) {
+        new naver.maps.Polyline({
+          map: routeMap, path: path, strokeColor: DAY_COLORS[di % DAY_COLORS.length],
+          strokeWeight: 3, strokeOpacity: 0.85, strokeStyle: "shortdash"
+        });
+      }
+    });
+    routeMap.fitBounds(bounds, { top: 24, right: 24, bottom: 24, left: 24 });
+  }
+
+  document.getElementById("mapLegend").innerHTML = DAYS.map(function (d, di) {
+    var has = (d.stops || []).some(function (s) { return typeof s.lat === "number"; });
+    return has ? '<span><i style="background:' + DAY_COLORS[di % DAY_COLORS.length] + '"></i>' + d.short + '</span>' : '';
+  }).join("");
+
+  window.navermap_authFailure = function () {
+    var el = document.getElementById("routeMap");
+    if (el) {
+      el.innerHTML = '<div class="map-fallback">네이버 지도 인증 실패<br>NCP 콘솔에서 이 사이트 도메인이 ' +
+        '허용 목록(Web 서비스 URL)에 등록되어 있는지 확인해주세요.</div>';
+    }
+  };
+
+  if (window.naver && naver.maps) initRouteMap();
+  else window.addEventListener("load", initRouteMap);
+
+  /* ── 준비물 체크리스트 (이 기기에만 저장) ── */
+  var checkedState = {};
+  try { checkedState = JSON.parse(localStorage.getItem(CHECK_KEY)) || {}; } catch (e) { checkedState = {}; }
+
+  function renderCheckList() {
+    var html = "";
+    CHECK_ITEMS.forEach(function (item, i) {
+      var checked = !!checkedState[i];
+      html += '<label class="check-item' + (checked ? ' checked' : '') + '">' +
+        '<input type="checkbox" data-idx="' + i + '"' + (checked ? ' checked' : '') + ' />' +
+        '<span>' + item + '</span>' +
+      '</label>';
+    });
+    document.getElementById("checkList").innerHTML = html;
+    Array.prototype.forEach.call(document.querySelectorAll(".check-item input"), function (input) {
+      input.addEventListener("change", function () {
+        checkedState[this.dataset.idx] = this.checked;
+        try { localStorage.setItem(CHECK_KEY, JSON.stringify(checkedState)); } catch (e) {}
+        renderCheckList();
+      });
+    });
+  }
+  renderCheckList();
+
+  /* ── 참고 사항 ── */
+  document.getElementById("tipList").innerHTML = TIPS.map(function (t) {
+    return '<div class="tip">' + t + '</div>';
+  }).join("");
+</script>
+</body>
+</html>
